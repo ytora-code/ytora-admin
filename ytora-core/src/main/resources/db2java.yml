@@ -1,0 +1,158 @@
+default:
+  bit: Boolean
+  tinyint: Byte
+  smallint: Short
+  int: Integer
+  integer: Integer
+  bigint: Long
+  float: Float
+  double: Double
+  decimal: java.math.BigDecimal
+  numeric: java.math.BigDecimal
+  char: String
+  varchar: String
+  text: String
+  clob: String
+  blob: byte[]
+  binary: byte[]
+  varbinary: byte[]
+  date: java.time.LocalDate
+  time: java.time.LocalTime
+  datetime: java.time.LocalDateTime
+  timestamp: java.time.LocalDateTime
+  year: Integer
+
+mysql:
+  tinyint: Byte
+  # 建议通过正则/规则支持 tinyint(1) → Boolean（见实现建议）
+  tinyint(1): Boolean
+  smallint: Short
+  mediumint: Integer
+  int: Integer
+  bigint: Long
+  float: Float
+  double: Double
+  decimal: java.math.BigDecimal
+  numeric: java.math.BigDecimal
+  char: String
+  varchar: String
+  tinytext: String
+  mediumtext: String
+  longtext: String
+  text: String
+  blob: byte[]
+  tinyblob: byte[]
+  mediumblob: byte[]
+  longblob: byte[]
+  binary: byte[]
+  varbinary: byte[]
+  date: java.time.LocalDate
+  time: java.time.LocalTime
+  datetime: java.time.LocalDateTime
+  timestamp: java.time.LocalDateTime
+  year: java.time.Year
+  enum: String
+  set: String
+  json: String
+  geometry: byte[]
+  point: byte[]
+
+postgresql:
+  boolean: Boolean
+  smallint: Short
+  integer: Integer
+  serial: Integer
+  bigserial: Long
+  bigint: Long
+  real: Float
+  "double precision": Double
+  decimal: java.math.BigDecimal
+  numeric: java.math.BigDecimal
+  char: String
+  varchar: String
+  text: String
+  bytea: byte[]
+  date: java.time.LocalDate
+  "time without time zone": java.time.LocalTime
+  time: java.time.LocalTime
+  "time with time zone": java.time.OffsetTime
+  timestamp: java.time.LocalDateTime
+  "timestamp without time zone": java.time.LocalDateTime
+  "timestamp with time zone": java.time.OffsetDateTime
+  interval: java.time.Duration
+  uuid: java.util.UUID
+  json: String
+  jsonb: String
+  xml: String
+  cidr: String
+  inet: String
+  macaddr: String
+  # 可选
+  smallserial: Integer
+  money: java.math.BigDecimal
+
+oracle:
+  number: java.math.BigDecimal
+  float: Float
+  binary_float: Float
+  binary_double: Double
+  char: String
+  varchar2: String
+  nvarchar2: String
+  nchar: String
+  clob: String
+  nclob: String
+  blob: byte[]
+  raw: byte[]
+  date: java.time.LocalDateTime
+  timestamp: java.time.LocalDateTime
+  "timestamp with time zone": java.time.OffsetDateTime
+  "timestamp with local time zone": java.time.LocalDateTime
+  interval year to month: String
+  interval day to second: String
+  rowid: String
+  xmltype: String
+  # 可选（Oracle 23c）
+  boolean: Boolean
+
+sqlserver:
+  bit: Boolean
+  tinyint: Byte
+  smallint: Short
+  int: Integer
+  bigint: Long
+  real: Float
+  float: Double
+  decimal: java.math.BigDecimal
+  numeric: java.math.BigDecimal
+  money: java.math.BigDecimal
+  smallmoney: java.math.BigDecimal
+  char: String
+  varchar: String
+  text: String
+  nchar: String
+  nvarchar: String
+  ntext: String
+  binary: byte[]
+  varbinary: byte[]
+  image: byte[]
+  date: java.time.LocalDate
+  time: java.time.LocalTime
+  datetime: java.time.LocalDateTime
+  smalldatetime: java.time.LocalDateTime
+  datetime2: java.time.LocalDateTime
+  datetimeoffset: java.time.OffsetDateTime
+  uniqueidentifier: java.util.UUID
+  rowversion: byte[]
+  xml: String
+  # 可选
+  "varchar(max)": String
+  "nvarchar(max)": String
+
+sqlite:
+  integer: Long
+  real: Double
+  numeric: java.math.BigDecimal
+  text: String
+  json: String
+  blob: byte[]
