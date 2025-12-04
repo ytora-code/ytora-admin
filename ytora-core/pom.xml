@@ -26,23 +26,6 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
-        <!-- web场景 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <!--排除tomcat-->
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-
         <!-- AOP依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
