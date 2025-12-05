@@ -26,7 +26,7 @@ public class PrintUrlOnApplicationStarted implements ApplicationRunner, Applicat
 
     @Override
     public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
-        this.application = (ConfigurableApplicationContext)applicationContext;
+        this.application = (ConfigurableApplicationContext) applicationContext;
     }
 
     @Override
@@ -34,7 +34,8 @@ public class PrintUrlOnApplicationStarted implements ApplicationRunner, Applicat
         Environment env = application.getEnvironment();
         String ip = InetAddress.getLocalHost().getHostAddress();
         String port = env.getProperty("server.port");
-        String path = getString(env.getProperty("server.servlet.context-path"));
+        String path = env.getProperty("server.servlet.context-path");
+        path = path == null ? "" : path.trim();
         log.info("\n-----------------------------------------------------------------------------------------------\n\t" +
                 "项目启动成功! 访问路径:\n\t" +
                 "Local:\t\thttp://localhost:" + port + path + "/\n\t" +
@@ -42,13 +43,6 @@ public class PrintUrlOnApplicationStarted implements ApplicationRunner, Applicat
                 "Swagger文档: http://" + ip + ":" + port + path + "/doc.html\n\t" +
                 "Druid地址:\thttp://" + ip + ":" + port + path + "/druid/login.html\n" +
                 "-----------------------------------------------------------------------------------------------");
-    }
-
-    private String getString(String s) {
-        if (s == null) {
-            return "";
-        }
-        return (s.trim());
     }
 
 }

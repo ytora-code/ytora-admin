@@ -23,7 +23,7 @@ public class YtoraApplication {
     static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(YtoraApplication.class, args);
         Environment env = context.getEnvironment();
-        String value = env.getProperty("system.version");
+        String value = env.getProperty("ytora.version");
         System.out.println("项目版本：" + value);
     }
 }

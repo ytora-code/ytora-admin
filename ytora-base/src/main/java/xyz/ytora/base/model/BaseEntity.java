@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import xyz.ytora.sql4j.orm.AbsEntity;
 
-import java.io.Serial;
 import java.time.LocalDateTime;
 
 /**
@@ -14,14 +13,6 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public abstract class BaseEntity<T> extends AbsEntity<T> {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * 主键id
-     */
-    private String id;
 
     /**
      * 创建时间
