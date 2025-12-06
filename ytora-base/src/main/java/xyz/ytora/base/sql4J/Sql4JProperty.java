@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import xyz.ytora.sql4j.caster.ITypeCaster;
 import xyz.ytora.sql4j.log.ISqlLogger;
+import xyz.ytora.sql4j.orm.TableCreatorManager;
 import xyz.ytora.sql4j.translate.ITranslator;
 
 import java.util.Map;
@@ -25,6 +26,11 @@ public class Sql4JProperty {
     public static final String PRIMARY_KEY = "primary";
 
     /**
+     * 实体类最左前缀的类路径（不支持 ant 风格的路径通配符）
+     */
+    private String entityPath;
+
+    /**
      * 日志实现
      */
     private Class<? extends ISqlLogger> sqlLogImpl;
@@ -38,6 +44,8 @@ public class Sql4JProperty {
      * 从数据库读入数据时的类型转换器
      */
     private Class<? extends ITypeCaster> typeCasterImpl;
+
+    private Class<? extends TableCreatorManager> tableCreatorManagerImpl;
 
     /**
      * 多数据源

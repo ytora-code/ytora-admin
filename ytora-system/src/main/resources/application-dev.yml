@@ -2,6 +2,8 @@ server:
   port: 9876
   servlet:
     context-path: /ytora
+logging:
+  config: classpath:log/logback-dev.xml
 ytora:
   base-package: xyz.ytora.**
   version: @project.version@
@@ -11,6 +13,8 @@ ytora:
     allow-credentials: true
     origins: http://localhost:8765
   sql4j:
+    entity-path: xyz.ytora
+    sql-log-impl: xyz.ytora.base.sql4J.MySqlLogger
     dynamic-ds:
       primary:
         #连接基本信息

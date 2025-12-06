@@ -2,6 +2,7 @@ package xyz.ytora.base.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.sql4j.orm.AbsEntity;
 
 import java.time.LocalDateTime;
@@ -19,40 +20,43 @@ public abstract class BaseEntity<T> extends AbsEntity<T> {
      * JsonFormat:ObjectMapper在序列化（Java→JSON）和反序列化（JSON→Java）时生效
      * DateTimeFormat:Spring MVC使用的注解，用于告诉Spring MVC的ConversionService如何进行类型绑定，通常是将前端字符串日期参数转为后端的日期对象
      */
+    @Column(comment = "创建时间")
     private LocalDateTime createTime;
 
     /**
      * 创建人
      */
+    @Column(comment = "创建人", columnType = "VARCHAR(16)")
     private String createBy;
 
     /**
      * 更新时间
      */
+    @Column(comment = "更新时间")
     private LocalDateTime updateTime;
 
     /**
      * 更新人
      */
+    @Column(comment = "更新人", columnType = "VARCHAR(16)")
     private String updateBy;
 
     /**
      * 创建者所属部门
      */
+    @Column(comment = "创建者所属部门")
     private String departCode;
-
-    //按需添加
-//    /** 乐观锁控制 */
-//    private Integer version;
 
     /**
      * 数据备注
      */
+    @Column(comment = "数据备注")
     private String remark;
 
     /**
      * 数据状态
      */
+    @Column(comment = "数据状态")
     private String status;
 
     /**

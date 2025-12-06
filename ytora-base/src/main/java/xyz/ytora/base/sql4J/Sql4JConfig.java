@@ -1,6 +1,7 @@
 package xyz.ytora.base.sql4J;
 
 import com.zaxxer.hikari.HikariDataSource;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -12,11 +13,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.lang.NonNull;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.ytora.sql4j.caster.Caster;
 import xyz.ytora.sql4j.caster.ITypeCaster;
 import xyz.ytora.sql4j.core.SQLHelper;
 import xyz.ytora.sql4j.interceptor.SqlInterceptor;
 import xyz.ytora.sql4j.log.ISqlLogger;
+import xyz.ytora.sql4j.orm.TableCreatorManager;
 import xyz.ytora.sql4j.translate.ITranslator;
 import xyz.ytora.ytool.convert.TypePair;
 
@@ -34,6 +37,9 @@ import java.util.Map;
 public class Sql4JConfig implements EnvironmentAware {
     private Environment environment;
 
+    @Resource
+    private Sql4JProperty sql4JProperty;
+
     @Override
     public void setEnvironment(@NonNull Environment environment) {
         this.environment = environment;
@@ -47,7 +53,7 @@ public class Sql4JConfig implements EnvironmentAware {
     @Bean
     @Primary
     @ConditionalOnMissingBean(DataSource.class)
-    public DataSource dynamicDataSource(Sql4JProperty sql4JProperty) {
+    public DataSource dynamicDataSource() {
         DynamicDataSource dynamicDs = new DynamicDataSource();
         // 数据源路由
         Map<Object, Object> targetDataSources = new HashMap<>();
@@ -74,7 +80,8 @@ public class Sql4JConfig implements EnvironmentAware {
     }
 
     @Bean
-    public SQLHelper sqlHelper(DataSource ds, Sql4JProperty sql4JProperty, List<SqlInterceptor> interceptors, List<Caster<?, ?>> casters) {
+    @Transactional(rollbackFor = Exception.class)
+    public SQLHelper sqlHelper(DataSource ds, List<SqlInterceptor> interceptors, List<Caster<?, ?>> casters) {
         SQLHelper sqlHelper = new SQLHelper();
         // 注册数据库连接提供器
         sqlHelper.registerConnectionProvider(new SpringConnectionProvider(ds));
@@ -116,7 +123,7 @@ public class Sql4JConfig implements EnvironmentAware {
                 sqlHelper.registerTypeCaster(typeCaster);
             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
                      IllegalAccessException e) {
-                log.error("注册 SQL 翻译器时出错：" + e.getMessage(), e);
+                log.error("注册 TypeCaster 出错：" + e.getMessage(), e);
             }
         }
 
@@ -124,6 +131,21 @@ public class Sql4JConfig implements EnvironmentAware {
         for (Caster<?, ?> caster : casters) {
             sqlHelper.addCaster(new TypePair(caster.getSourceType(), caster.getTargetType()), caster);
         }
+
+        // 注册 TableCreatorManager
+        Class<? extends TableCreatorManager> tableCreatorManagerImpl = sql4JProperty.getTableCreatorManagerImpl();
+        if (tableCreatorManagerImpl != null) {
+            try {
+                TableCreatorManager tableCreatorManager = tableCreatorManagerImpl.getConstructor().newInstance();
+                sqlHelper.registerTableCreatorManager(tableCreatorManager);
+            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
+                     IllegalAccessException e) {
+                log.error("注册 TableCreatorManager 时出错：" + e.getMessage(), e);
+            }
+        }
+
+        // 扫描实体类，并决定是否创建表
+        sqlHelper.startTableCreator(sql4JProperty.getEntityPath());
         return sqlHelper;
     }
 

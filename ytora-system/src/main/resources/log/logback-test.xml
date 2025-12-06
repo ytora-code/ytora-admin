@@ -1,0 +1,92 @@
+<configuration xmlns="http://ch.qos.logback/xml/ns/logback"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://ch.qos.logback/xml/ns/logback
+               https://raw.githubusercontent.com/enricopulatzo/logback-XSD/master/src/main/xsd/logback.xsd">
+
+    <!--正常info日志(包括trace，debug，info和warn级别的日志)的附加器-->
+    <appender name="NORMAL_ROLL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <!--文件里的日志格式-->
+            <pattern>%d{MM月dd日HH:mm:ss} ${pid} %-5level -> [%10thread] %logger::%-5line-> %msg%n</pattern>
+        </encoder>
+        <!--正在记录的日志文件的路径-->
+        <file>_info.log</file>
+        <append>true</append>
+        <!--滚动策略,SizeAndTimeBasedRollingPolicy是基于文件大小和时间进行归档-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--归档后的文件的路径，路径中的日期表示归档频率，如下表示每天归档-->
+            <fileNamePattern>./log/%d{yyyy-MM-dd}/%i.log</fileNamePattern>
+            <!--日志文件大小超过指定值，就会进行归档-->
+            <maxFileSize>10MB</maxFileSize>
+            <!--只保留最近的三天(归档文件路径的日期类型)日志文件-->
+            <maxHistory>7</maxHistory>
+            <!--所有日志文件的总大小，超过指定值后会把旧文件删除-->
+            <totalSizeCap>1GB</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+        <!--过滤器，只输出正常日志(非sql)-->
+        <filter class="org.raindrop.core.log.NormalLogFilter">
+        </filter>
+    </appender>
+
+    <!--只有日志级别为error才记录-->
+    <appender name="ERROR_ROLL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <!--文件里的日志格式-->
+            <pattern>%d{MM月dd日HH:mm:ss} ${pid} %-5level -> [%10thread] %-80logger::%-5line-> %msg%n</pattern>
+        </encoder>
+        <!--正在记录的日志文件的路径-->
+        <file>_error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--每天进行归档-->
+            <fileNamePattern>./log/%d{yyyy-MM-dd}/error_%i.log</fileNamePattern>
+            <!--日志文件大小超过指定值，就会进行归档-->
+            <maxFileSize>10MB</maxFileSize>
+            <!--只保留最近的三天(归档文件路径的日期类型)日志文件-->
+            <maxHistory>30</maxHistory>
+            <!--所有日志文件的总大小，超过指定值后会把旧文件删除-->
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <!--过滤器，只有日志级别为error才输出-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>error</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!--只记录sql日志-->
+    <appender name="SQL_ROLL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <!--文件里的日志格式-->
+            <pattern>%d{MM月dd日HH:mm:ss} ${pid} %-5level -> [%10thread] %-80logger::%-5line-> %msg%n</pattern>
+        </encoder>
+        <!--正在记录的日志文件的路径-->
+        <file>_sql.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--每天进行归档-->
+            <fileNamePattern>./log/%d{yyyy-MM-dd}/sql_%i.log</fileNamePattern>
+            <!--日志文件大小超过指定值，就会进行归档-->
+            <maxFileSize>10MB</maxFileSize>
+            <!--只保留最近的三天(归档文件路径的日期类型)日志文件-->
+            <maxHistory>30</maxHistory>
+            <!--所有日志文件的总大小，超过指定值后会把旧文件删除-->
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <!--过滤器，只有为sql日志才输出-->
+        <filter class="org.raindrop.core.log.SqlLogFilter">
+        </filter>
+    </appender>
+
+    <!--设置sql记录器的属性-->
+    <logger name="sql" level="INFO" additivity="false">
+        <appender-ref ref="SQL_ROLL_FILE" />
+    </logger>
+
+    <!--设置根记录器的属性-->
+    <root level="INFO">
+        <!--生产环境，日志输出到文件-->
+        <appender-ref ref="NORMAL_ROLL_FILE" />
+        <appender-ref ref="ERROR_ROLL_FILE" />
+    </root>
+</configuration>
