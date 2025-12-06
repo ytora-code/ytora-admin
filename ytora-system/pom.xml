@@ -39,7 +39,16 @@
                 <configuration>
                     <!-- 如果没有该配置，devtools不会生效 -->
                     <!--<fork>true</fork>-->
+                    <!-- 指定jar包的主清单 -->
+                    <mainClass>xyz.ytora.YtoraApplication</mainClass>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

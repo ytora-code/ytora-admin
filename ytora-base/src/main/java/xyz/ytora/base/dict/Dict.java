@@ -1,4 +1,4 @@
-package xyz.ytora.base.anno;
+package xyz.ytora.base.dict;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package xyz.ytora.base.anno;
+package xyz.ytora.base.log;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,11 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 自动记录日志
+ * 日志注解
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface AutoLog {
+public @interface Log {
     String value() default "";
 
     String remark() default "AutoLog自动记录请求日志";

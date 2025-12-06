@@ -1,33 +1,31 @@
-package xyz.ytora.base.exception;//package org.rain.common.exception;
-//
-//import lombok.extern.slf4j.Slf4j;
-//
-//
-///**
-// *
-// */
-//@RestControllerAdvice
-//@Slf4j
-//public class GlobalExceptionHandler {
-//
-//    @ExceptionHandler(BaseException.class)
-//    public R<?> baseExceptionHandler(BaseException e) {
-//        log.error(ExceptionUtil.stacktraceToString(e));
-//        return R.error(e.getCode(), e.getMessage());
-//    }
-//
-//    @ExceptionHandler(Exception.class)
-//    public R<?> exceptionHandler(Exception e) {
-//        log.error(ExceptionUtil.stacktraceToString(e));
-//        return R.error(Resp.OTHER_ERROR.code, e.getClass().getName() + " -> " + e.getMessage());
-//    }
-//
-//    /**
-//     * 记录异常日志
-//     */
-//    private void logging(Exception e) {
-//        Threads.execute(() -> {
-//            //TODO 记录异常日志
-//        });
-//    }
-//}
+package xyz.ytora.base.exception;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import xyz.ytora.base.model.R;
+
+/**
+ * created by YT on 2025/12/6 16:40:57
+ * <br/>
+ * 全局异常处理器
+ */
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    @ExceptionHandler(BaseException.class)
+    public R<?> baseExceptionHandler(BaseException e) {
+        log.error(e.getMessage(), e);
+        logging(e);
+        return R.error(e.getCode(), e.getMessage());
+    }
+
+    /**
+     * 记录异常日志
+     */
+    private void logging(Exception e) {
+        //TODO 记录异常日志
+    }
+}

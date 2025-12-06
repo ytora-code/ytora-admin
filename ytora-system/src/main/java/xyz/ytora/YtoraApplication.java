@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement //开启事务
 @SpringBootApplication
 public class YtoraApplication {
-    static void main(String[] args) {
+    void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(YtoraApplication.class, args);
         Environment env = context.getEnvironment();
         String value = env.getProperty("ytora.version");

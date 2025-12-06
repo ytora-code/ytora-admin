@@ -1,10 +1,15 @@
 server:
-  port: 6789
+  port: 9876
   servlet:
     context-path: /ytora
 ytora:
   base-package: xyz.ytora.**
   version: @project.version@
+  auth:
+    enable: true
+    token-invalid-time: 600
+    allow-credentials: true
+    origins: http://localhost:8765
   sql4j:
     dynamic-ds:
       primary:
