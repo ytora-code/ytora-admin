@@ -45,6 +45,14 @@ public class Sql4JProperty {
      */
     private Class<? extends ITypeCaster> typeCasterImpl;
 
+    /**
+     * 当实体类对应表不存在时，是否创建表
+     */
+    private Boolean createTableIfNotExist = false;
+
+    /**
+     * 表创建器管理器
+     */
     private Class<? extends TableCreatorManager> tableCreatorManagerImpl;
 
     /**

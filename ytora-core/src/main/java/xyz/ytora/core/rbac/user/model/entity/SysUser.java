@@ -7,6 +7,7 @@ import xyz.ytora.base.model.BaseEntity;
 import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.sql4j.anno.Table;
 import xyz.ytora.sql4j.enums.IdType;
+import xyz.ytora.ytool.anno.Index;
 
 import java.time.LocalDate;
 
@@ -20,6 +21,7 @@ public class SysUser extends BaseEntity<SysUser> {
     /**
      * 用户名
      */
+    @Index(1)
     @Schema(description = "用户名")
     @Column(comment = "用户名")
     private String userName;
@@ -27,6 +29,7 @@ public class SysUser extends BaseEntity<SysUser> {
     /**
      * 真实姓名
      */
+    @Index(2)
     @Schema(description = "真实姓名")
     @Column(comment = "真实姓名")
     private String realName;
@@ -34,6 +37,7 @@ public class SysUser extends BaseEntity<SysUser> {
     /**
      * 密码
      */
+    @Index(3)
     @Schema(description = "密码")
     @Column(comment = "密码")
     private String password;
@@ -41,6 +45,7 @@ public class SysUser extends BaseEntity<SysUser> {
     /**
      * 头像
      */
+    @Index(4)
     @Schema(description = "头像")
     @Column(comment = "头像")
     private String avatar;
@@ -48,6 +53,7 @@ public class SysUser extends BaseEntity<SysUser> {
     /**
      * 手机号码
      */
+    @Index(5)
     @Schema(description = "手机号码")
     @Column(comment = "手机号码", columnType = "CHAR(11)")
     private String phone;
@@ -55,6 +61,7 @@ public class SysUser extends BaseEntity<SysUser> {
     /**
      * 邮箱
      */
+    @Index(6)
     @Schema(description = "邮箱")
     @Column(comment = "邮箱")
     private String email;
@@ -62,6 +69,7 @@ public class SysUser extends BaseEntity<SysUser> {
     /**
      * 生日
      */
+    @Index(7)
     @Schema(description = "生日")
     @Column(comment = "生日")
     private LocalDate birthday;
@@ -69,6 +77,7 @@ public class SysUser extends BaseEntity<SysUser> {
     /**
      * 身份证
      */
+    @Index(8)
     @Schema(description = "身份证")
     @Column(comment = "身份证")
     private String idCard;

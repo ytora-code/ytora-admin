@@ -145,7 +145,9 @@ public class Sql4JConfig implements EnvironmentAware {
         }
 
         // 扫描实体类，并决定是否创建表
-        sqlHelper.startTableCreator(sql4JProperty.getEntityPath());
+        if (sql4JProperty.getCreateTableIfNotExist()) {
+            sqlHelper.createTableIfNotExist(sql4JProperty.getEntityPath());
+        }
         return sqlHelper;
     }
 

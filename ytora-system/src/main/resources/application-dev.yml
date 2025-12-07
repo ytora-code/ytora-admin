@@ -15,6 +15,7 @@ ytora:
   sql4j:
     entity-path: xyz.ytora
     sql-log-impl: xyz.ytora.base.sql4J.MySqlLogger
+    create-table-if-not-exist: true
     dynamic-ds:
       primary:
         #连接基本信息
