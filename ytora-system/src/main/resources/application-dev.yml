@@ -19,10 +19,10 @@ ytora:
     dynamic-ds:
       primary:
         #连接基本信息
-        driver-class-name: com.mysql.cj.jdbc.Driver
+        driver-class-name: org.postgresql.Driver
 #        url: jdbc:mysql://192.168.1.246:3306/ytor?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&cachePrepStmts=true&prepStmtCacheSize=256&prepStmtCacheSqlLimit=2048&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false
-        url: jdbc:mysql://127.0.0.1:3306/ytor?serverTimezone=Asia/Shanghai&characterEncoding=utf-8
-        username: root
+        url: jdbc:postgresql://localhost:5432/ytora
+        username: ytora
         password: 220600
 #        password: Mysql8@pwd
         type: com.zaxxer.hikari.HikariDataSource

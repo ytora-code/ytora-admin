@@ -21,30 +21,33 @@ public abstract class BaseEntity<T> extends AbsEntity<T> {
      * JsonFormat:ObjectMapper在序列化（Java→JSON）和反序列化（JSON→Java）时生效
      * DateTimeFormat:Spring MVC使用的注解，用于告诉Spring MVC的ConversionService如何进行类型绑定，通常是将前端字符串日期参数转为后端的日期对象
      */
-    @Index(1)
-    @Column(comment = "创建时间")
-    private LocalDateTime createTime;
-
     /**
      * 创建人
      */
-    @Index(2)
+    @Index(1)
     @Column(comment = "创建人", columnType = "VARCHAR(16)")
     private String createBy;
 
     /**
-     * 更新时间
+     * 创建时间
      */
-    @Index(3)
-    @Column(comment = "更新时间")
-    private LocalDateTime updateTime;
+    @Index(2)
+    @Column(comment = "创建时间")
+    private LocalDateTime createTime;
 
     /**
      * 更新人
      */
-    @Index(4)
+    @Index(3)
     @Column(comment = "更新人", columnType = "VARCHAR(16)")
     private String updateBy;
+
+    /**
+     * 更新时间
+     */
+    @Index(4)
+    @Column(comment = "更新时间")
+    private LocalDateTime updateTime;
 
     /**
      * 创建者所属部门
