@@ -20,9 +20,7 @@ ytora:
       primary:
         #连接基本信息
         driver-class-name: org.postgresql.Driver
-#        url: jdbc:mysql://192.168.1.246:3306/ytor?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&cachePrepStmts=true&prepStmtCacheSize=256&prepStmtCacheSqlLimit=2048&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false
-        url: jdbc:postgresql://localhost:5432/ytora
+        url: jdbc:postgresql://localhost:5432/ytora?currentSchema=ytora&ssl=false
         username: ytora
         password: 220600
-#        password: Mysql8@pwd
         type: com.zaxxer.hikari.HikariDataSource

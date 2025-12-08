@@ -23,7 +23,7 @@ public class SysUser extends BaseEntity<SysUser> {
      */
     @Index(1)
     @Schema(description = "用户名")
-    @Column(comment = "用户名")
+    @Column(comment = "用户名", notNull = true)
     private String userName;
 
     /**
@@ -31,7 +31,7 @@ public class SysUser extends BaseEntity<SysUser> {
      */
     @Index(2)
     @Schema(description = "真实姓名")
-    @Column(comment = "真实姓名")
+    @Column(comment = "真实姓名", notNull = true)
     private String realName;
 
     /**
@@ -39,7 +39,7 @@ public class SysUser extends BaseEntity<SysUser> {
      */
     @Index(3)
     @Schema(description = "密码")
-    @Column(comment = "密码")
+    @Column(comment = "密码", notNull = true)
     private String password;
 
     /**
