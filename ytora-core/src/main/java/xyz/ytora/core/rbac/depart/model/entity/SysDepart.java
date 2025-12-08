@@ -1,4 +1,4 @@
-package xyz.ytora.core.rbac.user.model.entity;
+package xyz.ytora.core.rbac.depart.model.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -16,8 +16,8 @@ import java.time.LocalDate;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table(value = "sys_user", idType = IdType.SNOWFLAKE, createIfNotExist = true, comment = "用户表")
-public class SysUser extends BaseEntity<SysUser> {
+@Table(value = "sys_depart", idType = IdType.SNOWFLAKE, createIfNotExist = true, comment = "部门表")
+public class SysDepart extends BaseEntity<SysDepart> {
     /**
      * 用户名
      */

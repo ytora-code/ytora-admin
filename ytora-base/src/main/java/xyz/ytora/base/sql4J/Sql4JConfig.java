@@ -20,6 +20,8 @@ import xyz.ytora.sql4j.core.SQLHelper;
 import xyz.ytora.sql4j.interceptor.SqlInterceptor;
 import xyz.ytora.sql4j.log.ISqlLogger;
 import xyz.ytora.sql4j.orm.TableCreatorManager;
+import xyz.ytora.sql4j.orm.scanner.EntityScanner;
+import xyz.ytora.sql4j.orm.scanner.RepoScanner;
 import xyz.ytora.sql4j.translate.ITranslator;
 import xyz.ytora.ytool.convert.TypePair;
 
@@ -146,7 +148,14 @@ public class Sql4JConfig implements EnvironmentAware {
 
         // 扫描实体类，并决定是否创建表
         if (sql4JProperty.getCreateTableIfNotExist()) {
-            sqlHelper.createTableIfNotExist(sql4JProperty.getEntityPath());
+            EntityScanner scanner = new EntityScanner(sqlHelper, sql4JProperty.getEntityPath());
+            scanner.createTableIfNotExist();
+        }
+        // 扫描Repo接口，创建代理类
+        String repoPath = sql4JProperty.getRepoPath();
+        if (repoPath != null) {
+            RepoScanner scanner = new RepoScanner(sqlHelper, repoPath);
+            scanner.createProxyRepo();
         }
         return sqlHelper;
     }

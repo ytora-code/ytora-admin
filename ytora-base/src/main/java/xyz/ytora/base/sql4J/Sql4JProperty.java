@@ -31,6 +31,11 @@ public class Sql4JProperty {
     private String entityPath;
 
     /**
+     * Repo接口最左前缀的类路径（不支持 ant 风格的路径通配符）
+     */
+    private String repoPath;
+
+    /**
      * 日志实现
      */
     private Class<? extends ISqlLogger> sqlLogImpl;

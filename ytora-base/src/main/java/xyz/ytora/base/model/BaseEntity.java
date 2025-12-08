@@ -3,7 +3,7 @@ package xyz.ytora.base.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import xyz.ytora.sql4j.anno.Column;
-import xyz.ytora.sql4j.orm.AbsEntity;
+import xyz.ytora.sql4j.orm.Entity;
 import xyz.ytora.ytool.anno.Index;
 
 import java.time.LocalDateTime;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class BaseEntity<T> extends AbsEntity<T> {
+public abstract class BaseEntity<T> extends Entity<T> {
 
     /**
      * 创建时间

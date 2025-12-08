@@ -14,6 +14,7 @@ ytora:
     origins: http://localhost:8765
   sql4j:
     entity-path: xyz.ytora
+    repo-path: xyz.ytora
     sql-log-impl: xyz.ytora.base.sql4J.MySqlLogger
     create-table-if-not-exist: true
     dynamic-ds:
