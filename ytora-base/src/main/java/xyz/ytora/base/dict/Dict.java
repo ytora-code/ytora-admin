@@ -28,7 +28,7 @@ public @interface Dict {
     String text() default "";
 
     /**
-     * 是否是多值（如以逗号分隔的多个字典code），暂未支持
+     * 是否是多值（以逗号分隔的多个字典code），暂未支持
      */
     boolean multi() default false;
 }

@@ -9,23 +9,23 @@ import xyz.ytora.sql4j.enums.IdType;
 import xyz.ytora.ytool.anno.Index;
 
 /**
- * 角色表
+ * 用户-角色关系表
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table(value = "sys_role", idType = IdType.SNOWFLAKE, createIfNotExist = true, comment = "角色表")
-public class SysRole extends BaseEntity<SysRole> {
+@Table(value = "sys_user_role", idType = IdType.SNOWFLAKE, createIfNotExist = true, comment = "用户-角色关系表")
+public class SysUserRole extends BaseEntity<SysUserRole> {
     /**
-     * 角色名称
+     * 用户ID
      */
     @Index(1)
-    @Column(comment = "角色名称")
-    private String roleName;
+    @Column(comment = "用户ID", notNull = true)
+    private String userId;
 
     /**
-     * 角色编码
+     * 角色ID
      */
     @Index(2)
-    @Column(comment = "角色编码", notNull = true)
-    private String roleCode;
+    @Column(comment = "角色ID", notNull = true)
+    private String roleId;
 }

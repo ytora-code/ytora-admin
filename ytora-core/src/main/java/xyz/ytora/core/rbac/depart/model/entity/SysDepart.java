@@ -9,76 +9,45 @@ import xyz.ytora.sql4j.anno.Table;
 import xyz.ytora.sql4j.enums.IdType;
 import xyz.ytora.ytool.anno.Index;
 
-import java.time.LocalDate;
-
 /**
- * 系统用户
+ * 部门表
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Table(value = "sys_depart", idType = IdType.SNOWFLAKE, createIfNotExist = true, comment = "部门表")
 public class SysDepart extends BaseEntity<SysDepart> {
     /**
-     * 用户名
+     * 上级部门id
      */
     @Index(1)
-    @Schema(description = "用户名")
-    @Column(comment = "用户名", notNull = true)
-    private String userName;
+    @Column(comment = "上级部门id", notNull = true)
+    private String pid;
 
     /**
-     * 真实姓名
+     * 部门名称
      */
     @Index(2)
-    @Schema(description = "真实姓名")
-    @Column(comment = "真实姓名", notNull = true)
-    private String realName;
+    @Column(comment = "部门名称")
+    private String departName;
 
     /**
-     * 密码
+     * 部门编码
      */
     @Index(3)
-    @Schema(description = "密码")
-    @Column(comment = "密码", notNull = true)
-    private String password;
+    @Column(comment = "部门编码", notNull = true)
+    private String departCode;
 
     /**
-     * 头像
+     * 部门类型
+     */
+    @Index(3)
+    @Column(comment = "部门类型")
+    private String type;
+
+    /**
+     * 部门联系人username
      */
     @Index(4)
-    @Schema(description = "头像")
-    @Column(comment = "头像")
-    private String avatar;
-
-    /**
-     * 手机号码
-     */
-    @Index(5)
-    @Schema(description = "手机号码")
-    @Column(comment = "手机号码", columnType = "CHAR(11)")
-    private String phone;
-
-    /**
-     * 邮箱
-     */
-    @Index(6)
-    @Schema(description = "邮箱")
-    @Column(comment = "邮箱")
-    private String email;
-
-    /**
-     * 生日
-     */
-    @Index(7)
-    @Schema(description = "生日")
-    @Column(comment = "生日")
-    private LocalDate birthday;
-
-    /**
-     * 身份证
-     */
-    @Index(8)
-    @Schema(description = "身份证")
-    @Column(comment = "身份证")
-    private String idCard;
+    @Column(comment = "部门联系人username")
+    private String contactUserName;
 }

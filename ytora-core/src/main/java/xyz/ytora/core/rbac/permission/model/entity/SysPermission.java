@@ -1,6 +1,5 @@
 package xyz.ytora.core.rbac.permission.model.entity;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import xyz.ytora.base.model.BaseEntity;
@@ -12,73 +11,65 @@ import xyz.ytora.ytool.anno.Index;
 import java.time.LocalDate;
 
 /**
- * 系统用户
+ * 资源表
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Table(value = "sys_permission", idType = IdType.SNOWFLAKE, createIfNotExist = true, comment = "资源表")
 public class SysPermission extends BaseEntity<SysPermission> {
     /**
-     * 用户名
+     * 父资源id
      */
     @Index(1)
-    @Schema(description = "用户名")
-    @Column(comment = "用户名", notNull = true)
-    private String userName;
+    @Column(comment = "父资源id", notNull = true)
+    private String pid;
 
     /**
-     * 真实姓名
+     * 资源名称
      */
     @Index(2)
-    @Schema(description = "真实姓名")
-    @Column(comment = "真实姓名", notNull = true)
-    private String realName;
+    @Column(comment = "资源名称", notNull = true)
+    private String permissionName;
 
     /**
-     * 密码
+     * 资源编码，例如：接口地址、页面的路由地址、页面元素(按钮)的唯一标识
      */
     @Index(3)
-    @Schema(description = "密码")
-    @Column(comment = "密码", notNull = true)
-    private String password;
+    @Column(comment = "资源编码，例如：接口地址、页面的路由地址、页面元素(按钮)的唯一标识", notNull = true)
+    private String permissionCode;
 
     /**
-     * 头像
+     * 资源类型，1-接口、2-页面、3-页面元素
      */
     @Index(4)
-    @Schema(description = "头像")
-    @Column(comment = "头像")
-    private String avatar;
+    @Column(comment = "资源类型，1-接口、2-页面、3-页面元素")
+    private String permissionType;
 
     /**
      * 手机号码
      */
     @Index(5)
-    @Schema(description = "手机号码")
     @Column(comment = "手机号码", columnType = "CHAR(11)")
     private String phone;
 
     /**
-     * 邮箱
+     * 图标
      */
     @Index(6)
-    @Schema(description = "邮箱")
-    @Column(comment = "邮箱")
-    private String email;
+    @Column(comment = "图标")
+    private String icon;
 
     /**
-     * 生日
+     * 是否可见
      */
     @Index(7)
-    @Schema(description = "生日")
-    @Column(comment = "生日")
-    private LocalDate birthday;
+    @Column(comment = "是否可见")
+    private LocalDate visible;
 
     /**
-     * 身份证
+     * 排序
      */
     @Index(8)
-    @Schema(description = "身份证")
-    @Column(comment = "身份证")
-    private String idCard;
+    @Column(comment = "排序")
+    private String index;
 }
