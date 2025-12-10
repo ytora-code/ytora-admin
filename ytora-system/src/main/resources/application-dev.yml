@@ -12,6 +12,10 @@ ytora:
     token-invalid-time: 600
     allow-credentials: true
     origins: http://localhost:8765
+  cache:
+    default-cache: local
+    impl:
+      local: xyz.ytora.base.cache.support.local.CacheByLocal
   sql4j:
     entity-path: xyz.ytora
     repo-path: xyz.ytora

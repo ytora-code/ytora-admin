@@ -1,8 +1,13 @@
 package xyz.ytora.core.rbac.user.model.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.stereotype.Component;
+import xyz.ytora.base.dict.Dict;
+import xyz.ytora.base.dict.IDictParser;
 import xyz.ytora.base.model.BaseEntity;
 import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.sql4j.anno.Table;
@@ -10,6 +15,8 @@ import xyz.ytora.sql4j.enums.IdType;
 import xyz.ytora.ytool.anno.Index;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 系统用户
@@ -17,6 +24,7 @@ import java.time.LocalDate;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Table(value = "sys_user", idType = IdType.SNOWFLAKE, createIfNotExist = true, comment = "用户表")
+@Component
 public class SysUser extends BaseEntity<SysUser> {
     /**
      * 用户名
@@ -24,6 +32,7 @@ public class SysUser extends BaseEntity<SysUser> {
     @Index(1)
     @Schema(description = "用户名")
     @Column(comment = "用户名", notNull = true)
+    @Dict(table = "sys_user", code = "user_name", text = "real_name")
     private String userName;
 
     /**
@@ -81,4 +90,16 @@ public class SysUser extends BaseEntity<SysUser> {
     @Schema(description = "身份证")
     @Column(comment = "身份证")
     private String idCard;
+
+    @Resource
+    private IDictParser dictParser;
+    @PostConstruct
+    public void init() {
+        SysUser sysUser1 = new SysUser();
+        sysUser1.setUserName("admin");
+        SysUser sysUser2 = new SysUser();
+        sysUser2.setUserName("test_123123");
+        Map<String, Object> translate = dictParser.translate(sysUser1);
+        System.out.println(translate);
+    }
 }

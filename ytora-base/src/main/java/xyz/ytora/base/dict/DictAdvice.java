@@ -27,7 +27,7 @@ public class DictAdvice implements ResponseBodyAdvice<Object> {
 
     private final IDictParser dictParser;
 
-    public DictAdvice(IDictParser dictParser) {
+    public DictAdvice(@Nullable IDictParser dictParser) {
         this.dictParser = dictParser;
     }
 
