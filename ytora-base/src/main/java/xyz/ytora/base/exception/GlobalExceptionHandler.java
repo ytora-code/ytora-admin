@@ -1,25 +1,48 @@
 package xyz.ytora.base.exception;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import xyz.ytora.base.enums.RespCode;
 import xyz.ytora.base.model.R;
+import xyz.ytora.sql4j.Sql4JException;
 
 /**
- * created by YT on 2025/12/6 16:40:57
- * <br/>
  * 全局异常处理器
  */
+@Hidden
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler(BaseException.class)
-    public R<?> baseExceptionHandler(BaseException e) {
+    @ExceptionHandler(NullPointerException.class)
+    public R<?> nullPointerExceptionHandler(NullPointerException e) {
         log.error(e.getMessage(), e);
         logging(e);
+        return R.error(RespCode.NULL_ERROR.code, RespCode.NULL_ERROR.message);
+    }
+
+    @ExceptionHandler(BaseException.class)
+    public R<?> baseExceptionHandler(BaseException e) {
+        log.error(e.getMessage(), e.getCause());
+        logging(e);
         return R.error(e.getCode(), e.getMessage());
+    }
+
+    @ExceptionHandler(Sql4JException.class)
+    public R<?> sql4JExceptionHandler(Sql4JException e) {
+        log.error(e.getMessage(), e.getCause());
+        logging(e);
+        return R.error(e.getCode(), e.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public R<?> exceptionHandler(Exception e) {
+        log.error(e.getMessage(), e);
+        logging(e);
+        return R.error(RespCode.FAIL.code, e.getMessage());
     }
 
     /**

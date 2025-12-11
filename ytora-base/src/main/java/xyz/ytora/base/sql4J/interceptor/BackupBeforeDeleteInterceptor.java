@@ -3,13 +3,15 @@ package xyz.ytora.base.sql4J.interceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import xyz.ytora.base.scope.ScopedValueItem;
-import xyz.ytora.sql4j.core.ExecResult;
+import xyz.ytora.sql4j.anno.Table;
 import xyz.ytora.sql4j.enums.SqlType;
 import xyz.ytora.sql4j.interceptor.SqlInterceptorAdapter;
 import xyz.ytora.sql4j.sql.ConditionExpressionBuilder;
 import xyz.ytora.sql4j.sql.SqlInfo;
 import xyz.ytora.sql4j.sql.delete.DeleteBuilder;
 import xyz.ytora.sql4j.sql.delete.DeleteWhereStage;
+import xyz.ytora.ytool.classcache.ClassCache;
+import xyz.ytora.ytool.classcache.classmeta.ClassMetadata;
 import xyz.ytora.ytool.json.Jsons;
 import xyz.ytora.ytool.str.Strs;
 
@@ -37,6 +39,16 @@ public class BackupBeforeDeleteInterceptor extends SqlInterceptorAdapter {
             LocalDateTime now = LocalDateTime.now();
 
             DeleteBuilder deleteBuilder = (DeleteBuilder) sqlInfo.getSqlBuilder();
+            Class<?> tableClass = deleteBuilder.getFromStage().getTableClass();
+            if (tableClass == null) {
+                return true;
+            }
+            ClassMetadata<?> metadata = ClassCache.get(tableClass);
+            Table tableAnno = metadata.getAnnotation(Table.class);
+            if (tableAnno == null || !tableAnno.backupOnDelete()) {
+                return true;
+            }
+
             DeleteWhereStage whereStage = deleteBuilder.getWhereStage();
             if (whereStage != null && whereStage.getWhereExpression() != null) {
                 ConditionExpressionBuilder whereExpression = whereStage.getWhereExpression();
@@ -61,14 +73,13 @@ public class BackupBeforeDeleteInterceptor extends SqlInterceptorAdapter {
                         params.add(tableName);
                         params.add(id);
                         params.add(jsonStr);
-                        sql.append("(?,?,?,?,?,?)");
+                        sql.append("(?,?,?,?,?,?::jsonb)");
                         if (i < deleteData.size() - 1) {
                             sql.append(",");
                         }
                     }
 
-                    ExecResult execResult = sqlInfo.getSqlBuilder().getSQLHelper().submitSQL(sql.toString(), params);
-                    System.out.println(execResult);
+                    sqlInfo.getSqlBuilder().getSQLHelper().submitSQL(sql.toString(), params);
                 }
             }
         }

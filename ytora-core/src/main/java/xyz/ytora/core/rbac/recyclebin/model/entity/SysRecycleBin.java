@@ -5,8 +5,10 @@ import lombok.EqualsAndHashCode;
 import xyz.ytora.base.model.BaseEntity;
 import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.sql4j.anno.Table;
+import xyz.ytora.sql4j.enums.ColumnType;
 import xyz.ytora.sql4j.enums.IdType;
 import xyz.ytora.ytool.anno.Index;
+import xyz.ytora.ytool.json.JSON;
 
 import java.time.LocalDateTime;
 
@@ -57,6 +59,6 @@ public class SysRecycleBin extends BaseEntity<SysRecycleBin> {
      * 原始数据，JSON
      */
     @Index(6)
-    @Column(comment = "原始数据，JSON", notNull = true)
-    private String originalData;
+    @Column(comment = "原始数据，JSON", type = ColumnType.JSON, notNull = true)
+    private JSON originalData;
 }

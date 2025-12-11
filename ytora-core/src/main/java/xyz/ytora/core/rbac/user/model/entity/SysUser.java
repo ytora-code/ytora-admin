@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import xyz.ytora.base.model.BaseEntity;
 import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.sql4j.anno.Table;
+import xyz.ytora.sql4j.enums.ColumnType;
 import xyz.ytora.sql4j.enums.IdType;
 import xyz.ytora.ytool.anno.Index;
 
@@ -15,7 +16,7 @@ import java.time.LocalDate;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table(value = "sys_user", idType = IdType.SNOWFLAKE, createIfNotExist = true, comment = "用户表")
+@Table(value = "sys_user", idType = IdType.SNOWFLAKE, createIfNotExist = true, backupOnDelete = true, comment = "用户表")
 public class SysUser extends BaseEntity<SysUser> {
     /**
      * 用户名
@@ -49,7 +50,7 @@ public class SysUser extends BaseEntity<SysUser> {
      * 手机号码
      */
     @Index(5)
-    @Column(comment = "手机号码", columnType = "CHAR(11)")
+    @Column(comment = "手机号码", type = ColumnType.VARCHAR16)
     private String phone;
 
     /**

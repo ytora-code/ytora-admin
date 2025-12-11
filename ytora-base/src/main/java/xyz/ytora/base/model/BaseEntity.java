@@ -3,6 +3,7 @@ package xyz.ytora.base.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import xyz.ytora.sql4j.anno.Column;
+import xyz.ytora.sql4j.enums.ColumnType;
 import xyz.ytora.sql4j.orm.Entity;
 import xyz.ytora.ytool.anno.Index;
 
@@ -25,7 +26,7 @@ public abstract class BaseEntity<T> extends Entity<T> {
      * 创建人
      */
     @Index(1)
-    @Column(comment = "创建人", columnType = "VARCHAR(16)")
+    @Column(comment = "创建人", type = ColumnType.VARCHAR16)
     private String createBy;
 
     /**
@@ -39,7 +40,7 @@ public abstract class BaseEntity<T> extends Entity<T> {
      * 更新人
      */
     @Index(3)
-    @Column(comment = "更新人", columnType = "VARCHAR(16)")
+    @Column(comment = "更新人", type = ColumnType.VARCHAR16)
     private String updateBy;
 
     /**
