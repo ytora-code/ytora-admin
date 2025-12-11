@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table(value = "sys_recycle_bin", idType = IdType.SNOWFLAKE, createIfNotExist = true, comment = "回收站")
+@Table(value = "sys_recycle_bin", idType = IdType.AUTO_INCREMENT, createIfNotExist = true, comment = "回收站")
 public class SysRecycleBin extends BaseEntity<SysRecycleBin> {
     /**
      * 删除人

@@ -8,7 +8,7 @@ ytora:
   base-package: xyz.ytora.**
   version: @project.version@
   auth:
-    enable: true
+    enable: false
     token-invalid-time: 600
     allow-credentials: true
     origins: http://localhost:8765
