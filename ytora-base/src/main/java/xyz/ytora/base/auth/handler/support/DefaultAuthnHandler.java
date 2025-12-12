@@ -14,6 +14,6 @@ import xyz.ytora.base.auth.handler.AuthnHandler;
 public class DefaultAuthnHandler implements AuthnHandler {
     @Override
     public LoginUser doAuthn(HttpServletRequest request, HttpServletResponse response) throws AuthException {
-        return new LoginUser();
+        return new LoginUser().setUserName("admin");
     }
 }

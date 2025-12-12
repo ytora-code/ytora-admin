@@ -1,10 +1,13 @@
 package xyz.ytora.base.exception;
 
 import io.swagger.v3.oas.annotations.Hidden;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import xyz.ytora.base.RespUtil;
 import xyz.ytora.base.enums.RespCode;
 import xyz.ytora.base.model.R;
 import xyz.ytora.sql4j.Sql4JException;
@@ -28,6 +31,17 @@ public class GlobalExceptionHandler {
     public R<?> baseExceptionHandler(BaseException e) {
         log.error(e.getMessage(), e.getCause());
         logging(e);
+        return R.error(e.getCode(), e.getMessage());
+    }
+
+    @ExceptionHandler(DownloadException.class)
+    public R<?> downloadExceptionHandler(DownloadException e) {
+        HttpServletResponse resp = RespUtil.getResp();
+        resp.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+        log.error(e.getMessage(), e);
+        logging(e);
+
         return R.error(e.getCode(), e.getMessage());
     }
 

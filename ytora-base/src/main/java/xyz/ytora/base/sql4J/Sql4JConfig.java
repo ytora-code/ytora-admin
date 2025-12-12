@@ -14,9 +14,11 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.lang.NonNull;
 import org.springframework.transaction.annotation.Transactional;
+import xyz.ytora.sql4j.Sql4JException;
 import xyz.ytora.sql4j.caster.Caster;
 import xyz.ytora.sql4j.caster.ITypeCaster;
 import xyz.ytora.sql4j.core.SQLHelper;
+import xyz.ytora.sql4j.enums.DbType;
 import xyz.ytora.sql4j.interceptor.SqlInterceptor;
 import xyz.ytora.sql4j.log.ISqlLogger;
 import xyz.ytora.sql4j.orm.TableCreatorManager;
@@ -27,8 +29,10 @@ import xyz.ytora.ytool.convert.TypePair;
 
 import javax.sql.DataSource;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -41,6 +45,11 @@ public class Sql4JConfig implements EnvironmentAware {
 
     @Resource
     private Sql4JProperty sql4JProperty;
+
+    /**
+     * 记录下面每个数据源和数据库类型的映射
+     */
+    private final Map<DataSource, DbType> dataSourceTypeMapper = new HashMap<>();
 
     @Override
     public void setEnvironment(@NonNull Environment environment) {
@@ -72,6 +81,9 @@ public class Sql4JConfig implements EnvironmentAware {
                 ds = binder.bind("sql4j.param", Bindable.ofInstance(ds)).get();
             }
             targetDataSources.put(dsName, ds);
+
+            // 根据数据库驱动判断每个数据源的数据库类型
+            determineDatabaseType(ds, properties);
         }
 
         // 给动态数据源设置数据源路由
@@ -160,7 +172,6 @@ public class Sql4JConfig implements EnvironmentAware {
         return sqlHelper;
     }
 
-
     /**
      * 根据DataSourceProperties判断应该创建什么类型的数据库连接池
      */
@@ -175,5 +186,39 @@ public class Sql4JConfig implements EnvironmentAware {
 
     private void registerCaster(SQLHelper sqlHelper) {
 
+    }
+
+
+    private void determineDatabaseType(DataSource ds, DataSourceProperties dsp) {
+        String driverClassName = dsp.getDriverClassName();
+        if (driverClassName == null || driverClassName.isEmpty()) {
+            throw new Sql4JException("driverClassName 不能为空!");
+        }
+
+        String lower = driverClassName.toLowerCase(Locale.ROOT);
+        DbType dbType;
+
+        if (lower.contains("postgresql")) {
+            // org.postgresql.Driver
+            dbType = DbType.POSTGRESQL;
+        } else if (lower.contains("mysql")) {
+            dbType = DbType.MYSQL;
+        } else if (lower.contains("mariadb")) {
+            dbType = DbType.MARIADB;
+        } else if (lower.contains("oracle")) {
+            dbType = DbType.ORACLE;
+        } else if (lower.contains("sqlserver") || lower.contains("microsoft.sqlserver") || lower.contains("jtds")) {
+            dbType = DbType.SQLSERVER;
+        }  else if (lower.contains("db2")) {
+            dbType = DbType.DB2;
+        } else if (lower.contains("h2")) {
+            dbType = DbType.H2;
+        } else if (lower.contains("sqlite")) {
+            dbType = DbType.SQLite;
+        } else {
+            throw new Sql4JException("未知的数据库驱动：" + driverClassName);
+        }
+
+        dataSourceTypeMapper.put(ds, dbType);
     }
 }

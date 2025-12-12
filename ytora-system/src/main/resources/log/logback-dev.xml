@@ -7,7 +7,7 @@
     <appender name="SQL_STUOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <!--控制台的SQL日志格式-->
-            <pattern>%highlight(%d{MM月dd日HH:mm:ss}) ${PID} %clr(%-5level) 👉 %boldYellow([%10thread])  %boldCyan(%logger{20}): %msg%n</pattern>
+            <pattern>%highlight(%d{MM月dd日HH:mm:ss}) ${PID} %clr(%-5level) 👉 %boldYellow([%10thread])  %boldCyan(%class{20}::%line): %msg%n</pattern>
         </encoder>
     </appender>
 

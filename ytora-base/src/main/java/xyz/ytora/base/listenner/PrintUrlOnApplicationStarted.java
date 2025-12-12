@@ -1,4 +1,4 @@
-package xyz.ytora.core.listenner;
+package xyz.ytora.base.listenner;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;

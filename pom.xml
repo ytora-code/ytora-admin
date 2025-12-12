@@ -80,7 +80,7 @@
                     <!-- 跳过测试 -->
                     <skip>false</skip>
                     <compilerArgs>
-<!--                        <arg>&#45;&#45;enable-preview</arg>-->
+                        <arg>-parameters</arg>
                     </compilerArgs>
                     <!-- 注解处理器的路径，确保在编译时能够处理指定的注解 -->
                     <annotationProcessorPaths>
