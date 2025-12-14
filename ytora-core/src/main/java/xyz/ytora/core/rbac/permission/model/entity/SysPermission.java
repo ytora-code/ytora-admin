@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import xyz.ytora.base.model.BaseEntity;
 import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.sql4j.anno.Table;
+import xyz.ytora.sql4j.enums.ColumnType;
 import xyz.ytora.sql4j.enums.IdType;
 import xyz.ytora.ytool.anno.Index;
 
@@ -49,7 +50,7 @@ public class SysPermission extends BaseEntity<SysPermission> {
      * 手机号码
      */
     @Index(5)
-    @Column(comment = "手机号码", columnType = "CHAR(11)")
+    @Column(comment = "手机号码", type = ColumnType.VARCHAR16)
     private String phone;
 
     /**

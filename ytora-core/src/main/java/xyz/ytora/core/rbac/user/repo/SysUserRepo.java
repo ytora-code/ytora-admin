@@ -1,5 +1,6 @@
 package xyz.ytora.core.rbac.user.repo;
 
+import org.springframework.stereotype.Repository;
 import xyz.ytora.core.rbac.user.model.entity.SysUser;
 import xyz.ytora.sql4j.orm.BaseRepo;
 
@@ -7,5 +8,9 @@ import xyz.ytora.sql4j.orm.BaseRepo;
  * created by YT on 2025/12/8 22:27:34
  * <br/>
  */
-public class SysUserRepo implements BaseRepo<SysUser> {
+@Repository
+public interface SysUserRepo extends BaseRepo<SysUser> {
+
+    SysUser selectByUserNameAndId(String userName, Long id);
+
 }

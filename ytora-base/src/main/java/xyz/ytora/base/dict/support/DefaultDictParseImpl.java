@@ -261,7 +261,7 @@ public class DefaultDictParseImpl implements IDictParser {
         SqlInfo sqlInfo = sqlHelper.select(SysDict::getDictItemText).from(SysDict.class)
                 .where(w -> w.eq(SysDict::getDictCode, dictCode).eq(SysDict::getDictItemValue, dictItemValue))
                 .end();
-        SysDict dict = sqlHelper.getSqlExecutionEngine().executeQuery(sqlInfo).toBean(SysDict.class);
+        SysDict dict = sqlHelper.getSqlExecutionEngine().executeSelect(sqlInfo).toBean(SysDict.class);
         if (dict != null) {
             dictItemText = dict.getDictItemText();
             caches.put(key, dictItemText);

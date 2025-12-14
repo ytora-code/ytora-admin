@@ -3,10 +3,18 @@ package xyz.ytora.base.sql4J;
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.aop.framework.autoproxy.AutoProxyUtils;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
+import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +37,6 @@ import xyz.ytora.ytool.convert.TypePair;
 
 import javax.sql.DataSource;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -40,8 +47,9 @@ import java.util.Map;
  */
 @Slf4j
 @Configuration
-public class Sql4JConfig implements EnvironmentAware {
+public class Sql4JConfig implements EnvironmentAware, ApplicationContextAware {
     private Environment environment;
+    private ConfigurableApplicationContext applicationContext;
 
     @Resource
     private Sql4JProperty sql4JProperty;
@@ -54,6 +62,11 @@ public class Sql4JConfig implements EnvironmentAware {
     @Override
     public void setEnvironment(@NonNull Environment environment) {
         this.environment = environment;
+    }
+
+    @Override
+    public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = (ConfigurableApplicationContext) applicationContext;
     }
 
     /**
@@ -167,7 +180,16 @@ public class Sql4JConfig implements EnvironmentAware {
         String repoPath = sql4JProperty.getRepoPath();
         if (repoPath != null) {
             RepoScanner scanner = new RepoScanner(sqlHelper, repoPath);
-            scanner.createProxyRepo();
+            List<Class<?>> proxyRepo = scanner.createProxyRepo();
+            for (Class<?> clazz : proxyRepo) {
+                try {
+                    Object bean = clazz.getConstructor().newInstance();
+                    applicationContext.getBeanFactory().registerSingleton(clazz.getName(), bean);
+                } catch (InstantiationException | InvocationTargetException | NoSuchMethodException |
+                         IllegalAccessException e) {
+                    throw new Sql4JException(e);
+                }
+            }
         }
         return sqlHelper;
     }
@@ -209,7 +231,7 @@ public class Sql4JConfig implements EnvironmentAware {
             dbType = DbType.ORACLE;
         } else if (lower.contains("sqlserver") || lower.contains("microsoft.sqlserver") || lower.contains("jtds")) {
             dbType = DbType.SQLSERVER;
-        }  else if (lower.contains("db2")) {
+        } else if (lower.contains("db2")) {
             dbType = DbType.DB2;
         } else if (lower.contains("h2")) {
             dbType = DbType.H2;

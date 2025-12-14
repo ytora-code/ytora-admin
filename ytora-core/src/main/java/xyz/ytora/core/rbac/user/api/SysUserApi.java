@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.ytora.base.model.R;
 import xyz.ytora.core.rbac.user.model.entity.SysUser;
+import xyz.ytora.core.rbac.user.repo.SysUserRepo;
 import xyz.ytora.sql4j.core.SQLHelper;
 
 /**
@@ -19,6 +20,7 @@ import xyz.ytora.sql4j.core.SQLHelper;
 @RequiredArgsConstructor
 public class SysUserApi {
     private final SQLHelper sqlHelper;
+    private final SysUserRepo sysUserRepo;
 
     /**
      * 分页查询字典
@@ -28,5 +30,15 @@ public class SysUserApi {
     public R<?> page() {
         Integer submit = sqlHelper.delete().from(SysUser.class).where(w -> w.ne(SysUser::getId, 111)).submit();
         return R.success(submit);
+    }
+
+    /**
+     * 分页查询字典
+     */
+    @GetMapping("/test")
+    @Operation(summary = "测试", description = "测试")
+    public R<?> test() {
+        SysUser sysUser = sysUserRepo.selectByUserNameAndId("张三", 1L);
+        return R.success(sysUser);
     }
 }
