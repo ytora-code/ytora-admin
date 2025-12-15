@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import xyz.ytora.base.exception.BaseException;
 import xyz.ytora.base.scheduler.timewheel.ITimeWheelScheduler;
 import xyz.ytora.base.scheduler.timewheel.TimeWheelTask;
+import xyz.ytora.base.sse.support.DefaultISseMessagePusher;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,8 +22,15 @@ public abstract class AbsSseEventHandler {
      */
     private final static Map<String, AbsSseEventHandler> sseEventMap = new ConcurrentHashMap<>();
 
+    /**
+     * 定时任务
+     */
     private ITimeWheelScheduler scheduler;
-    private ISsePusher pusher;
+
+    /**
+     * 消息推送器
+     */
+    private DefaultISseMessagePusher pusher;
 
     /**
      * 该SSE事件处理器在定时任务中的任务id
@@ -40,7 +48,7 @@ public abstract class AbsSseEventHandler {
     }
 
     @Autowired
-    public void setPusher(ISsePusher pusher) {
+    public void setPusher(DefaultISseMessagePusher pusher) {
         this.pusher = pusher;
     }
 
@@ -76,6 +84,17 @@ public abstract class AbsSseEventHandler {
      */
     public boolean isEnabled() {
         return true;
+    }
+
+    /**
+     * 执行任务获取数据
+     */
+    public Object exec() {
+        if (pusher.size() > 0) {
+            log.info("执行任务并推送SSE数据：{}", getEventName());
+            return doExec();
+        }
+        return null;
     }
 
     /**
@@ -115,10 +134,12 @@ public abstract class AbsSseEventHandler {
 
         //将任务注册进时间轮
         TimeWheelTask task = new TimeWheelTask(cronExpression(), () -> {
-            Object result = doExec();
-            if (result != null) {
-                message.setData(result);
-                pusher.push(message);
+            if (isRunning) {
+                Object result = exec();
+                if (result != null) {
+                    message.setData(result);
+                    pusher.push(message);
+                }
             }
         });
 

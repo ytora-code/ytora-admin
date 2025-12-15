@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class BaseEntity<T> extends Entity<T> {
+public abstract class BaseEntity<T extends BaseEntity<T>> extends Entity<T> {
 
     /**
      * 创建时间

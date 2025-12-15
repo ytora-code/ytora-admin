@@ -39,6 +39,11 @@ public class SysUserApi {
     @Operation(summary = "测试", description = "测试")
     public R<?> test() {
         SysUser sysUser = sysUserRepo.selectByUserNameAndId("张三", 1L);
+        sysUserRepo.count(sysUser);
+        sysUserRepo.page(1, 12, sysUser);
+        sysUserRepo.insert(sysUser);
+        sysUserRepo.update(sysUser, null);
+        sysUserRepo.delete(w -> w.eq(SysUser::getId, 1L));
         return R.success(sysUser);
     }
 }

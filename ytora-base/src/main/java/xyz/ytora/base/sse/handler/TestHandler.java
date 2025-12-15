@@ -31,9 +31,6 @@ public class TestHandler extends AbsSseEventHandler {
 
     @Override
     public Object doExec() {
-        if (sseRegister.size() > 0) {
-            return "hello SSE";
-        }
-        return null;
+        return "hello SSE";
     }
 }

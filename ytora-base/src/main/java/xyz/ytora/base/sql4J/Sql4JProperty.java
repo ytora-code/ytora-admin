@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import xyz.ytora.sql4j.caster.ITypeCaster;
 import xyz.ytora.sql4j.log.ISqlLogger;
-import xyz.ytora.sql4j.orm.TableCreatorManager;
+import xyz.ytora.sql4j.orm.creator.TableCreatorManager;
 import xyz.ytora.sql4j.translate.ITranslator;
 
 import java.util.Map;
