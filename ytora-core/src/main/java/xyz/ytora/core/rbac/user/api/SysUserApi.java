@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import xyz.ytora.base.model.R;
+import xyz.ytora.base.mvc.R;
 import xyz.ytora.core.rbac.user.model.entity.SysUser;
 import xyz.ytora.core.rbac.user.repo.SysUserRepo;
 import xyz.ytora.sql4j.core.SQLHelper;
@@ -32,18 +32,12 @@ public class SysUserApi {
         return R.success(submit);
     }
 
-    /**
-     * 分页查询字典
-     */
     @GetMapping("/test")
     @Operation(summary = "测试", description = "测试")
     public R<?> test() {
-        SysUser sysUser = sysUserRepo.selectByUserNameAndId("张三", 1L);
-        sysUserRepo.count(sysUser);
-        sysUserRepo.page(1, 12, sysUser);
-        sysUserRepo.insert(sysUser);
-        sysUserRepo.update(sysUser, null);
-        sysUserRepo.delete(w -> w.eq(SysUser::getId, 1L));
+        SysUser sysUser = sysUserRepo.one(w -> w.eq(SysUser::getId, 111));
+
         return R.success(sysUser);
     }
+
 }

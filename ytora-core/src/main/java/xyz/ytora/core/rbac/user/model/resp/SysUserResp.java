@@ -3,8 +3,8 @@ package xyz.ytora.core.rbac.user.model.resp;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import xyz.ytora.base.model.BaseResp;
-import xyz.ytora.ytool.document.excel.Excel;
+import xyz.ytora.base.mvc.BaseResp;
+import xyz.ytora.core.rbac.user.model.entity.SysUser;
 
 import java.time.LocalDate;
 
@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "用户表响应数据")
-public class SysUserResp extends BaseResp {
+public class SysUserResp extends BaseResp<SysUser> {
     /**
      * 用户名
      */

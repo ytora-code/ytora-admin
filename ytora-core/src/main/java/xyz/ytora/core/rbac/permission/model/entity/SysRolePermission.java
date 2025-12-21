@@ -2,7 +2,8 @@ package xyz.ytora.core.rbac.permission.model.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import xyz.ytora.base.model.BaseEntity;
+import xyz.ytora.base.mvc.BaseEntity;
+import xyz.ytora.base.mvc.BaseResp;
 import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.sql4j.anno.Table;
 import xyz.ytora.sql4j.enums.IdType;
@@ -28,4 +29,9 @@ public class SysRolePermission extends BaseEntity<SysRolePermission> {
     @Index(2)
     @Column(comment = "资源ID", notNull = true)
     private String permissionId;
+
+    @Override
+    public BaseResp<SysRolePermission> toResp() {
+        return null;
+    }
 }

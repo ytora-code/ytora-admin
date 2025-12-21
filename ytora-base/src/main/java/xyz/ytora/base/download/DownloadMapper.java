@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import xyz.ytora.base.model.R;
+import xyz.ytora.base.mvc.R;
 
 import java.lang.annotation.*;
 

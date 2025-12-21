@@ -3,8 +3,9 @@ package xyz.ytora.core.rbac.user.model.req;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import xyz.ytora.base.model.BaseReq;
-import xyz.ytora.ytool.document.excel.Excel;
+import xyz.ytora.base.mvc.BaseReq;
+import xyz.ytora.core.rbac.user.model.SysUserMapper;
+import xyz.ytora.core.rbac.user.model.entity.SysUser;
 
 import java.time.LocalDate;
 
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "用户表请求数据")
-public class SysUserReq extends BaseReq {
+public class SysUserReq extends BaseReq<SysUser> {
     /**
      * 用户名
      */
@@ -62,4 +63,10 @@ public class SysUserReq extends BaseReq {
      */
     @Schema(description = "身份证")
     private String idCard;
+
+    @Override
+    public SysUser toEntity() {
+        SysUserMapper mapper = SysUserMapper.mapper;
+        return mapper.toEntity(this);
+    }
 }

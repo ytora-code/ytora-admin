@@ -1,29 +1,35 @@
-package xyz.ytora.core.rbac.permission.model.resp;
+package xyz.ytora.core.rbac.permission.model.req;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import xyz.ytora.base.dict.Dict;
-import xyz.ytora.base.mvc.BaseResp;
+import xyz.ytora.base.mvc.BaseReq;
+import xyz.ytora.core.rbac.permission.model.SysPermissionMapper;
 import xyz.ytora.core.rbac.permission.model.entity.SysPermission;
-import xyz.ytora.ytool.tree.ITree;
-
-import java.util.List;
 
 /**
- * created by YT on 2025/12/13 18:35:55
+ * created by System on 2025年5月22日 20:45:43
+ * <br/>
+ * SysPermissionReq表实体类
  * <br/>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "资源表")
-public class SysPermissionResp extends BaseResp<SysPermission> implements ITree<SysPermissionResp> {
+public class SysPermissionReq extends BaseReq<SysPermission> {
+
+    private String id;
+
+    /**
+     * 删除标记，0正常，1删除
+     */
+    @Schema(description = "删除标记，0正常，1删除")
+    private Boolean delFlag;
 
     /**
      * 父资源id
      */
     @Schema(description = "父资源id")
-    @Dict(table = "sys_permission", code = "id", text = "permission_name")
     private String pid;
 
     /**
@@ -45,10 +51,10 @@ public class SysPermissionResp extends BaseResp<SysPermission> implements ITree<
     private Integer permissionType;
 
     /**
-     * 前端组件地址（type为页面时生效）
+     * 地址（页面路由地址或者接口地址）
      */
-    @Schema(description = "前端组件地址（type为页面时生效）")
-    private String component;
+    @Schema(description = "地址（页面路由地址或者接口地址）")
+    private String path;
 
     /**
      * 图标
@@ -66,24 +72,9 @@ public class SysPermissionResp extends BaseResp<SysPermission> implements ITree<
      */
     private Integer sort;
 
-    /**
-     * 子元数集合
-     */
-    private List<SysPermissionResp> children;
-
-    /**
-     * 是否有子节点
-     */
-    private Boolean hasChildren = false;
-
     @Override
-    public String getKey() {
-        return this.permissionName;
+    public SysPermission toEntity() {
+        SysPermissionMapper mapper = SysPermissionMapper.mapper;
+        return mapper.reqToEntity(this);
     }
-
-    @Override
-    public void hasChildren(Boolean hasChildren) {
-        this.hasChildren = hasChildren;
-    }
-
 }

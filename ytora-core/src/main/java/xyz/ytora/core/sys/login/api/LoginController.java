@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import xyz.ytora.base.model.R;
+import xyz.ytora.base.mvc.R;
 import xyz.ytora.core.sys.login.loginc.LoginLogic;
 import xyz.ytora.core.sys.login.model.req.LoginReq;
 import xyz.ytora.core.sys.login.model.resp.SysUserDetailResp;

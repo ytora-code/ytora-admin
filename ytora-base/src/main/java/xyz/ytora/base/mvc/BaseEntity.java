@@ -1,4 +1,4 @@
-package xyz.ytora.base.model;
+package xyz.ytora.base.mvc;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,11 +17,6 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 public abstract class BaseEntity<T extends BaseEntity<T>> extends Entity<T> {
 
-    /**
-     * 创建时间
-     * JsonFormat:ObjectMapper在序列化（Java→JSON）和反序列化（JSON→Java）时生效
-     * DateTimeFormat:Spring MVC使用的注解，用于告诉Spring MVC的ConversionService如何进行类型绑定，通常是将前端字符串日期参数转为后端的日期对象
-     */
     /**
      * 创建人
      */
@@ -74,5 +69,5 @@ public abstract class BaseEntity<T extends BaseEntity<T>> extends Entity<T> {
     /**
      * 实体类转为RESP类
      */
-//    public abstract BaseResp<T> toResp();
+    public abstract BaseResp<T> toResp();
 }

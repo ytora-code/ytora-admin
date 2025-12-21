@@ -2,7 +2,10 @@ package xyz.ytora.core.rbac.user.model.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import xyz.ytora.base.model.BaseEntity;
+import xyz.ytora.base.mvc.BaseEntity;
+import xyz.ytora.base.mvc.BaseResp;
+import xyz.ytora.core.rbac.user.model.SysUserMapper;
+import xyz.ytora.core.rbac.user.model.resp.SysUserResp;
 import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.sql4j.anno.Table;
 import xyz.ytora.sql4j.enums.ColumnType;
@@ -73,4 +76,10 @@ public class SysUser extends BaseEntity<SysUser> {
     @Index(8)
     @Column(comment = "身份证")
     private String idCard;
+
+    @Override
+    public SysUserResp toResp() {
+        SysUserMapper mapper = SysUserMapper.mapper;
+        return mapper.toResp(this);
+    }
 }

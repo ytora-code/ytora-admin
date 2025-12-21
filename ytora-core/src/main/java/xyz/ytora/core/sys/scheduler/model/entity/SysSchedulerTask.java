@@ -2,7 +2,8 @@ package xyz.ytora.core.sys.scheduler.model.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import xyz.ytora.base.model.BaseEntity;
+import xyz.ytora.base.mvc.BaseEntity;
+import xyz.ytora.base.mvc.BaseResp;
 import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.sql4j.anno.Table;
 import xyz.ytora.sql4j.enums.IdType;
@@ -50,4 +51,9 @@ public class SysSchedulerTask extends BaseEntity<SysSchedulerTask> {
     @Index(5)
     @Column(comment = "任务参数")
     private String parameter;
+
+    @Override
+    public BaseResp<SysSchedulerTask> toResp() {
+        return null;
+    }
 }

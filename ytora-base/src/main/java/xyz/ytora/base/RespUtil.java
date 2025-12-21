@@ -7,7 +7,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import xyz.ytora.base.download.Mimes;
 import xyz.ytora.base.exception.BaseException;
-import xyz.ytora.base.model.R;
+import xyz.ytora.base.mvc.R;
 
 import java.io.IOException;
 import java.net.URLEncoder;

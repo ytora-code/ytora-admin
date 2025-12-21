@@ -1,8 +1,7 @@
-package xyz.ytora.base.model;
+package xyz.ytora.base.mvc;
 
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.Order;

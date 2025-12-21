@@ -2,7 +2,9 @@ package xyz.ytora.core.rbac.permission.model.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import xyz.ytora.base.model.BaseEntity;
+import xyz.ytora.base.mvc.BaseEntity;
+import xyz.ytora.core.rbac.permission.model.SysPermissionMapper;
+import xyz.ytora.core.rbac.permission.model.resp.SysPermissionResp;
 import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.sql4j.anno.Table;
 import xyz.ytora.sql4j.enums.ColumnType;
@@ -65,7 +67,7 @@ public class SysPermission extends BaseEntity<SysPermission> {
      */
     @Index(7)
     @Column(comment = "是否可见")
-    private LocalDate visible;
+    private Boolean visible;
 
     /**
      * 排序
@@ -73,4 +75,22 @@ public class SysPermission extends BaseEntity<SysPermission> {
     @Index(8)
     @Column(comment = "排序")
     private String index;
+
+    @Override
+    public SysPermissionResp toResp() {
+        SysPermissionResp permissionResp = SysPermissionMapper.mapper.entityToResp(this);
+
+        // 如果该资源属于菜单，则需要获取其对应的页面组件路径
+        if (permissionResp.getPermissionType() == 2) {
+            // 如果是顶级菜单，组件路径应该是固定的一级路由地址
+            if ("0".equals(permissionResp.getPid())) {
+                permissionResp.setComponent("/layouts/index.vue");
+            }
+            // 如果是非顶级菜单，则使用 permissionCode 作为组件路径
+            else {
+                permissionResp.setComponent(permissionResp.getPermissionCode());
+            }
+        }
+        return permissionResp;
+    }
 }

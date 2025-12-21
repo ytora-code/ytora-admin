@@ -2,7 +2,7 @@ package xyz.ytora.core.rbac.user.model.excel;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import xyz.ytora.base.model.BaseExcel;
+import xyz.ytora.base.mvc.BaseExcel;
 import xyz.ytora.ytool.document.excel.Excel;
 
 import java.time.LocalDate;

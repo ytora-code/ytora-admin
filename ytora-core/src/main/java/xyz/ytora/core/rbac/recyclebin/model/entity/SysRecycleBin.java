@@ -2,7 +2,8 @@ package xyz.ytora.core.rbac.recyclebin.model.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import xyz.ytora.base.model.BaseEntity;
+import xyz.ytora.base.mvc.BaseEntity;
+import xyz.ytora.base.mvc.BaseResp;
 import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.sql4j.anno.Table;
 import xyz.ytora.sql4j.enums.ColumnType;
@@ -61,4 +62,9 @@ public class SysRecycleBin extends BaseEntity<SysRecycleBin> {
     @Index(6)
     @Column(comment = "原始数据，JSON", type = ColumnType.JSON, notNull = true)
     private JSON originalData;
+
+    @Override
+    public BaseResp<SysRecycleBin> toResp() {
+        return null;
+    }
 }

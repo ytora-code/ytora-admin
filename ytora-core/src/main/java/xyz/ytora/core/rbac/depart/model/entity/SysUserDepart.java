@@ -2,7 +2,8 @@ package xyz.ytora.core.rbac.depart.model.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import xyz.ytora.base.model.BaseEntity;
+import xyz.ytora.base.mvc.BaseEntity;
+import xyz.ytora.base.mvc.BaseResp;
 import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.sql4j.anno.Table;
 import xyz.ytora.sql4j.enums.IdType;
@@ -28,4 +29,9 @@ public class SysUserDepart extends BaseEntity<SysUserDepart> {
     @Index(2)
     @Column(comment = "部门ID", notNull = true)
     private String departId;
+
+    @Override
+    public BaseResp<SysUserDepart> toResp() {
+        return null;
+    }
 }

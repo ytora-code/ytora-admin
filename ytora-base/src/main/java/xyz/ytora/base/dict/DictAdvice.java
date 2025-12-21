@@ -9,7 +9,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
-import xyz.ytora.base.model.R;
+import xyz.ytora.base.mvc.R;
 import xyz.ytora.sql4j.orm.Page;
 
 import java.lang.reflect.Method;

@@ -40,4 +40,9 @@ public class LoginUser {
      */
     private Long lastRequestTime;
 
+    /**
+     * 请求次数
+     */
+    private Long requestCount;
+
 }

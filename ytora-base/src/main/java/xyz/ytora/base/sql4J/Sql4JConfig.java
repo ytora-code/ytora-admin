@@ -1,22 +1,17 @@
 package xyz.ytora.base.sql4J;
 
 import com.zaxxer.hikari.HikariDataSource;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeansException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
-import org.springframework.lang.NonNull;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.ytora.sql4j.Sql4JException;
 import xyz.ytora.sql4j.caster.Caster;
@@ -27,7 +22,6 @@ import xyz.ytora.sql4j.interceptor.SqlInterceptor;
 import xyz.ytora.sql4j.log.ISqlLogger;
 import xyz.ytora.sql4j.orm.creator.TableCreatorManager;
 import xyz.ytora.sql4j.orm.scanner.EntityScanner;
-import xyz.ytora.sql4j.orm.scanner.RepoScanner;
 import xyz.ytora.sql4j.translate.ITranslator;
 import xyz.ytora.ytool.convert.TypePair;
 
@@ -43,27 +37,14 @@ import java.util.Map;
  */
 @Slf4j
 @Configuration
-public class Sql4JConfig implements EnvironmentAware, ApplicationContextAware {
-    private Environment environment;
-    private ConfigurableApplicationContext applicationContext;
-
-    @Resource
-    private Sql4JProperty sql4JProperty;
+@Import(Sql4JRepoRegistrar.class)
+@EnableConfigurationProperties(Sql4JProperty.class)
+public class Sql4JConfig {
 
     /**
      * 记录下面每个数据源和数据库类型的映射
      */
     private final Map<DataSource, DbType> dataSourceTypeMapper = new HashMap<>();
-
-    @Override
-    public void setEnvironment(@NonNull Environment environment) {
-        this.environment = environment;
-    }
-
-    @Override
-    public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = (ConfigurableApplicationContext) applicationContext;
-    }
 
     /**
      * 多数据源核心配置
@@ -73,7 +54,7 @@ public class Sql4JConfig implements EnvironmentAware, ApplicationContextAware {
     @Bean
     @Primary
     @ConditionalOnMissingBean(DataSource.class)
-    public DataSource dynamicDataSource() {
+    public DataSource dynamicDataSource(Sql4JProperty sql4JProperty, Environment environment) {
         DynamicDataSource dynamicDs = new DynamicDataSource();
         // 数据源路由
         Map<Object, Object> targetDataSources = new HashMap<>();
@@ -104,7 +85,8 @@ public class Sql4JConfig implements EnvironmentAware, ApplicationContextAware {
 
     @Bean
     @Transactional(rollbackFor = Exception.class)
-    public SQLHelper sqlHelper(DataSource ds, List<SqlInterceptor> interceptors, List<Caster<?, ?>> casters) {
+    public SQLHelper sqlHelper(Sql4JProperty sql4JProperty, DataSource ds, List<SqlInterceptor> interceptors, List<Caster<?, ?>> casters) {
+        log.info("正在初始化 SQLHelper...");
         SQLHelper sqlHelper = new SQLHelper();
         // 注册数据库连接提供器
         sqlHelper.registerConnectionProvider(new SpringConnectionProvider(ds));
@@ -172,23 +154,10 @@ public class Sql4JConfig implements EnvironmentAware, ApplicationContextAware {
             EntityScanner scanner = new EntityScanner(sqlHelper, sql4JProperty.getEntityPath());
             scanner.createTableIfNotExist();
         }
-        // 扫描Repo接口，创建代理类
-        String repoPath = sql4JProperty.getRepoPath();
-        if (repoPath != null) {
-            RepoScanner scanner = new RepoScanner(sqlHelper, repoPath);
-            List<Class<?>> proxyRepo = scanner.createProxyRepo();
-            for (Class<?> clazz : proxyRepo) {
-                try {
-                    Object bean = clazz.getConstructor().newInstance();
-                    applicationContext.getBeanFactory().registerSingleton(clazz.getName(), bean);
-                } catch (InstantiationException | InvocationTargetException | NoSuchMethodException |
-                         IllegalAccessException e) {
-                    throw new Sql4JException(e);
-                }
-            }
-        }
+
         return sqlHelper;
     }
+
 
     /**
      * 根据DataSourceProperties判断应该创建什么类型的数据库连接池

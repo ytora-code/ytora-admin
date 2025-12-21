@@ -3,7 +3,8 @@ package xyz.ytora.core.sys.log.model.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import xyz.ytora.base.model.BaseEntity;
+import xyz.ytora.base.mvc.BaseEntity;
+import xyz.ytora.base.mvc.BaseResp;
 import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.sql4j.anno.Table;
 import xyz.ytora.sql4j.enums.IdType;
@@ -108,4 +109,9 @@ public class SysLog extends BaseEntity<SysLog> {
     @Index(13)
     @Column(comment = "错误堆栈信息")
     private String errorStack;
+
+    @Override
+    public BaseResp<SysLog> toResp() {
+        return null;
+    }
 }

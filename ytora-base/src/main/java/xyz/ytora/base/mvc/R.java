@@ -1,4 +1,4 @@
-package xyz.ytora.base.model;
+package xyz.ytora.base.mvc;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

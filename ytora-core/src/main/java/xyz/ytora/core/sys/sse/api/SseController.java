@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import xyz.ytora.base.auth.LoginUser;
-import xyz.ytora.base.model.R;
+import xyz.ytora.base.mvc.R;
 import xyz.ytora.base.scope.ScopedValueItem;
 import xyz.ytora.base.sse.AbsSseEventHandler;
 import xyz.ytora.base.sse.ISsePusher;

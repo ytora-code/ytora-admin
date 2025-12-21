@@ -2,7 +2,8 @@ package xyz.ytora.core.rbac.role.model.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import xyz.ytora.base.model.BaseEntity;
+import xyz.ytora.base.mvc.BaseEntity;
+import xyz.ytora.base.mvc.BaseResp;
 import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.sql4j.anno.Table;
 import xyz.ytora.sql4j.enums.IdType;
@@ -28,4 +29,9 @@ public class SysRole extends BaseEntity<SysRole> {
     @Index(2)
     @Column(comment = "角色编码", notNull = true)
     private String roleCode;
+
+    @Override
+    public BaseResp<SysRole> toResp() {
+        return null;
+    }
 }
