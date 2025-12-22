@@ -48,12 +48,6 @@ public class SysPermission extends BaseEntity<SysPermission> {
     @Column(comment = "资源类型，1-接口、2-页面、3-页面元素")
     private String permissionType;
 
-    /**
-     * 手机号码
-     */
-    @Index(5)
-    @Column(comment = "手机号码", type = ColumnType.VARCHAR16)
-    private String phone;
 
     /**
      * 图标
@@ -74,7 +68,7 @@ public class SysPermission extends BaseEntity<SysPermission> {
      */
     @Index(8)
     @Column(comment = "排序")
-    private String index;
+    private Integer index;
 
     @Override
     public SysPermissionResp toResp() {
@@ -84,7 +78,7 @@ public class SysPermission extends BaseEntity<SysPermission> {
         if (permissionResp.getPermissionType() == 2) {
             // 如果是顶级菜单，组件路径应该是固定的一级路由地址
             if ("0".equals(permissionResp.getPid())) {
-                permissionResp.setComponent("/layouts/index.vue");
+                permissionResp.setComponent("/components/layout/index.vue");
             }
             // 如果是非顶级菜单，则使用 permissionCode 作为组件路径
             else {

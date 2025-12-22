@@ -70,7 +70,7 @@ public class SysPermissionReq extends BaseReq<SysPermission> {
     /**
      * 排序
      */
-    private Integer sort;
+    private Integer index;
 
     @Override
     public SysPermission toEntity() {

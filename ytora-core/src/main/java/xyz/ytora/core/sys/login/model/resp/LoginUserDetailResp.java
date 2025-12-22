@@ -8,11 +8,11 @@ import xyz.ytora.core.rbac.role.model.entity.SysRole;
 import java.util.List;
 
 /**
- * 展示给前端显示的系统用户详情
+ * 登录用户的详情
  */
 @Data
 @Schema(name = "用户详情")
-public class SysUserDetailResp {
+public class LoginUserDetailResp {
     /**
      * 主键id
      */

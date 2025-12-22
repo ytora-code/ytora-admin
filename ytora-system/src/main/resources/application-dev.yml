@@ -31,7 +31,7 @@ ytora:
       primary:
         #连接基本信息
         driver-class-name: org.postgresql.Driver
-        url: jdbc:postgresql://localhost:5432/ytora?currentSchema=ytora&ssl=false
+        url: jdbc:postgresql://localhost:5432/ytora?currentSchema=ytora&ssl=false&stringtype=unspecified
         username: ytora
         password: 220600
         type: com.zaxxer.hikari.HikariDataSource

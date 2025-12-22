@@ -18,7 +18,7 @@ import xyz.ytora.core.rbac.role.model.entity.SysRole;
 import xyz.ytora.core.rbac.user.model.entity.SysUser;
 import xyz.ytora.core.rbac.user.repo.SysUserRepo;
 import xyz.ytora.core.sys.login.model.req.LoginReq;
-import xyz.ytora.core.sys.login.model.resp.SysUserDetailResp;
+import xyz.ytora.core.sys.login.model.resp.LoginUserDetailResp;
 import xyz.ytora.sql4j.core.SQLHelper;
 import xyz.ytora.ytool.bean.Beans;
 import xyz.ytora.ytool.str.Strs;
@@ -49,7 +49,7 @@ public class LoginLogic {
     /**
      * 执行登录
      */
-    public SysUserDetailResp doLogin(@Valid LoginReq loginReq) {
+    public LoginUserDetailResp doLogin(@Valid LoginReq loginReq) {
         long now = System.currentTimeMillis();
 
         String username = loginReq.getUsername();
@@ -66,7 +66,7 @@ public class LoginLogic {
             throw new BaseException(RespCode.UNKNOWN_USER_PASSWORD);
         }
         // 登录校验通过，获取用户详细信息
-        SysUserDetailResp userDetail = queryUserDetail(user.getId());
+        LoginUserDetailResp userDetail = queryUserDetail(user.getId());
 
         // 产生token并将token作为cookie发送给前端
         UUID uuid = UUID.randomUUID();
@@ -90,11 +90,11 @@ public class LoginLogic {
         loginUser.setRequestCount(1L);
         caches.put(token, loginUser, tokenInvalidTime);
 
-        return null;
+        return userDetail;
     }
 
-    public SysUserDetailResp queryUserDetail(String userid) {
-        SysUserDetailResp userDetail = new SysUserDetailResp();
+    public LoginUserDetailResp queryUserDetail(String userid) {
+        LoginUserDetailResp userDetail = new LoginUserDetailResp();
         // step1.根据id查询用户信息
         SysUser user = sysUserRepo.one(w -> w.eq(SysUser::getId, userid));
         if (user == null) {

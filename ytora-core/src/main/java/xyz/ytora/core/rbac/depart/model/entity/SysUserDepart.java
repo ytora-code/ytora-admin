@@ -6,6 +6,7 @@ import xyz.ytora.base.mvc.BaseEntity;
 import xyz.ytora.base.mvc.BaseResp;
 import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.sql4j.anno.Table;
+import xyz.ytora.sql4j.enums.ColumnType;
 import xyz.ytora.sql4j.enums.IdType;
 import xyz.ytora.ytool.anno.Index;
 
@@ -20,14 +21,14 @@ public class SysUserDepart extends BaseEntity<SysUserDepart> {
      * 用户ID
      */
     @Index(1)
-    @Column(comment = "用户ID", notNull = true)
+    @Column(comment = "用户ID", notNull = true, type = ColumnType.INT8)
     private String userId;
 
     /**
      * 部门ID
      */
     @Index(2)
-    @Column(comment = "部门ID", notNull = true)
+    @Column(comment = "部门ID", notNull = true, type = ColumnType.INT8)
     private String departId;
 
     @Override

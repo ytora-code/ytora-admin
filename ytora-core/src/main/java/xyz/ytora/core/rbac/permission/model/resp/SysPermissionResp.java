@@ -64,7 +64,7 @@ public class SysPermissionResp extends BaseResp<SysPermission> implements ITree<
     /**
      * 排序
      */
-    private Integer sort;
+    private Integer index;
 
     /**
      * 子元数集合
