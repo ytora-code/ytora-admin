@@ -20,8 +20,6 @@ public class Sql4JRepoFactoryBean<T> implements FactoryBean<T>, InitializingBean
     @Autowired
     private SQLHelper sqlHelper;
 
-    public Sql4JRepoFactoryBean() {}
-
     // 提供构造函数给 Registrar 使用，确保类型第一时间确定
     public Sql4JRepoFactoryBean(Class<T> repoInterface) {
         this.repoInterface = repoInterface;

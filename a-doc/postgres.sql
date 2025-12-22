@@ -1,10 +1,3 @@
-CREATE
-USER ytora WITH PASSWORD '220600';
-CREATE
-DATABASE ytora OWNER ytora ENCODING 'UTF8';
-
-
-
 -- ----------------------------
 -- Table structure for sys_depart
 -- ----------------------------
@@ -228,14 +221,37 @@ VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, '1', '0', '权限管理', '/rbac'
 INSERT INTO "ytora"."sys_permission"
 VALUES (2, NULL, NULL, NULL, NULL, NULL, NULL, '1', '1', '用户管理', '/rbac/user', '2', 'PersonOutline', 't', 1);
 INSERT INTO "ytora"."sys_permission"
-VALUES (4, NULL, NULL, NULL, NULL, NULL, NULL, '1', '1', '资源管理', '/rbac/permission', '2', 'FingerPrintOutline', 't',
-        3);
-INSERT INTO "ytora"."sys_permission"
 VALUES (3, NULL, NULL, NULL, NULL, NULL, NULL, '1', '1', '角色管理', '/rbac/role', '2', 'AccessibilityOutline', 't', 2);
 INSERT INTO "ytora"."sys_permission"
 VALUES (5, NULL, NULL, NULL, NULL, NULL, NULL, '1', '1', '部门管理', '/rbac/depart', '2', 'TriangleOutline', 't', 4);
 INSERT INTO "ytora"."sys_permission"
 VALUES (6, NULL, NULL, NULL, NULL, NULL, NULL, '1', '0', '系统管理', '/sys', '2', 'SettingsOutline', 't', 1);
+INSERT INTO "ytora"."sys_permission"
+VALUES (7, NULL, NULL, NULL, NULL, NULL, NULL, '1', '6', '数据字典', '/sys/dict', '2', 'BookOutline', 't', 1);
+INSERT INTO "ytora"."sys_permission"
+VALUES (4, NULL, NULL, NULL, NULL, NULL, NULL, '1', '1', '资源管理', '/rbac/permission', '2', 'GridOutline', 't', 3);
+INSERT INTO "ytora"."sys_permission"
+VALUES (8, NULL, NULL, NULL, NULL, NULL, NULL, '1', '6', '缓存管理', '/sys/cache', '2', 'LayersOutline', 't', 2);
+INSERT INTO "ytora"."sys_permission"
+VALUES (9, NULL, NULL, NULL, NULL, NULL, NULL, '1', '6', '数据库管理', '/sys/db', '2', 'ServerOutline', 't', 4);
+INSERT INTO "ytora"."sys_permission"
+VALUES (11, NULL, NULL, NULL, NULL, NULL, NULL, '1', '6', '文件管理', '/sys/file', '2', 'FileTrayFullOutline', 't', 5);
+INSERT INTO "ytora"."sys_permission"
+VALUES (10, NULL, NULL, NULL, NULL, NULL, NULL, '1', '6', '日志管理', '/sys/log', '2', 'TerminalOutline', 't', 3);
+INSERT INTO "ytora"."sys_permission"
+VALUES (12, NULL, NULL, NULL, NULL, NULL, NULL, '1', '6', '定时任务', '/sys/cron', '2', 'AlarmOutline', 't', 5);
+INSERT INTO "ytora"."sys_permission"
+VALUES (13, NULL, NULL, NULL, NULL, NULL, NULL, '1', '6', '系统监控', '/sys/monitor', '2', 'SpeedometerOutline', 't',
+        6);
+INSERT INTO "ytora"."sys_permission"
+VALUES (14, NULL, NULL, NULL, NULL, NULL, NULL, '1', '6', 'API接口', '/sys/api', '2', 'CodeSlashOutline', 't', 7);
+INSERT INTO "ytora"."sys_permission"
+VALUES (15, NULL, NULL, NULL, NULL, NULL, NULL, '1', '0', '公共模块', '/common', '2', 'LockOpenOutline', 't', 2);
+INSERT INTO "ytora"."sys_permission"
+VALUES (16, NULL, NULL, NULL, NULL, NULL, NULL, '1', '15', '图标库', '/common/icon', '2', 'StarOutline', 't', 1);
+INSERT INTO "ytora"."sys_permission"
+VALUES (17, NULL, NULL, NULL, NULL, NULL, NULL, '1', '15', '系统说明', '/common/remark', '2', 'DocumentOutline', 't',
+        2);
 
 -- ----------------------------
 -- Table structure for sys_recycle_bin
@@ -243,7 +259,7 @@ VALUES (6, NULL, NULL, NULL, NULL, NULL, NULL, '1', '0', '系统管理', '/sys',
 DROP TABLE IF EXISTS "ytora"."sys_recycle_bin";
 CREATE TABLE "ytora"."sys_recycle_bin"
 (
-    "id"             int4                                        NOT NULL DEFAULT nextval('sys_recycle_bin_id_seq'::regclass),
+    "id"             serial,
     "create_by"      varchar(16) COLLATE "pg_catalog"."default",
     "create_time"    timestamp(6),
     "update_by"      varchar(16) COLLATE "pg_catalog"."default",
@@ -418,6 +434,28 @@ INSERT INTO "ytora"."sys_role_permission"
 VALUES (5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 5);
 INSERT INTO "ytora"."sys_role_permission"
 VALUES (6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 6);
+INSERT INTO "ytora"."sys_role_permission"
+VALUES (7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 7);
+INSERT INTO "ytora"."sys_role_permission"
+VALUES (8, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 8);
+INSERT INTO "ytora"."sys_role_permission"
+VALUES (9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 9);
+INSERT INTO "ytora"."sys_role_permission"
+VALUES (10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 10);
+INSERT INTO "ytora"."sys_role_permission"
+VALUES (11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 11);
+INSERT INTO "ytora"."sys_role_permission"
+VALUES (12, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 12);
+INSERT INTO "ytora"."sys_role_permission"
+VALUES (13, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 13);
+INSERT INTO "ytora"."sys_role_permission"
+VALUES (14, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 14);
+INSERT INTO "ytora"."sys_role_permission"
+VALUES (15, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 15);
+INSERT INTO "ytora"."sys_role_permission"
+VALUES (16, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 16);
+INSERT INTO "ytora"."sys_role_permission"
+VALUES (17, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 17);
 
 -- ----------------------------
 -- Table structure for sys_scheduler_task
@@ -536,41 +574,41 @@ ON TABLE "ytora"."sys_user" IS '用户表';
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO "ytora"."sys_user"
-VALUES (101, NULL, '2025-01-01 10:00:00', NULL, NULL, 'YT-001', NULL, '1', 'admin', '集团管理员', '1', '/avatar.jpg',
-        '13811110001', 'admin@ytora.com', NULL, NULL);
-INSERT INTO "ytora"."sys_user"
-VALUES (102, NULL, '2025-01-02 10:00:00', NULL, NULL, 'YT-RD-01', NULL, '1', 'li.miao', '李苗', '1', '/avatar.jpg',
-        '13811110002', 'li.miao@ytora.com', NULL, NULL);
-INSERT INTO "ytora"."sys_user"
-VALUES (103, NULL, '2025-01-02 11:00:00', NULL, NULL, 'YT-FI-01', NULL, '1', 'wang.qiang', '王强', '1', '/avatar.jpg',
-        '13811110003', 'wang.qiang@ytora.com', NULL, NULL);
-INSERT INTO "ytora"."sys_user"
-VALUES (104, NULL, '2025-01-02 12:00:00', NULL, NULL, 'YT-HR-01', NULL, '1', 'chen.xi', '陈曦', '1', '/avatar.jpg',
-        '13811110004', 'chen.xi@ytora.com', NULL, NULL);
-INSERT INTO "ytora"."sys_user"
-VALUES (105, NULL, '2025-01-03 09:00:00', NULL, NULL, 'YT-RD-SOFT', NULL, '1', 'zhang.wei', '张伟', '1', '/avatar.jpg',
-        '13811110005', 'zhang.wei@ytora.com', NULL, NULL);
-INSERT INTO "ytora"."sys_user"
-VALUES (106, NULL, '2025-01-03 10:00:00', NULL, NULL, 'YT-RD-SOFT', NULL, '1', 'zhou.jie', '周杰', '1', '/avatar.jpg',
-        '13811110006', 'zhou.jie@ytora.com', NULL, NULL);
-INSERT INTO "ytora"."sys_user"
-VALUES (107, NULL, '2025-01-03 11:00:00', NULL, NULL, 'YT-RD-TEST', NULL, '1', 'lin.yv', '林语', '1', '/avatar.jpg',
-        '13811110007', 'lin.yv@ytora.com', NULL, NULL);
-INSERT INTO "ytora"."sys_user"
-VALUES (108, NULL, '2025-01-04 09:00:00', NULL, NULL, 'YT-FI-ACC', NULL, '1', 'huang.bo', '黄博', '1', '/avatar.jpg',
-        '13811110008', 'huang.bo@ytora.com', NULL, NULL);
-INSERT INTO "ytora"."sys_user"
 VALUES (109, NULL, '2025-01-04 10:00:00', NULL, NULL, 'YT-HR-RECR', NULL, '1', 'sun.yao', '孙尧', '1', '/avatar.jpg',
-        '13811110009', 'sun.yao@ytora.com', NULL, NULL);
+        '13811110009', 'sun.yao@ytora.com', '2025-12-22', '114514');
 INSERT INTO "ytora"."sys_user"
 VALUES (110, NULL, '2025-01-05 09:00:00', NULL, NULL, 'YT-SA-EAST', NULL, '1', 'gao.yuan', '高原', '1', '/avatar.jpg',
-        '13811110010', 'gao.yuan@ytora.com', NULL, NULL);
+        '13811110010', 'gao.yuan@ytora.com', '2025-12-22', '114514');
 INSERT INTO "ytora"."sys_user"
 VALUES (111, NULL, '2025-01-05 10:00:00', NULL, NULL, 'YT-IT-OPS', NULL, '1', 'he.yang', '何洋', '1', '/avatar.jpg',
-        '13811110011', 'he.yang@ytora.com', NULL, NULL);
+        '13811110011', 'he.yang@ytora.com', '2025-12-22', '114514');
 INSERT INTO "ytora"."sys_user"
 VALUES (112, NULL, '2025-01-06 09:00:00', NULL, NULL, 'YT-001', NULL, '1', 'external.v', '顾文', '1', '/avatar.jpg',
-        '13811110012', 'guest@ext.com', NULL, NULL);
+        '13811110012', 'guest@ext.com', '2025-12-22', '114514');
+INSERT INTO "ytora"."sys_user"
+VALUES (101, NULL, '2025-01-01 10:00:00', NULL, NULL, 'YT-001', NULL, '1', 'admin', '杨桐', '1', '/avatar.jpg',
+        '13811110001', 'admin@ytora.com', '2025-12-22', '114514');
+INSERT INTO "ytora"."sys_user"
+VALUES (102, NULL, '2025-01-02 10:00:00', NULL, NULL, 'YT-RD-01', NULL, '1', 'li.miao', '李苗', '1', '/avatar.jpg',
+        '13811110002', 'li.miao@ytora.com', '2025-12-22', '114514');
+INSERT INTO "ytora"."sys_user"
+VALUES (103, NULL, '2025-01-02 11:00:00', NULL, NULL, 'YT-FI-01', NULL, '1', 'wang.qiang', '王强', '1', '/avatar.jpg',
+        '13811110003', 'wang.qiang@ytora.com', '2025-12-22', '114514');
+INSERT INTO "ytora"."sys_user"
+VALUES (104, NULL, '2025-01-02 12:00:00', NULL, NULL, 'YT-HR-01', NULL, '1', 'chen.xi', '陈曦', '1', '/avatar.jpg',
+        '13811110004', 'chen.xi@ytora.com', '2025-12-22', '114514');
+INSERT INTO "ytora"."sys_user"
+VALUES (105, NULL, '2025-01-03 09:00:00', NULL, NULL, 'YT-RD-SOFT', NULL, '1', 'zhang.wei', '张伟', '1', '/avatar.jpg',
+        '13811110005', 'zhang.wei@ytora.com', '2025-12-22', '114514');
+INSERT INTO "ytora"."sys_user"
+VALUES (106, NULL, '2025-01-03 10:00:00', NULL, NULL, 'YT-RD-SOFT', NULL, '1', 'zhou.jie', '周杰', '1', '/avatar.jpg',
+        '13811110006', 'zhou.jie@ytora.com', '2025-12-22', '114514');
+INSERT INTO "ytora"."sys_user"
+VALUES (107, NULL, '2025-01-03 11:00:00', NULL, NULL, 'YT-RD-TEST', NULL, '1', 'lin.yv', '林语', '1', '/avatar.jpg',
+        '13811110007', 'lin.yv@ytora.com', '2025-12-22', '114514');
+INSERT INTO "ytora"."sys_user"
+VALUES (108, NULL, '2025-01-04 09:00:00', NULL, NULL, 'YT-FI-ACC', NULL, '1', 'huang.bo', '黄博', '1', '/avatar.jpg',
+        '13811110008', 'huang.bo@ytora.com', '2025-12-22', '114514');
 
 -- ----------------------------
 -- Table structure for sys_user_depart
