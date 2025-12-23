@@ -1,5 +1,6 @@
 package xyz.ytora.base.auth;
 
+import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
 import org.springframework.lang.NonNull;
 import org.springframework.web.filter.OncePerRequestFilter;
 import xyz.ytora.base.auth.handler.AuthnHandler;
@@ -28,6 +30,9 @@ import java.util.concurrent.atomic.AtomicReference;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 public class AuthCoreFilter extends OncePerRequestFilter {
+
+    @Resource
+    private ApplicationContext applicationContext;
 
     /**
      * 判断请求资源是否是公共资源的组件
@@ -74,7 +79,8 @@ public class AuthCoreFilter extends OncePerRequestFilter {
             // 将请求对象和响应对象保存到 ScopedValue
             ScopedValue.Carrier scope = ScopedValue
                     .where(ScopedValueItem.REQUEST, request)
-                    .where(ScopedValueItem.RESPONSE, response);
+                    .where(ScopedValueItem.RESPONSE, response)
+                    .where(ScopedValueItem.APPLICATION_CONTEXT, applicationContext);
 
             // 如果是公共资源，或者auth没有启用，直接访问资源
             if (publicResourcesHandler.isPublic(request, response) || !authProperty.getEnable()) {

@@ -2,6 +2,7 @@ package xyz.ytora.base.scope;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.context.ApplicationContext;
 import xyz.ytora.base.auth.LoginUser;
 
 /**
@@ -32,6 +33,11 @@ public interface ScopedValueItem {
      * 请求对象
      */
     ScopedValue<HttpServletResponse> RESPONSE = ScopedValue.newInstance();
+
+    /**
+     * spring的上下文容器
+     */
+    ScopedValue<ApplicationContext> APPLICATION_CONTEXT = ScopedValue.newInstance();
 
     /**
      * 当前登录用户

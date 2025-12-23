@@ -3,13 +3,22 @@ package xyz.ytora.core.rbac.user.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.web.bind.annotation.*;
+import xyz.ytora.base.mvc.BaseApi;
+import xyz.ytora.base.mvc.BaseEntity;
 import xyz.ytora.base.mvc.R;
+import xyz.ytora.base.querygen.WhereGenerator;
+import xyz.ytora.core.rbac.user.logic.SysUserLogic;
 import xyz.ytora.core.rbac.user.model.entity.SysUser;
+import xyz.ytora.core.rbac.user.model.req.SysUserReq;
+import xyz.ytora.core.rbac.user.model.resp.SysUserResp;
 import xyz.ytora.core.rbac.user.repo.SysUserRepo;
 import xyz.ytora.sql4j.core.SQLHelper;
+import xyz.ytora.sql4j.func.support.Raw;
+import xyz.ytora.sql4j.orm.Page;
+import xyz.ytora.sql4j.orm.Pages;
+import xyz.ytora.sql4j.sql.ConditionExpressionBuilder;
 
 /**
  * 用户 控制器
@@ -18,26 +27,58 @@ import xyz.ytora.sql4j.core.SQLHelper;
 @RestController
 @RequestMapping("/rbac/sysUser")
 @RequiredArgsConstructor
-public class SysUserApi {
-    private final SQLHelper sqlHelper;
-    private final SysUserRepo sysUserRepo;
+public class SysUserApi extends BaseApi<SysUser, SysUserLogic, SysUserRepo> {
 
     /**
-     * 分页查询字典
+     * 分页查询用户
      */
     @GetMapping("/page")
-    @Operation(summary = "分页查询字典", description = "分页查询字典")
-    public R<?> page() {
-        Integer submit = sqlHelper.delete().from(SysUser.class).where(w -> w.ne(SysUser::getId, 111)).submit();
-        return R.success(submit);
+    @Operation(summary = "分页查询用户", description = "分页查询用户")
+    public Page<SysUserResp> page(@ParameterObject SysUserReq userdata,
+                                     @RequestParam(defaultValue = "1") Integer pageNo,
+                                     @RequestParam(defaultValue = "10") Integer pageSize) {
+        ConditionExpressionBuilder where = WhereGenerator.where();
+        Page<SysUser> page = repository.page(pageNo, pageSize, where);
+        return Pages.transPage(page, SysUser::toResp);
     }
 
-    @GetMapping("/test")
-    @Operation(summary = "测试", description = "测试")
-    public R<?> test() {
-        SysUser sysUser = sysUserRepo.one(w -> w.eq(SysUser::getId, 111));
+    /**
+     * 根据ID查询
+     */
+    @GetMapping("/queryById")
+    @Operation(summary = "根据ID查询", description = "根据ID查询")
+    public SysUserResp queryById(@RequestParam String id) {
+        SysUser entity = repository.one(w -> w.eq(SysUserReq::getId, id));
+        if (entity == null) {
+            return null;
+        }
+        return entity.toResp();
+    }
 
-        return R.success(sysUser);
+    /**
+     * 新增或编辑
+     */
+    @PostMapping("/insertOrUpdate")
+    @Operation(summary = "新增或编辑", description = "新增或编辑")
+    public String insertOrUpdate(@RequestBody SysUserReq sysUserReq) {
+        if (sysUserReq.getId() == null) {
+            repository.insert(sysUserReq.toEntity());
+            return "新增成功";
+        } else {
+            repository.update(sysUserReq.toEntity(), w -> w.eq(SysUserReq::getId, sysUserReq.getId()));
+            return "编辑成功";
+        }
+    }
+
+    /**
+     * 删除数据
+     */
+    @DeleteMapping("/delete")
+    @Operation(summary = "删除数据", description = "delete?id=1,2,3：表示删除id为1,2,3的数据")
+    public String delete(@RequestParam String id) {
+        ConditionExpressionBuilder where = WhereGenerator.where();
+        repository.delete(where);
+        return "删除成功";
     }
 
 }
