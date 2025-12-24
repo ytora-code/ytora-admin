@@ -50,8 +50,8 @@ public class BackupBeforeDeleteInterceptor extends SqlInterceptorAdapter {
             }
 
             DeleteWhereStage whereStage = deleteBuilder.getWhereStage();
-            if (whereStage != null && whereStage.getWhereExpression() != null) {
-                ConditionExpressionBuilder whereExpression = whereStage.getWhereExpression();
+            if (whereStage != null && whereStage.getWhere() != null) {
+                ConditionExpressionBuilder whereExpression = whereStage.getWhere();
                 if (whereExpression != null && Strs.isNotEmpty(whereExpression.build())) {
                     String tableName = deleteBuilder.getFromStage().getTableName();
                     String querySourceDataSql = "SELECT * FROM " + tableName + " WHERE " + whereExpression.build();

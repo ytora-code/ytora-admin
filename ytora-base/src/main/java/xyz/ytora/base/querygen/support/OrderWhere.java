@@ -5,24 +5,17 @@ import xyz.ytora.base.querygen.AbsWhere;
 import xyz.ytora.base.querygen.token.Token;
 import xyz.ytora.sql4j.func.support.Raw;
 import xyz.ytora.sql4j.sql.ConditionExpressionBuilder;
-import xyz.ytora.sql4j.sql.Wrapper;
 import xyz.ytora.ytool.str.Strs;
 
-import java.util.function.Consumer;
-
 /**
- * 等值匹配，age=1，优先级最高
+ * 排序字段，固定字段名称：orderCol，+表示升序，-表示降序，orderCol=id+,userName- 表示先按id升序，再按userName降序
  */
 @Component
-public class EqWhere extends AbsWhere {
+public class OrderWhere extends AbsWhere {
+
     @Override
     public Boolean isMatch(Token token) {
-        String k = token.getKey();
-        String v = token.getValue();
-        if (Strs.isEmpty(k) || Strs.isEmpty(v)) return false;
-        if (k.endsWith("_gt") || k.endsWith("_ge") || k.endsWith("_lt") || k.endsWith("_le")
-                || k.endsWith("_in") || k.endsWith("_or") || k.equals("orderCol")) return false;
-        return !v.startsWith("*") || !v.endsWith("*");
+        return token.getKey().equals("orderCol");
     }
 
     @Override
@@ -32,16 +25,17 @@ public class EqWhere extends AbsWhere {
 
     @Override
     protected ConditionExpressionBuilder positive(ConditionExpressionBuilder where, Token token) {
-        return where.eq(Raw.of(Strs.toUnderline(token.getKey())), token.getValue());
+        String[] orderCols = token.getValue().split(",");
+        return where;
     }
 
     @Override
     protected ConditionExpressionBuilder negate(ConditionExpressionBuilder where, Token token) {
-        return where.ne(Raw.of(Strs.toUnderline(token.getKey())), token.getValue());
+        return where;
     }
 
     @Override
     public int getOrder() {
-        return Integer.MIN_VALUE;
+        return 1;
     }
 }
