@@ -1,5 +1,6 @@
 package xyz.ytora.base.mvc;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serial;
@@ -14,6 +15,7 @@ public abstract class BaseReq<T extends BaseEntity<T>> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @Schema(description = "主键ID")
     private String id;
 
     /**

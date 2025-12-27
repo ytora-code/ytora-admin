@@ -17,6 +17,7 @@ import xyz.ytora.base.auth.handler.AuthzHandler;
 import xyz.ytora.base.auth.handler.CorsHandler;
 import xyz.ytora.base.auth.handler.PublicResourcesHandler;
 import xyz.ytora.base.RespUtil;
+import xyz.ytora.base.enums.RespCode;
 import xyz.ytora.base.scope.ScopedValueItem;
 
 import java.io.IOException;
@@ -125,6 +126,9 @@ public class AuthCoreFilter extends OncePerRequestFilter {
         } catch (AuthException e) {
             log.error("鉴权环节异常：" + e.getMessage(), e);
             RespUtil.responseByCode(response, e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            log.error("鉴权环节未知异常：" + e.getMessage(), e);
+            RespUtil.responseByCode(response, RespCode.UNKNOWN_USER_PASSWORD.code, e.getMessage());
         }
     }
 }

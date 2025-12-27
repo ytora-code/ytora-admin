@@ -10,12 +10,12 @@ public enum PublicResource {
     TOKEN_TIME_OUT("/sys/getTokenTimeOut"),
     SYS_STATUS_CODE("/sys/listResCode"),
     SYS_PUBLIC_RESOURCE("/sys/listSysPublicResource"),
-    UPLOAD_FILE("/sys/upload"),
-    DOWNLOAD_FILE("/sys/download"),
+    UPLOAD_FILE("/sys/file/upload"),
+    DOWNLOAD_FILE("/sys/file/download"),
     DOWNLOAD_FILE_TEST("/sys/fileTest/**"),
     DELETE_FILE("/sys/deleteFile"),
     DRUID("/druid/**"),
-    //SSE("/sys/sse/connect"),
+    SSE("/sys/sse/connect"),
     ;
 
     /**

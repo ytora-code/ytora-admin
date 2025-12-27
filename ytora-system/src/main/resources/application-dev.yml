@@ -15,13 +15,17 @@ ytora:
   version: @project.version@
   auth:
     enable: true
-    token-invalid-time: 600
+    token-invalid-time: 6000
     allow-credentials: true
     origins: http://localhost:8765
   cache:
     default-cache: local
     impl:
       local: xyz.ytora.base.cache.support.local.CacheByLocal
+  storage:
+    type: xyz.ytora.base.storage.support.LocalFileStorageServiceImpl
+    max: 100MB
+    path: "file-storage/"
   sql4j:
     entity-path: xyz.ytora
     repo-path: xyz.ytora

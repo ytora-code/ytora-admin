@@ -20,7 +20,7 @@ public class CacheByLocal implements ICache {
 
     private static final Logger log = LoggerFactory.getLogger(CacheByLocal.class);
 
-    private final Cache<String, CacheItem> cache;
+    private final Cache<@NonNull String,  @NonNull CacheItem> cache;
 
     public CacheByLocal() {
         cache = Caffeine.newBuilder()
@@ -90,7 +90,7 @@ public class CacheByLocal implements ICache {
         return sourceMap.keySet().stream()
                 .map(sourceMap::get)
                 .filter(Objects::nonNull)
-                .filter(item -> item.getTtl() < 0 || item.getCacheAt() + item.getTtl() > System.currentTimeMillis())
+                .filter(item -> item.getTtl() < 0 || (item.getCacheAt() + item.getTtl()) > System.currentTimeMillis())
                 .map(CacheItem::getKey)
                 .toList();
     }

@@ -45,7 +45,7 @@ public class CacheItem implements Serializable {
         this.value = value;
         this.type = value.getClass();
         this.cacheAt = now;
-        this.ttl = ttl > 0 ? now + ttl : -1;
+        this.ttl = ttl > 0 ? ttl : -1;
     }
 
     @Override

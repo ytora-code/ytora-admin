@@ -12,7 +12,6 @@ import xyz.ytora.base.auth.LoginUser;
 import xyz.ytora.base.auth.handler.AuthnHandler;
 import xyz.ytora.base.cache.Caches;
 import xyz.ytora.base.enums.RespCode;
-import xyz.ytora.base.exception.BaseException;
 import xyz.ytora.sql4j.core.SQLHelper;
 import xyz.ytora.sql4j.func.support.Raw;
 
@@ -62,7 +61,7 @@ public class DefaultAuthnHandler implements AuthnHandler, ApplicationContextAwar
         }
         //如果还是没有获取到，认为用户尚未登录
         if (authorization == null) {
-            throw new BaseException(RespCode.NOT_LOGIN);
+            throw new AuthException(RespCode.NOT_LOGIN);
         }
         //根据令牌获取登录用户信息
         LoginUser loginUser;
@@ -80,12 +79,12 @@ public class DefaultAuthnHandler implements AuthnHandler, ApplicationContextAwar
             loginUser = caches.get(authorization);
             //缓存中没有当前令牌信息，说明登录过期，用户信息已经从缓存中被清除了
             if (loginUser == null) {
-                throw new BaseException(RespCode.LOGIN_TIMEOUT);
+                throw new AuthException(RespCode.LOGIN_TIMEOUT);
             }
             //走到这，说明当前用户已经登录了，认证通过，更新当前用户的访问信息并重置过期时间
             List<Map<String, Object>> sysUsers = sqlHelper.select().from("sys_user").where(w -> w.eq(Raw.of("id"), loginUser.getId())).submit();
             if (sysUsers.isEmpty()) {
-                throw new BaseException(RespCode.UNKNOWN_USER_PASSWORD);
+                throw new AuthException(RespCode.UNKNOWN_USER_PASSWORD);
             }
             Map<String, Object> sysUser = sysUsers.getFirst();
             loginUser.setUserName((String) sysUser.get("user_name"));

@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.core.annotation.AliasFor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import xyz.ytora.base.mvc.R;
@@ -17,10 +18,18 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@RequestMapping(method = RequestMethod.GET)
+@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 @ApiResponses({
         @ApiResponse(
                 responseCode = "0",
+                description = "文件下载成功",
+                content = @Content(
+                        mediaType = "application/octet-stream",
+                        schema = @Schema(type = "string", format = "binary")
+                )
+        ),
+        @ApiResponse(
+                responseCode = "200",
                 description = "文件下载成功",
                 content = @Content(
                         mediaType = "application/octet-stream",
