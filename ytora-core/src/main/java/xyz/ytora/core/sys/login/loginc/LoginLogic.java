@@ -88,7 +88,7 @@ public class LoginLogic {
         loginUser.setLoginTime(now);
         loginUser.setLastRequestTime(now);
         loginUser.setRequestCount(1L);
-        caches.put(token, loginUser, tokenInvalidTime);
+        caches.put(token, loginUser, tokenInvalidTime * 1000);
 
         return userDetail;
     }

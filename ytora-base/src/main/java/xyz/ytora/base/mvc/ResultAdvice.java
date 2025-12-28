@@ -93,9 +93,9 @@ public class ResultAdvice implements ResponseBodyAdvice<Object> {
         } else if (body instanceof String stringBody) {
             //springmvc会使用StringHttpMessageConverter来处理返回String的控制器方法，所以需要进行如下处理，告诉springmvc这是json类型
             response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-            return Jsons.toJsonStr(R.success(stringBody));
+            return Jsons.toJsonStr(R.success(null, stringBody));
         } else {
-            return R.success(body);
+            return R.success(null, body);
         }
     }
 }

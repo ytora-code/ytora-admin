@@ -20,7 +20,7 @@ public class AuthProperty {
     /**
      * 用户多久不操作登录会失效，单位s，默认600s: 10分钟
      */
-    private Long tokenInvalidTime = 600L;
+    private Long tokenInvalidTime;
 
     /**
      * 是否允许跨域请求携带凭据（如 cookies、HTTP 身份验证信息或客户端证书）进行跨域请求

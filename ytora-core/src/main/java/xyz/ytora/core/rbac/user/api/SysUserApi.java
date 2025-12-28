@@ -60,13 +60,13 @@ public class SysUserApi extends BaseApi<SysUser, SysUserLogic, SysUserRepo> {
      */
     @PostMapping("/insertOrUpdate")
     @Operation(summary = "新增或编辑", description = "新增或编辑")
-    public String insertOrUpdate(@RequestBody SysUserReq sysUserReq) {
+    public R<String> insertOrUpdate(@RequestBody SysUserReq sysUserReq) {
         if (sysUserReq.getId() == null) {
             repository.insert(sysUserReq.toEntity());
-            return "新增成功";
+            return R.success("新增成功");
         } else {
             repository.update(sysUserReq.toEntity(), w -> w.eq(SysUserReq::getId, sysUserReq.getId()));
-            return "编辑成功";
+            return R.success("编辑成功");
         }
     }
 
@@ -75,10 +75,10 @@ public class SysUserApi extends BaseApi<SysUser, SysUserLogic, SysUserRepo> {
      */
     @DeleteMapping("/delete")
     @Operation(summary = "删除数据", description = "delete?id=1,2,3：表示删除id为1,2,3的数据")
-    public String delete(@RequestParam String id) {
+    public R<String> delete(String id) {
         ConditionExpressionBuilder where = WhereGenerator.where();
         repository.delete(where);
-        return "删除成功";
+        return R.success("删除成功");
     }
 
 }
