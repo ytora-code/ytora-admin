@@ -329,7 +329,7 @@ VALUES (22, NULL, NULL, NULL, NULL, NULL, NULL, '1', '20', '系统说明', '/com
 DROP TABLE IF EXISTS "ytora"."sys_recycle_bin";
 CREATE TABLE "ytora"."sys_recycle_bin"
 (
-    "id"             int4                                        NOT NULL DEFAULT nextval('sys_recycle_bin_id_seq'::regclass),
+    "id"             serial,
     "create_by"      varchar(16) COLLATE "pg_catalog"."default",
     "create_time"    timestamp(6),
     "update_by"      varchar(16) COLLATE "pg_catalog"."default",

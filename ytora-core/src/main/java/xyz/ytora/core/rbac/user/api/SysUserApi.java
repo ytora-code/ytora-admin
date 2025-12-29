@@ -6,19 +6,15 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.*;
 import xyz.ytora.base.mvc.BaseApi;
-import xyz.ytora.base.mvc.BaseEntity;
 import xyz.ytora.base.mvc.R;
-import xyz.ytora.base.querygen.WhereGenerator;
 import xyz.ytora.core.rbac.user.logic.SysUserLogic;
 import xyz.ytora.core.rbac.user.model.entity.SysUser;
 import xyz.ytora.core.rbac.user.model.req.SysUserReq;
 import xyz.ytora.core.rbac.user.model.resp.SysUserResp;
 import xyz.ytora.core.rbac.user.repo.SysUserRepo;
-import xyz.ytora.sql4j.core.SQLHelper;
-import xyz.ytora.sql4j.func.support.Raw;
 import xyz.ytora.sql4j.orm.Page;
 import xyz.ytora.sql4j.orm.Pages;
-import xyz.ytora.sql4j.sql.ConditionExpressionBuilder;
+import xyz.ytora.sql4j.sql.select.SelectBuilder;
 
 /**
  * 用户 控制器
@@ -35,10 +31,10 @@ public class SysUserApi extends BaseApi<SysUser, SysUserLogic, SysUserRepo> {
     @GetMapping("/page")
     @Operation(summary = "分页查询用户", description = "分页查询用户")
     public Page<SysUserResp> page(@ParameterObject SysUserReq userdata,
-                                     @RequestParam(defaultValue = "1") Integer pageNo,
-                                     @RequestParam(defaultValue = "10") Integer pageSize) {
-        ConditionExpressionBuilder where = WhereGenerator.where();
-        Page<SysUser> page = repository.page(pageNo, pageSize, where);
+                                  @RequestParam(defaultValue = "1") Integer pageNo,
+                                  @RequestParam(defaultValue = "10") Integer pageSize) {
+        SelectBuilder selectBuilder = query();
+        Page<SysUser> page = repository.page(pageNo, pageSize, selectBuilder);
         return Pages.transPage(page, SysUser::toResp);
     }
 
@@ -76,8 +72,8 @@ public class SysUserApi extends BaseApi<SysUser, SysUserLogic, SysUserRepo> {
     @DeleteMapping("/delete")
     @Operation(summary = "删除数据", description = "delete?id=1,2,3：表示删除id为1,2,3的数据")
     public R<String> delete(String id) {
-        ConditionExpressionBuilder where = WhereGenerator.where();
-        repository.delete(where);
+        SelectBuilder selectBuilder = query();
+        repository.delete(selectBuilder.getWhereStage().getWhere());
         return R.success("删除成功");
     }
 

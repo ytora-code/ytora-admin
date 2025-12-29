@@ -2,6 +2,7 @@ package xyz.ytora.base.mvc;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import xyz.ytora.base.sql4J.autofill.*;
 import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.sql4j.enums.ColumnType;
 import xyz.ytora.sql4j.orm.Entity;
@@ -21,35 +22,35 @@ public abstract class BaseEntity<T extends BaseEntity<T>> extends Entity<T> {
      * 创建人
      */
     @Index(1)
-    @Column(comment = "创建人", type = ColumnType.VARCHAR16)
+    @Column(comment = "创建人", type = ColumnType.VARCHAR16, fill = CreateUserFiller.class)
     private String createBy;
 
     /**
      * 创建时间
      */
     @Index(2)
-    @Column(comment = "创建时间")
+    @Column(comment = "创建时间", fill = CreateTimeFiller.class)
     private LocalDateTime createTime;
 
     /**
      * 更新人
      */
     @Index(3)
-    @Column(comment = "更新人", type = ColumnType.VARCHAR16)
+    @Column(comment = "更新人", type = ColumnType.VARCHAR16, fill = UpdateUserFiller.class)
     private String updateBy;
 
     /**
      * 更新时间
      */
     @Index(4)
-    @Column(comment = "更新时间")
+    @Column(comment = "更新时间", fill = UpdateTimeFiller.class)
     private LocalDateTime updateTime;
 
     /**
      * 创建者所属部门
      */
     @Index(5)
-    @Column(comment = "创建者所属部门")
+    @Column(comment = "创建者所属部门", fill = DepartCodeFiller.class)
     private String departCode;
 
     /**

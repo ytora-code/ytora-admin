@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.ytora.base.download.DownloadMapper;
 import xyz.ytora.base.mvc.BaseApi;
-import xyz.ytora.base.querygen.WhereGenerator;
 import xyz.ytora.core.sys.file.logic.SysFileLogic;
 import xyz.ytora.core.sys.file.model.entity.SysFile;
 import xyz.ytora.core.sys.file.model.req.SysFileReq;
@@ -15,7 +14,7 @@ import xyz.ytora.core.sys.file.model.resp.SysFileResp;
 import xyz.ytora.core.sys.file.resp.SysFileRepo;
 import xyz.ytora.sql4j.orm.Page;
 import xyz.ytora.sql4j.orm.Pages;
-import xyz.ytora.sql4j.sql.ConditionExpressionBuilder;
+import xyz.ytora.sql4j.sql.select.SelectBuilder;
 
 /**
  * created by YT on 2025/12/28 00:53:46
@@ -34,8 +33,8 @@ public class SysFileApi extends BaseApi<SysFile, SysFileLogic, SysFileRepo> {
     public Page<SysFileResp> page(@ParameterObject SysFileReq params,
                                   @RequestParam(defaultValue = "1") Integer pageNo,
                                   @RequestParam(defaultValue = "10") Integer pageSize) {
-        ConditionExpressionBuilder where = WhereGenerator.where();
-        Page<SysFile> page = repository.page(pageNo, pageSize, where);
+        SelectBuilder selectBuilder = query();
+        Page<SysFile> page = repository.page(pageNo, pageSize, selectBuilder);
         return Pages.transPage(page, SysFile::toResp);
     }
 

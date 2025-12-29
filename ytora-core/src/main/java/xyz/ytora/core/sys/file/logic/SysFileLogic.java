@@ -9,14 +9,15 @@ import xyz.ytora.base.download.Mimes;
 import xyz.ytora.base.enums.RespCode;
 import xyz.ytora.base.exception.BaseException;
 import xyz.ytora.base.exception.DownloadException;
+import xyz.ytora.base.mvc.BaseApi;
 import xyz.ytora.base.mvc.BaseLogic;
-import xyz.ytora.base.querygen.WhereGenerator;
 import xyz.ytora.base.scope.ScopedValueItem;
 import xyz.ytora.base.storage.IFileStorageService;
 import xyz.ytora.core.sys.file.model.entity.SysFile;
 import xyz.ytora.core.sys.file.resp.SysFileRepo;
 import xyz.ytora.sql4j.core.SQLHelper;
 import xyz.ytora.sql4j.sql.ConditionExpressionBuilder;
+import xyz.ytora.sql4j.sql.select.SelectBuilder;
 import xyz.ytora.ytool.io.Ios;
 import xyz.ytora.ytool.str.Strs;
 
@@ -35,7 +36,8 @@ public class SysFileLogic extends BaseLogic<SysFile, SysFileRepo> {
     private final IFileStorageService fileStorageService;
 
     public void delete(String id) {
-        ConditionExpressionBuilder where = WhereGenerator.where();
+        SelectBuilder selectBuilder = BaseApi.query();
+        ConditionExpressionBuilder where = selectBuilder.getWhereStage().getWhere();
         if (Strs.isNotEmpty(where.build())) {
             repository.delete(where);
         }

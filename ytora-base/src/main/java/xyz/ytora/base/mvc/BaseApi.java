@@ -1,13 +1,14 @@
 package xyz.ytora.base.mvc;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestParam;
-import xyz.ytora.base.querygen.WhereGenerator;
+import xyz.ytora.base.scope.ScopedValueItem;
 import xyz.ytora.sql4j.func.support.Raw;
 import xyz.ytora.sql4j.orm.IRepo;
 import xyz.ytora.sql4j.orm.Page;
 import xyz.ytora.sql4j.orm.Pages;
-import xyz.ytora.sql4j.sql.ConditionExpressionBuilder;
+import xyz.ytora.sql4j.orm.querygen.QueryGenerator;
+import xyz.ytora.sql4j.sql.select.SelectBuilder;
 
 import java.util.List;
 
@@ -34,8 +35,8 @@ public class BaseApi<T extends BaseEntity<T>, L extends BaseLogic<T, D>, D exten
      * 分页查询
      */
     protected Page<BaseResp<T>> page(BaseReq<T> baseReq, Integer pageNo, Integer pageSize) {
-        ConditionExpressionBuilder where = WhereGenerator.where();
-        Page<T> page = repository.page(pageNo, pageSize, where);
+        SelectBuilder selectBuilder = query();
+        Page<T> page = repository.page(pageNo, pageSize, selectBuilder);
         return Pages.transPage(page, BaseEntity::toResp);
     }
 
@@ -69,5 +70,11 @@ public class BaseApi<T extends BaseEntity<T>, L extends BaseLogic<T, D>, D exten
     protected R<String> delete(List<String> ids) {
         repository.delete(w -> w.in(Raw.of("id"), ids));
         return R.success("删除成功");
+    }
+
+    public static SelectBuilder query() {
+        HttpServletRequest request = ScopedValueItem.REQUEST.get();
+        String queryString = request.getQueryString();
+        return QueryGenerator.where(queryString);
     }
 }
