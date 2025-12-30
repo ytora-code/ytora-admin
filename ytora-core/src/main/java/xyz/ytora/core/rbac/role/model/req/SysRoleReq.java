@@ -1,23 +1,21 @@
-package xyz.ytora.core.rbac.role.model.entity;
+package xyz.ytora.core.rbac.role.model.req;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import xyz.ytora.base.mvc.BaseEntity;
+import xyz.ytora.base.mvc.BaseReq;
 import xyz.ytora.core.rbac.role.model.SysRoleMapper;
-import xyz.ytora.core.rbac.role.model.resp.SysRoleResp;
+import xyz.ytora.core.rbac.role.model.entity.SysRole;
 import xyz.ytora.sql4j.anno.Column;
-import xyz.ytora.sql4j.anno.Table;
-import xyz.ytora.sql4j.enums.IdType;
 import xyz.ytora.ytool.anno.Index;
 
 /**
- * 角色表
+ * 角色表请求数据
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table(value = "sys_role", idType = IdType.SNOWFLAKE, createIfNotExist = true, comment = "角色表")
-public class SysRole extends BaseEntity<SysRole> {
-
+@Schema(description = "角色表请求数据")
+public class SysRoleReq extends BaseReq<SysRole> {
     /**
      * 角色名称
      */
@@ -33,8 +31,8 @@ public class SysRole extends BaseEntity<SysRole> {
     private String roleCode;
 
     @Override
-    public SysRoleResp toResp() {
+    public SysRole toEntity() {
         SysRoleMapper mapper = SysRoleMapper.mapper;
-        return mapper.toResp(this);
+        return mapper.toEntity(this);
     }
 }

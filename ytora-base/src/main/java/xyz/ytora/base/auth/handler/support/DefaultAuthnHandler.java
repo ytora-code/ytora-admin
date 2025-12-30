@@ -71,6 +71,7 @@ public class DefaultAuthnHandler implements AuthnHandler, ApplicationContextAwar
                     .setId("0")
                     .setUserName("ytora")
                     .setRealName("杨桐")
+                    .setDepartCode("部门CODE")
                     .setLastRequestTime(System.currentTimeMillis())
                     .setLastRequestTime(System.currentTimeMillis())
                     .setRequestCount(1L)
