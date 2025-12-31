@@ -29,6 +29,7 @@ ytora:
   sql4j:
     entity-path: xyz.ytora
     repo-path: xyz.ytora
+    slow-sql-threshold: 3000
     sql-log-impl: xyz.ytora.base.sql4J.LogbackSqlLogger
     create-table-if-not-exist: true
     dynamic-ds:

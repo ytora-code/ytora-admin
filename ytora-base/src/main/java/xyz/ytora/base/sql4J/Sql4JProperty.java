@@ -36,6 +36,11 @@ public class Sql4JProperty {
     private String repoPath;
 
     /**
+     * 慢SQL阈值(毫秒)
+     */
+    private Long slowSqlThreshold;
+
+    /**
      * 日志实现
      */
     private Class<? extends ISqlLogger> sqlLogImpl;

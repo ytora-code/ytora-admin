@@ -90,6 +90,8 @@ public class Sql4JConfig {
         SQLHelper sqlHelper = new SQLHelper();
         // 注册数据库连接提供器
         sqlHelper.registerConnectionProvider(new SpringConnectionProvider(ds));
+        // 设置慢SQL阈值
+        sqlHelper.setSlowSqlThreshold(sql4JProperty.getSlowSqlThreshold());
         // 注册读取时的类型转换器
         registerCaster(sqlHelper);
         // 注册拦截器
