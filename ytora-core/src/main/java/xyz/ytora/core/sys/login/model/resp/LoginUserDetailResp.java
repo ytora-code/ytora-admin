@@ -67,9 +67,16 @@ public class LoginUserDetailResp {
      */
     @Schema(name = "该用户角色")
     private List<SysRole> roles;
+
     /**
-     * 一个角色对应多个资源
+     * 该用户拥有菜单
      */
-    @Schema(name = "该用户拥有资源")
-    private List<SysPermissionResp> permissions;
+    @Schema(name = "该用户拥有菜单")
+    private List<SysPermissionResp> menus;
+
+    /**
+     * 该用户拥有页面组件
+     */
+    @Schema(name = "该用户拥有页面组件")
+    private List<SysPermissionResp> components;
 }

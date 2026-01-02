@@ -57,6 +57,12 @@ public class SysPermissionResp extends BaseResp<SysPermission> implements ITree<
     private String icon;
 
     /**
+     * 元数据
+     */
+    @Schema(description = "元数据")
+    private SysComponentsResp meta;
+
+    /**
      * 是否可见
      */
     private Boolean visible;
@@ -78,7 +84,7 @@ public class SysPermissionResp extends BaseResp<SysPermission> implements ITree<
 
     @Override
     public String getKey() {
-        return this.permissionName;
+        return this.permissionCode;
     }
 
     @Override

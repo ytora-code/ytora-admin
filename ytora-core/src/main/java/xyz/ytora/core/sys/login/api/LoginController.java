@@ -15,6 +15,7 @@ import xyz.ytora.base.mvc.R;
 import xyz.ytora.core.sys.login.loginc.LoginLogic;
 import xyz.ytora.core.sys.login.model.req.LoginReq;
 import xyz.ytora.core.sys.login.model.resp.LoginUserDetailResp;
+import xyz.ytora.ytool.str.Strs;
 
 import java.util.concurrent.TimeUnit;
 
@@ -42,16 +43,18 @@ public class LoginController {
     @GetMapping("/logout")
     @Operation(summary = "执行登出", description = "根据token执行登出")
     public R<?> logout(@CookieValue(value = "Authorization", required = false) String token, HttpServletResponse resp) {
-        //移除缓存
-        caches.remove(token);
+        if (Strs.isNotEmpty(token)) {
+            //移除缓存
+            caches.remove(token);
 
-        //移除前端cookie
-        ResponseCookie cookie = ResponseCookie.from("Authorization", token)
-                .path("/")
-                .httpOnly(false)
-                .maxAge(0)
-                .build();
-        resp.addHeader("Set-Cookie", cookie.toString());
+            //移除前端cookie
+            ResponseCookie cookie = ResponseCookie.from("Authorization", token)
+                    .path("/")
+                    .httpOnly(false)
+                    .maxAge(0)
+                    .build();
+            resp.addHeader("Set-Cookie", cookie.toString());
+        }
 
         return R.success("退出成功");
     }

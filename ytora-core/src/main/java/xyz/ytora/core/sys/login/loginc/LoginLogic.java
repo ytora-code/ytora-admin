@@ -12,7 +12,8 @@ import xyz.ytora.base.cache.Caches;
 import xyz.ytora.base.enums.RespCode;
 import xyz.ytora.base.exception.BaseException;
 import xyz.ytora.base.scope.ScopedValueItem;
-import xyz.ytora.core.rbac.permission.model.entity.SysPermission;
+import xyz.ytora.core.rbac.permission.logic.SysPermissionLogic;
+import xyz.ytora.core.rbac.permission.model.resp.SysPermissionResp;
 import xyz.ytora.core.rbac.role.logic.SysRoleLogic;
 import xyz.ytora.core.rbac.role.model.entity.SysRole;
 import xyz.ytora.core.rbac.user.model.entity.SysUser;
@@ -20,9 +21,9 @@ import xyz.ytora.core.rbac.user.repo.SysUserRepo;
 import xyz.ytora.core.sys.login.model.req.LoginReq;
 import xyz.ytora.core.sys.login.model.resp.LoginUserDetailResp;
 import xyz.ytora.sql4j.core.SQLHelper;
+import xyz.ytora.sql4j.orm.Entity;
 import xyz.ytora.ytool.bean.Beans;
 import xyz.ytora.ytool.str.Strs;
-import xyz.ytora.ytool.tree.Trees;
 
 import java.util.List;
 import java.util.Objects;
@@ -40,6 +41,7 @@ public class LoginLogic {
     private final SQLHelper sqlHelper;
     private final SysUserRepo sysUserRepo;
     private final SysRoleLogic roleLogic;
+    private final SysPermissionLogic permissionLogic;
     private final Identity identity;
     private final Caches caches;
 
@@ -109,9 +111,13 @@ public class LoginLogic {
         List<SysRole> roles = sysUserRepo.listAllRoleByUserId(user.getId());
         userDetail.setRoles(roles);
 
-        // step3.查询该用户拥有的资源
-        List<SysPermission> permissions = roles.stream().flatMap(role -> roleLogic.listAllPermission(role.getId()).stream()).toList();
-        userDetail.setPermissions(Trees.toTree(permissions.stream().map(SysPermission::toResp).toList()));
+        // step3.查询该用户拥有的菜单
+        List<SysPermissionResp> menus = permissionLogic.listAllMenu(roles.stream().map(Entity::getId).toList());
+        userDetail.setMenus(menus);
+
+        // step4.查询该用户拥有的页面组件
+        List<SysPermissionResp> components = permissionLogic.listAllComponent(roles.stream().map(Entity::getId).toList());
+        userDetail.setComponents(components);
 
         return userDetail;
     }

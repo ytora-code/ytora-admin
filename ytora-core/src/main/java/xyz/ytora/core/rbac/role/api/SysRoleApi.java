@@ -26,10 +26,10 @@ import xyz.ytora.sql4j.sql.select.SelectBuilder;
 public class SysRoleApi extends BaseApi<SysRole, SysRoleLogic, SysRoleRepo> {
 
     /**
-     * 分页查询用户
+     * 分页查询角色
      */
     @GetMapping("/page")
-    @Operation(summary = "分页查询用户", description = "分页查询用户")
+    @Operation(summary = "分页查询角色", description = "分页查询角色")
     public Page<SysRoleResp> page(@ParameterObject SysRoleReq userdata,
                                   @RequestParam(defaultValue = "1") Integer pageNo,
                                   @RequestParam(defaultValue = "10") Integer pageSize) {

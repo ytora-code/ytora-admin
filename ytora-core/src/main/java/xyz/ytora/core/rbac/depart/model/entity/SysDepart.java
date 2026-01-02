@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.BaseEntity;
 import xyz.ytora.base.mvc.BaseResp;
+import xyz.ytora.core.rbac.depart.model.SysDepartMapper;
+import xyz.ytora.core.rbac.depart.model.resp.SysDepartResp;
 import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.sql4j.anno.Table;
 import xyz.ytora.sql4j.enums.IdType;
@@ -52,7 +54,8 @@ public class SysDepart extends BaseEntity<SysDepart> {
     private String contactUserName;
 
     @Override
-    public BaseResp<SysDepart> toResp() {
-        return null;
+    public SysDepartResp toResp() {
+        SysDepartMapper mapper = SysDepartMapper.mapper;
+        return mapper.entityToResp(this);
     }
 }

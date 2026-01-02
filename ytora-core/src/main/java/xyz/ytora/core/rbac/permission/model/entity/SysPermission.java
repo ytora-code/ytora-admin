@@ -4,14 +4,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.BaseEntity;
 import xyz.ytora.core.rbac.permission.model.SysPermissionMapper;
+import xyz.ytora.core.rbac.permission.model.resp.SysComponentsResp;
 import xyz.ytora.core.rbac.permission.model.resp.SysPermissionResp;
 import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.sql4j.anno.Table;
-import xyz.ytora.sql4j.enums.ColumnType;
 import xyz.ytora.sql4j.enums.IdType;
 import xyz.ytora.ytool.anno.Index;
-
-import java.time.LocalDate;
+import xyz.ytora.ytool.json.JSON;
+import xyz.ytora.ytool.json.Jsons;
 
 /**
  * 资源表
@@ -46,8 +46,7 @@ public class SysPermission extends BaseEntity<SysPermission> {
      */
     @Index(4)
     @Column(comment = "资源类型，1-接口、2-页面、3-页面元素")
-    private String permissionType;
-
+    private Integer permissionType;
 
     /**
      * 图标
@@ -57,16 +56,23 @@ public class SysPermission extends BaseEntity<SysPermission> {
     private String icon;
 
     /**
-     * 是否可见
+     * 图标
      */
     @Index(7)
+    @Column(comment = "资源的元数据")
+    private SysComponentsResp meta;
+
+    /**
+     * 是否可见
+     */
+    @Index(8)
     @Column(comment = "是否可见")
     private Boolean visible;
 
     /**
      * 排序
      */
-    @Index(8)
+    @Index(9)
     @Column(comment = "排序")
     private Integer index;
 
@@ -84,6 +90,10 @@ public class SysPermission extends BaseEntity<SysPermission> {
             else {
                 permissionResp.setComponent(permissionResp.getPermissionCode());
             }
+        }
+
+        if (this.meta != null) {
+            permissionResp.setMeta(this.meta);
         }
         return permissionResp;
     }
