@@ -9,9 +9,13 @@ import xyz.ytora.base.mvc.BaseApi;
 import xyz.ytora.base.mvc.R;
 import xyz.ytora.core.rbac.role.logic.SysRoleLogic;
 import xyz.ytora.core.rbac.role.model.entity.SysRole;
+import xyz.ytora.core.rbac.role.model.entity.SysUserRole;
 import xyz.ytora.core.rbac.role.model.req.SysRoleReq;
+import xyz.ytora.core.rbac.role.model.req.SysUserRoleReq;
 import xyz.ytora.core.rbac.role.model.resp.SysRoleResp;
+import xyz.ytora.core.rbac.role.model.resp.SysUserRoleResp;
 import xyz.ytora.core.rbac.role.repo.SysRoleRepo;
+import xyz.ytora.core.rbac.user.model.entity.SysUser;
 import xyz.ytora.sql4j.orm.Page;
 import xyz.ytora.sql4j.orm.Pages;
 import xyz.ytora.sql4j.sql.select.SelectBuilder;
@@ -75,6 +79,27 @@ public class SysRoleApi extends BaseApi<SysRole, SysRoleLogic, SysRoleRepo> {
         SelectBuilder selectBuilder = query();
         repository.delete(selectBuilder.getWhereStage().getWhere());
         return R.success("删除成功");
+    }
+
+    /**
+     * 获取用户-角色关系
+     */
+    @GetMapping("/listUserRoleMapper")
+    @Operation(summary = "获取用户-角色关系", description = "获取用户-角色关系")
+    public Page<SysUserRoleResp> listUserRoleMapper(@RequestParam String userId, String roleName, String roleCode,
+                                                @RequestParam(defaultValue = "1") Integer pageNo,
+                                                @RequestParam(defaultValue = "10") Integer pageSize) {
+        return logic.listUserRoleMapper(userId, roleName, roleCode, pageNo, pageSize);
+    }
+
+    /**
+     * 更新用户-角色关系
+     */
+    @PostMapping("/refreshUserRoleMapper")
+    @Operation(summary = "更新用户-角色关系", description = "更新用户-角色关系")
+    public R<String> refreshUserRoleMapper(@RequestBody SysUserRoleReq userRoleReq) {
+        logic.refreshUserRoleMapper(userRoleReq);
+        return R.success(userRoleReq.getAdd() ? "更新成功" : "移除成功");
     }
 
 }
