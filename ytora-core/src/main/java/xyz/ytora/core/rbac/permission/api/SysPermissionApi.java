@@ -10,7 +10,9 @@ import xyz.ytora.base.mvc.R;
 import xyz.ytora.core.rbac.permission.logic.SysPermissionLogic;
 import xyz.ytora.core.rbac.permission.model.entity.SysPermission;
 import xyz.ytora.core.rbac.permission.model.req.SysPermissionReq;
+import xyz.ytora.core.rbac.permission.model.req.SysRolePermissionReq;
 import xyz.ytora.core.rbac.permission.model.resp.SysPermissionResp;
+import xyz.ytora.core.rbac.permission.model.resp.SysRolePermissionResp;
 import xyz.ytora.core.rbac.permission.repo.SysPermissionRepo;
 import xyz.ytora.sql4j.sql.select.SelectBuilder;
 
@@ -74,5 +76,23 @@ public class SysPermissionApi extends BaseApi<SysPermission, SysPermissionLogic,
         return R.success("删除成功");
     }
 
+    /**
+     * 获取指定角色的资源树
+     */
+    @GetMapping("/treePermissionByRoleId")
+    @Operation(summary = "获取指定角色的资源树", description = "获取指定角色的资源树")
+    public SysRolePermissionResp treePermissionByRoleId(@RequestParam String roleId) {
+        return logic.treePermissionByRoleId(roleId);
+    }
+
+    /**
+     * 更新角色-资源映射
+     */
+    @PostMapping("/refreshRolePermission")
+    @Operation(summary = "更新角色-资源映射", description = "更新角色-资源映射")
+    public R<String> refreshRolePermission(@RequestBody SysRolePermissionReq rolePermissionReq) {
+        logic.refreshRolePermission(rolePermissionReq);
+        return R.success("更新成功");
+    }
 
 }

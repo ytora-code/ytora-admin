@@ -2,15 +2,25 @@ package xyz.ytora.core.rbac.permission.logic;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.ytora.base.mvc.BaseLogic;
 import xyz.ytora.core.rbac.permission.model.entity.SysPermission;
+import xyz.ytora.core.rbac.permission.model.entity.SysRolePermission;
+import xyz.ytora.core.rbac.permission.model.req.SysRolePermissionReq;
 import xyz.ytora.core.rbac.permission.model.resp.SysPermissionResp;
+import xyz.ytora.core.rbac.permission.model.resp.SysRolePermissionResp;
+import xyz.ytora.core.rbac.permission.model.resp.SysRolePermissionTreeResp;
 import xyz.ytora.core.rbac.permission.repo.SysPermissionRepo;
 import xyz.ytora.sql4j.core.SQLHelper;
 import xyz.ytora.sql4j.enums.OrderType;
+import xyz.ytora.sql4j.sql.insert.IntoStage;
+import xyz.ytora.ytool.coll.Colls;
 import xyz.ytora.ytool.tree.Trees;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * created by YT on 2025/12/21 16:25:59
@@ -41,5 +51,63 @@ public class SysPermissionLogic extends BaseLogic<SysPermission, SysPermissionRe
     public List<SysPermissionResp> list(String permissionCode) {
         List<SysPermission> list = sqlHelper.select(SysPermission.class).from(SysPermission.class).orderBy(SysPermission::getIndex, OrderType.ASC).submit(SysPermission.class);
         return Trees.toTree(list.stream().map(SysPermission::toResp).toList(), permissionCode);
+    }
+
+    /**
+     * 获取指定角色的资源树
+     */
+    public SysRolePermissionResp treePermissionByRoleId(String roleId) {
+        SysRolePermissionResp rolePermissionResp = new SysRolePermissionResp();
+        // 获取所有资源
+        List<SysRolePermissionTreeResp> allPermission = sqlHelper.select(SysPermission::getId, SysPermission::getPid, SysPermission::getPermissionName).from(SysPermission.class).submit(SysRolePermissionTreeResp.class);
+        // 转为TREE
+        List<SysRolePermissionTreeResp> tree = Trees.toTree(allPermission);
+        rolePermissionResp.setTree(tree);
+
+        // 获取指定角色的所有资源ID
+        List<String> rolePermissions = sqlHelper.select(SysRolePermission::getPermissionId).from(SysRolePermission.class).where(w -> w.eq(SysRolePermission::getRoleId, roleId)).submit(String.class);
+        rolePermissionResp.setPermissionIds(rolePermissions);
+
+        return rolePermissionResp;
+    }
+
+    /**
+     * 更新角色-资源映射
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void refreshRolePermission(SysRolePermissionReq rolePermissionReq) {
+        // 兜底
+        List<String> origin = Optional.ofNullable(rolePermissionReq.getOriginPermissionIds())
+                .orElse(Collections.emptyList());
+        List<String> current = Optional.ofNullable(rolePermissionReq.getCurrentPermissionIds())
+                .orElse(Collections.emptyList());
+
+        // 是否有变更
+        if (Colls.equals(origin, current)) {
+            return;
+        }
+
+        // 新增
+        List<String> addIds = Colls.diff(current, origin);
+
+        // 删除
+        List<String> removeIds = Colls.diff(origin, current);
+
+        if (!addIds.isEmpty()) {
+            IntoStage insert = sqlHelper.insert(SysRolePermission.class).into(SysRolePermission::getRoleId, SysRolePermission::getPermissionId);
+            List<List<Object>> valuesList = new ArrayList<>();
+            for (String id : addIds) {
+                valuesList.add(List.of(rolePermissionReq.getRoleId(), id));
+            }
+            insert.values(valuesList).submit();
+        }
+
+        if (!removeIds.isEmpty()) {
+            sqlHelper.delete().from(SysRolePermission.class)
+                    .where(
+                            w -> w.eq(SysRolePermission::getRoleId, rolePermissionReq.getRoleId())
+                                    .in(SysRolePermission::getPermissionId, removeIds)
+                    ).submit();
+        }
     }
 }
