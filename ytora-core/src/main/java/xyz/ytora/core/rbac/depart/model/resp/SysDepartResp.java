@@ -64,7 +64,7 @@ public class SysDepartResp extends BaseResp<SysDepart> implements ITree<SysDepar
 
     @Override
     public String getKey() {
-        return departCode;
+        return departName;
     }
 
     @Override

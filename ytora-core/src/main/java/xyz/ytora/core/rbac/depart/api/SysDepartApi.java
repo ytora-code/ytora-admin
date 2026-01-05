@@ -41,12 +41,12 @@ public class SysDepartApi extends BaseApi<SysDepart, SysDepartLogic, SysDepartRe
     }
 
     /**
-     * 查询部门
+     * 查询部门树
      */
-    @GetMapping("/list")
-    @Operation(summary = "查询部门", description = "查询部门")
-    public List<SysDepartResp> list(String departCode) {
-        return logic.list(departCode);
+    @GetMapping("/tree")
+    @Operation(summary = "查询部门树", description = "查询部门树")
+    public List<SysDepartResp> tree(String departName) {
+        return logic.tree(departName);
     }
 
     /**
@@ -67,14 +67,10 @@ public class SysDepartApi extends BaseApi<SysDepart, SysDepartLogic, SysDepartRe
      */
     @PostMapping("/insertOrUpdate")
     @Operation(summary = "新增或编辑", description = "新增或编辑")
-    public R<String> insertOrUpdate(@RequestBody SysDepartReq SysDepartReq) {
-        if (SysDepartReq.getId() == null) {
-            repository.insert(SysDepartReq.toEntity());
-            return R.success("新增成功");
-        } else {
-            repository.update(SysDepartReq.toEntity(), w -> w.eq(SysDepart::getId, SysDepartReq.getId()));
-            return R.success("编辑成功");
-        }
+    public R<String> insertOrUpdate(@RequestBody SysDepartReq sysDepartReq) {
+        String id = sysDepartReq.getId();
+        logic.insertOrUpdate(sysDepartReq);
+        return R.success(id == null ? "新增成功" : "编辑成功");
     }
 
     /**

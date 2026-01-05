@@ -10,6 +10,4 @@ import xyz.ytora.sql4j.orm.IRepo;
  */
 @Repository
 public abstract class SysDepartRepo implements IRepo<SysDepart> {
-
-
 }

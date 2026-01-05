@@ -59,7 +59,11 @@ public class SysPermissionLogic extends BaseLogic<SysPermission, SysPermissionRe
     public SysRolePermissionResp treePermissionByRoleId(String roleId) {
         SysRolePermissionResp rolePermissionResp = new SysRolePermissionResp();
         // 获取所有资源
-        List<SysRolePermissionTreeResp> allPermission = sqlHelper.select(SysPermission::getId, SysPermission::getPid, SysPermission::getPermissionName).from(SysPermission.class).submit(SysRolePermissionTreeResp.class);
+        List<SysRolePermissionTreeResp> allPermission = sqlHelper
+                .select(SysPermission::getId, SysPermission::getPid, SysPermission::getPermissionName)
+                .from(SysPermission.class)
+                .orderBy(SysPermission::getIndex, OrderType.ASC)
+                .submit(SysRolePermissionTreeResp.class);
         // 转为TREE
         List<SysRolePermissionTreeResp> tree = Trees.toTree(allPermission);
         rolePermissionResp.setTree(tree);
