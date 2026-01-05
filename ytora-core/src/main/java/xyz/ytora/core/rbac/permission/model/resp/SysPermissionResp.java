@@ -18,13 +18,30 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "资源表")
 public class SysPermissionResp extends BaseResp<SysPermission> implements ITree<SysPermissionResp> {
-
     /**
      * 父资源id
      */
     @Schema(description = "父资源id")
     @Dict(table = "sys_permission", code = "id", text = "permission_name")
     private String pid;
+
+    /**
+     * 父资源名称
+     */
+    @Schema(description = "父资源名称")
+    private String pName;
+
+    /**
+     * 层级
+     */
+    @Schema(description = "层级")
+    private Integer level;
+
+    /**
+     * 层级Key
+     */
+    @Schema(description = "层级Key")
+    private String levelKey;
 
     /**
      * 资源名称

@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.BaseReq;
 import xyz.ytora.core.rbac.permission.model.SysPermissionMapper;
 import xyz.ytora.core.rbac.permission.model.entity.SysPermission;
+import xyz.ytora.core.rbac.permission.model.resp.SysComponentsResp;
 
 /**
  * created by System on 2025年5月22日 20:45:43
@@ -71,6 +72,11 @@ public class SysPermissionReq extends BaseReq<SysPermission> {
      * 排序
      */
     private Integer index;
+
+    /**
+     * 元数据
+     */
+    private SysComponentsResp meta;
 
     @Override
     public SysPermission toEntity() {

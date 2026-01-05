@@ -31,10 +31,10 @@ public class SysPermissionApi extends BaseApi<SysPermission, SysPermissionLogic,
     /**
      * 查询资源
      */
-    @GetMapping("/list")
+    @GetMapping("/tree")
     @Operation(summary = "查询资源", description = "查询资源")
-    public List<SysPermissionResp> list(String permissionCode) {
-        return logic.list(permissionCode);
+    public List<SysPermissionResp> list(String permissionName) {
+        return logic.tree(permissionName);
     }
 
     /**

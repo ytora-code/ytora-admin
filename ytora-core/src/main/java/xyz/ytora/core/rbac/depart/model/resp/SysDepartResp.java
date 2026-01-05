@@ -1,5 +1,6 @@
 package xyz.ytora.core.rbac.depart.model.resp;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.BaseResp;
@@ -23,6 +24,24 @@ public class SysDepartResp extends BaseResp<SysDepart> implements ITree<SysDepar
     @Index(1)
     @Column(comment = "上级部门id", notNull = true)
     private String pid;
+
+    /**
+     * 父资源名称
+     */
+    @Schema(description = "父资源名称")
+    private String pName;
+
+    /**
+     * 层级
+     */
+    @Schema(description = "层级")
+    private Integer level;
+
+    /**
+     * 层级Key
+     */
+    @Schema(description = "层级Key")
+    private String levelKey;
 
     /**
      * 部门名称

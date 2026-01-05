@@ -31,7 +31,13 @@ public class SysDepartLogic extends BaseLogic<SysDepart, SysDepartRepo> {
      */
     public List<SysDepartResp> tree(String departName) {
         List<SysDepart> list = sqlHelper.select(SysDepart.class).from(SysDepart.class).orderBy(SysDepart::getUpdateTime, OrderType.DESC).submit(SysDepart.class);
-        return Trees.toTree(list.stream().map(SysDepart::toResp).toList(), departName);
+        return Trees.toTree(list.stream().map(SysDepart::toResp).toList(), departName, (level, current, parent) -> {
+            current.setLevel(level);
+            current.setLevelKey("└" + "─".repeat(level + 1) + ">");
+            if (parent != null) {
+                current.setPName(parent.getDepartName());
+            }
+        });
     }
 
     /**

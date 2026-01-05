@@ -48,9 +48,15 @@ public class SysPermissionLogic extends BaseLogic<SysPermission, SysPermissionRe
         return Trees.toTree(table.stream().map(SysPermission::toResp).toList());
     }
 
-    public List<SysPermissionResp> list(String permissionCode) {
+    public List<SysPermissionResp> tree(String permissionName) {
         List<SysPermission> list = sqlHelper.select(SysPermission.class).from(SysPermission.class).orderBy(SysPermission::getIndex, OrderType.ASC).submit(SysPermission.class);
-        return Trees.toTree(list.stream().map(SysPermission::toResp).toList(), permissionCode);
+        return Trees.toTree(list.stream().map(SysPermission::toResp).toList(), permissionName, (level, current, parent) -> {
+            current.setLevel(level);
+            current.setLevelKey("└" + "─".repeat(level + 1) + ">");
+            if (parent != null) {
+                current.setPName(parent.getPermissionName());
+            }
+        });
     }
 
     /**

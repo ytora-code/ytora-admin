@@ -3,6 +3,7 @@ package xyz.ytora.core.rbac.permission.model.resp;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import xyz.ytora.sql4j.caster.SQLReader;
+import xyz.ytora.sql4j.caster.SQLWriter;
 import xyz.ytora.ytool.json.JSON;
 import xyz.ytora.ytool.json.Jsons;
 
@@ -12,7 +13,7 @@ import xyz.ytora.ytool.json.Jsons;
  */
 @Data
 @Schema(description = "组件")
-public class SysComponentsResp implements SQLReader {
+public class SysComponentsResp implements SQLReader, SQLWriter {
 
     /**
      * 组件类型
@@ -52,5 +53,11 @@ public class SysComponentsResp implements SQLReader {
         }
         String string = o.toString();
         return Jsons.fromJsonStr(string, SysComponentsResp.class);
+    }
+
+
+    @Override
+    public Object write() {
+        return Jsons.toJsonStr(this);
     }
 }
