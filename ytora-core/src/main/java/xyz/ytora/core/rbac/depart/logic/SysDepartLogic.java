@@ -55,19 +55,7 @@ public class SysDepartLogic extends BaseLogic<SysDepart, SysDepartRepo> {
         if (sysDepartReq.getId() == null) {
             if (Strs.isEmpty(sysDepartReq.getDepartCode())) {
                 // 自动计算部门code规则
-                // 查询上级部门
-                SysDepart parentDepart = repository.one(w -> w.eq(SysDepart::getId, sysDepartReq.getPid()));
-                if (parentDepart == null) {
-                    throw new BaseException("父级部门不存在");
-                }
-                // 获取当前部门有多少直接子部门
-                Long count = repository.count(w -> w.eq(SysDepart::getPid, parentDepart.getId()));
-                if (count >= 99) {
-                    throw new BaseException("当前父级部门的子部门已达上限,最多99个");
-                }
-                String index = Strs.fillZero((int) (count + 1), 2);
-                String departCode = parentDepart.getDepartCode() + "-" + index;
-                sysDepartReq.setDepartCode(departCode);
+                sysDepartReq.setDepartCode(generateDepartCode(sysDepartReq.getPid()));
             }
             repository.insert(sysDepartReq.toEntity());
         } else {
@@ -75,6 +63,33 @@ public class SysDepartLogic extends BaseLogic<SysDepart, SysDepartRepo> {
             sysDepartReq.setDepartCode(null);
             sysDepartReq.setPid(null);
             repository.update(sysDepartReq.toEntity(), w -> w.eq(SysDepart::getId, sysDepartReq.getId()));
+        }
+    }
+
+    /**
+     * 规则：
+     *  1.找出上级部门的code，比如 YT
+     *  2.判断该上级部门有多少直接子部门，比如有三个，则当前是第四个部门，则code为 YT-04
+     */
+    private String generateDepartCode(String pid) {
+        if (Strs.isEmpty(pid)) {
+            throw new BaseException("自动产生departCode时必须传递pid");
+        }
+        synchronized (this) {
+            // 查询上级部门
+            SysDepart parentDepart = repository.one(w -> w.eq(SysDepart::getId, pid));
+            if (parentDepart == null) {
+                throw new BaseException("父级部门不存在");
+            }
+
+            // 获取当前部门有多少直接子部门
+            Long count = repository.count(w -> w.eq(SysDepart::getPid, parentDepart.getId()));
+            if (count >= 99) {
+                throw new BaseException("当前父级部门的子部门已达上限,最多99个");
+            }
+
+            String index = Strs.fillZero((int) (count + 1), 2);
+            return parentDepart.getDepartCode() + "-" + index;
         }
     }
 

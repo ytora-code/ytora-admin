@@ -1,4 +1,4 @@
-package xyz.ytora.core.rbac.recyclebin.model.entity;
+package xyz.ytora.core.sys.recyclebin.model.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

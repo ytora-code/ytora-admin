@@ -1,17 +1,25 @@
-package xyz.ytora.base.dict.support;
+package xyz.ytora.core.sys.dict.model.req;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import xyz.ytora.base.mvc.BaseEntity;
-import xyz.ytora.base.mvc.BaseResp;
+import xyz.ytora.base.mvc.BaseReq;
+import xyz.ytora.core.sys.dict.model.entity.SysDict;
 
 /**
- * created by YT on 2025/12/10 17:45:48
+ * created by YT on 2026/1/6 13:07:14
  * <br/>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SysDict extends BaseEntity<SysDict> {
+@Schema(description = "字典请求数据")
+public class SysDictReq extends BaseReq<SysDict> {
+
+    /**
+     * 父字典ID
+     */
+    private String pid;
+
     /**
      * 字典名称
      */
@@ -35,7 +43,7 @@ public class SysDict extends BaseEntity<SysDict> {
     /**
      * 字典排序
      */
-    private Integer sortOrder;
+    private Integer index;
 
     /**
      * 0-字典/1-字典项
@@ -43,7 +51,7 @@ public class SysDict extends BaseEntity<SysDict> {
     private Integer type;
 
     @Override
-    public BaseResp<SysDict> toResp() {
+    public SysDict toEntity() {
         return null;
     }
 }

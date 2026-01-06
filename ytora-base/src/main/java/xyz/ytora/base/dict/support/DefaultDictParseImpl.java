@@ -14,6 +14,7 @@ import xyz.ytora.sql4j.sql.Wrapper;
 import xyz.ytora.ytool.classcache.ClassCache;
 import xyz.ytora.ytool.classcache.classmeta.ClassMetadata;
 import xyz.ytora.ytool.classcache.classmeta.FieldMetadata;
+import xyz.ytora.ytool.coll.Colls;
 import xyz.ytora.ytool.json.Jsons;
 import xyz.ytora.ytool.str.Strs;
 
@@ -258,12 +259,13 @@ public class DefaultDictParseImpl implements IDictParser {
         }
 
         // 2.缓存中没有，从数据库查询
-        SqlInfo sqlInfo = sqlHelper.select(SysDict::getDictItemText).from(SysDict.class)
-                .where(w -> w.eq(SysDict::getDictCode, dictCode).eq(SysDict::getDictItemValue, dictItemValue))
+        SqlInfo sqlInfo = sqlHelper.select(Raw.of("dict_item_text")).from("sys_dict")
+                .where(w -> w.eq(Raw.of("dict_code"), dictCode).eq(Raw.of("dict_item_value"), dictItemValue))
                 .end();
-        SysDict dict = sqlHelper.getSqlExecutionEngine().executeSelect(sqlInfo).toBean(SysDict.class);
-        if (dict != null) {
-            dictItemText = dict.getDictItemText();
+        List<Map<String, Object>> dictList = sqlHelper.getSqlExecutionEngine().executeSelect(sqlInfo).toBeans();
+        if (Colls.isNotEmpty(dictList)) {
+            Map<String, Object> dictMap = dictList.getFirst();
+            dictItemText = (String) dictMap.get("dict_item_text");
             caches.put(key, dictItemText);
             return dictItemText;
         }

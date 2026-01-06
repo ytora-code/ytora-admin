@@ -34,7 +34,7 @@ public class BaseApi<T extends BaseEntity<T>, L extends BaseLogic<T, D>, D exten
     /**
      * 分页查询
      */
-    protected Page<BaseResp<T>> page(BaseReq<T> baseReq, Integer pageNo, Integer pageSize) {
+    protected Page<BaseResp<T>> page(BaseReq<T> param, Integer pageNo, Integer pageSize) {
         SelectBuilder selectBuilder = query();
         Page<T> page = repository.page(pageNo, pageSize, selectBuilder);
         return Pages.transPage(page, BaseEntity::toResp);
@@ -54,12 +54,12 @@ public class BaseApi<T extends BaseEntity<T>, L extends BaseLogic<T, D>, D exten
     /**
      * 新增或编辑
      */
-    protected String insertOrUpdate(BaseReq<T> baseReq) {
-        if (baseReq.getId() == null) {
-            repository.insert(baseReq.toEntity());
+    protected String insertOrUpdate(BaseReq<T> data) {
+        if (data.getId() == null) {
+            repository.insert(data.toEntity());
             return "新增成功";
         } else {
-            repository.update(baseReq.toEntity(), w -> w.eq(Raw.of("id"), baseReq.getId()));
+            repository.update(data.toEntity(), w -> w.eq(Raw.of("id"), data.getId()));
             return "编辑成功";
         }
     }
@@ -67,8 +67,9 @@ public class BaseApi<T extends BaseEntity<T>, L extends BaseLogic<T, D>, D exten
     /**
      * 根据id删除
      */
-    protected R<String> delete(List<String> ids) {
-        repository.delete(w -> w.in(Raw.of("id"), ids));
+    protected R<String> delete() {
+        SelectBuilder selectBuilder = query();
+        repository.delete(selectBuilder.getWhereStage().getWhere());
         return R.success("删除成功");
     }
 
