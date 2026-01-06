@@ -23,36 +23,50 @@ public class SysDict extends BaseEntity<SysDict> {
     /**
      * 父字典ID
      */
+    @Index(1)
+    @Column(comment = "父字典ID", notNull = true)
     private String pid;
 
     /**
      * 字典名称
      */
+    @Index(2)
+    @Column(comment = "字典名称")
     private String dictName;
 
     /**
-     * 字典编码，唯一
+     * 字典编码
      */
+    @Index(3)
+    @Column(comment = "字典编码", notNull = true)
     private String dictCode;
 
     /**
      * 字典项值
      */
+    @Index(4)
+    @Column(comment = "字典项值")
     private String dictItemValue;
 
     /**
      * 字典项值对应的显示文本
      */
+    @Index(5)
+    @Column(comment = "字典项值对应的显示文本")
     private String dictItemText;
 
     /**
      * 字典排序
      */
+    @Index(6)
+    @Column(comment = "字典排序")
     private Integer index;
 
     /**
      * 0-字典/1-字典项
      */
+    @Index(7)
+    @Column(comment = "类型：0-字典/1-字典项", notNull = true)
     private Integer type;
 
     @Override

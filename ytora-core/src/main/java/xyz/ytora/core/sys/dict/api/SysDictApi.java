@@ -1,4 +1,4 @@
-package xyz.ytora.core.sys.db;
+package xyz.ytora.core.sys.dict.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,7 +25,7 @@ import java.util.List;
  */
 @Tag(name = "字典")
 @RestController
-@RequestMapping("/rbac/user")
+@RequestMapping("/sys/dict")
 @RequiredArgsConstructor
 public class SysDictApi extends BaseApi<SysDict, SysDictLogic, SysDictRepo> {
 
@@ -47,9 +47,8 @@ public class SysDictApi extends BaseApi<SysDict, SysDictLogic, SysDictRepo> {
      */
     @GetMapping("/listDictItem")
     @Operation(summary = "查询字典项", description = "查询字典项")
-    public List<SysDictItemResp> listDictItem(@ParameterObject SysDictReq param) {
-        SelectBuilder selectBuilder = query();
-        List<SysDict> list = repository.list(selectBuilder);
+    public List<SysDictItemResp> listDictItem(@RequestParam String dictCode) {
+            List<SysDict> list = repository.list(w -> w.eq(SysDict::getDictCode, dictCode).eq(SysDict::getType, 2));
         return Beans.transBean(list, SysDictItemResp.class);
     }
 
