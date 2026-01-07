@@ -1,10 +1,10 @@
 package xyz.ytora.core.sys.recyclebin.logic;
 
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.ytora.base.exception.BaseException;
 import xyz.ytora.base.mvc.BaseApi;
-import xyz.ytora.base.mvc.BaseLogic;
 import xyz.ytora.core.sys.recyclebin.model.entity.SysRecycleBin;
 import xyz.ytora.core.sys.recyclebin.repo.SysRecycleBinRepo;
 import xyz.ytora.sql4j.core.SQLHelper;
@@ -14,17 +14,18 @@ import xyz.ytora.sql4j.orm.Page;
 import xyz.ytora.sql4j.sql.ConditionExpressionBuilder;
 import xyz.ytora.sql4j.sql.select.SelectBuilder;
 import xyz.ytora.ytool.json.JSON;
-import xyz.ytora.ytool.json.Jsons;
+import xyz.ytora.ytool.str.Strs;
 
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class SysRecycleBinLogic extends BaseLogic<SysRecycleBin, SysRecycleBinRepo> {
+@RequiredArgsConstructor
+public class SysRecycleBinLogic {
 
-    @Resource
-    private SQLHelper sqlHelper;
+    private final SQLHelper sqlHelper;
+    private final SysRecycleBinRepo recycleBinRepo;
 
     /**
      * 操作符：长的放前面,目前只考虑下面6种情况
@@ -47,7 +48,7 @@ public class SysRecycleBinLogic extends BaseLogic<SysRecycleBin, SysRecycleBinRe
     /**
      * 分页查询指定数据库表的删除数据
      */
-    public Page<JSON> page(String originalTable, Integer pageNo, Integer pageSize) {
+    public Page<Map<String, Object>> page(String originalTable, Integer pageNo, Integer pageSize) {
         // 根据表名称获取实体类
         Map<String, Class<?>> tableClassMapper = sqlHelper.getTableCreatorManager().getTableClassMapper();
         Class<?> entity = tableClassMapper.get(originalTable);
@@ -74,18 +75,48 @@ public class SysRecycleBinLogic extends BaseLogic<SysRecycleBin, SysRecycleBinRe
                 .submit(SysRecycleBin.class);
 
         // 封装返回结果
-        Page<JSON> page = new Page<>(pageNo, pageSize);
-        List<JSON> sourceDataList = list.stream().map(item -> {
+        Page<Map<String, Object>> page = new Page<>(pageNo, pageSize);
+        List<Map<String, Object>> sourceDataList = new ArrayList<>();
+        for (SysRecycleBin item : list) {
             JSON originalData = item.getOriginalData();
-            originalData.put("deleteReason", item.getDeleteReason());
-            originalData.put("deletedBy", item.getDeletedBy());
-            originalData.put("deletedTime", item.getDeletedTime());
-            return originalData;
-        }).toList();
+            Map<String, Object> data = new HashMap<>();
+            data.put("binId", item.getId());
+            data.put("deleteReason", item.getDeleteReason());
+            data.put("deletedBy", item.getDeletedBy());
+            data.put("deletedTime", item.getDeletedTime());
+            for (String key : originalData.keySet()) {
+                data.put(Strs.toLowerCamelCase(key), originalData.get(key));
+            }
+            sourceDataList.add(data);
+        }
+
         page.setRecords(sourceDataList);
         page.setTotal(count);
         page.setPages((int) ((count + pageSize - 1) / pageSize));
         return page;
+    }
+
+    /**
+     * 还原数据
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void restore(String ids) {
+        List<String> idList = Arrays.stream(ids.split(",")).toList();
+        List<SysRecycleBin> recycleBinList = sqlHelper.select(SysRecycleBin::getId, SysRecycleBin::getOriginalTable, SysRecycleBin::getOriginalData, SysRecycleBin::getRestoreSql).from(SysRecycleBin.class).where(w -> w.in(SysRecycleBin::getId, idList)).submit(SysRecycleBin.class);
+        for (SysRecycleBin sysRecycleBin : recycleBinList) {
+            String restoreSql = sysRecycleBin.getRestoreSql();
+            sqlHelper.submitSQL(restoreSql);
+            sqlHelper.submitSQL(Strs.format("DELETE FROM sys_recycle_bin WHERE id = {}", sysRecycleBin.getId()));
+        }
+
+    }
+
+    /**
+     * 彻底删除
+     */
+    public void deleteCompletely(String ids) {
+        List<String> idList = Arrays.stream(ids.split(",")).toList();
+        sqlHelper.delete().from(SysRecycleBin.class).where(w -> w.in(SysRecycleBin::getId, idList)).submit();
     }
 
     /**

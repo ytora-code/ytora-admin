@@ -12,6 +12,7 @@ import xyz.ytora.sql4j.sql.delete.DeleteBuilder;
 import xyz.ytora.sql4j.sql.delete.DeleteWhereStage;
 import xyz.ytora.ytool.classcache.ClassCache;
 import xyz.ytora.ytool.classcache.classmeta.ClassMetadata;
+import xyz.ytora.ytool.id.Ids;
 import xyz.ytora.ytool.json.Jsons;
 import xyz.ytora.ytool.str.Strs;
 
@@ -59,7 +60,7 @@ public class BackupBeforeDeleteInterceptor extends SqlInterceptorAdapter {
                     if (deleteData.isEmpty()) {
                         return true;
                     }
-                    StringBuilder sql = new StringBuilder("INSERT INTO sys_recycle_bin (deleted_by, deleted_time, delete_reason, original_table, original_id, original_data) VALUES ");
+                    StringBuilder sql = new StringBuilder("INSERT INTO sys_recycle_bin (id, deleted_by, deleted_time, delete_reason, original_table, original_id, original_data, restore_sql) VALUES ");
                     List<Object> params = new ArrayList<>();
 
                     for (int i = 0; i < deleteData.size(); i++) {
@@ -67,13 +68,15 @@ public class BackupBeforeDeleteInterceptor extends SqlInterceptorAdapter {
                         // 主键的字段名称固定位 id
                         Object id = deleteDatum.get("id");
                         String jsonStr = Jsons.toJsonStr(deleteDatum);
+                        params.add(Ids.snowflakeId());
                         params.add(deletedBy);
                         params.add(now);
                         params.add("-");
                         params.add(tableName);
                         params.add(id);
                         params.add(jsonStr);
-                        sql.append("(?,?,?,?,?,?::jsonb)");
+                        params.add(buildRedoInsertSql(tableName, deleteDatum));
+                        sql.append("(?,?,?,?,?,?,?,?)");
                         if (i < deleteData.size() - 1) {
                             sql.append(",");
                         }
@@ -85,4 +88,51 @@ public class BackupBeforeDeleteInterceptor extends SqlInterceptorAdapter {
         }
         return true;
     }
+
+    public static String buildRedoInsertSql(String tableName, Map<String, Object> data) {
+        StringBuilder columns = new StringBuilder();
+        StringBuilder values = new StringBuilder();
+
+        int i = 0;
+        for (Map.Entry<String, Object> entry : data.entrySet()) {
+            columns.append(entry.getKey());
+            values.append(toSqlLiteral(entry.getValue()));
+
+            if (i < data.size() - 1) {
+                columns.append(",");
+                values.append(",");
+            }
+            i++;
+        }
+
+        return "INSERT INTO " + tableName +
+                " (" + columns + ") VALUES (" + values + ");";
+    }
+
+
+    private static String toSqlLiteral(Object value) {
+        switch (value) {
+            case null -> {
+                return "NULL";
+            }
+            case Number number -> {
+                return value.toString();
+            }
+            case Boolean b -> {
+                return b ? "1" : "0";
+            }
+            case java.util.Date date -> {
+                return "'" + new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                        .format(value) + "'";
+            }
+            default -> {
+            }
+        }
+
+        // 默认按字符串处理
+        String str = value.toString()
+                .replace("'", "''"); // SQL 转义单引号
+        return "'" + str + "'";
+    }
+
 }

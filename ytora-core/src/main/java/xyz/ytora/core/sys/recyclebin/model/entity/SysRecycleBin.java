@@ -2,12 +2,11 @@ package xyz.ytora.core.sys.recyclebin.model.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import xyz.ytora.base.mvc.BaseEntity;
-import xyz.ytora.base.mvc.BaseResp;
 import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.sql4j.anno.Table;
 import xyz.ytora.sql4j.enums.ColumnType;
 import xyz.ytora.sql4j.enums.IdType;
+import xyz.ytora.sql4j.orm.Entity;
 import xyz.ytora.ytool.anno.Index;
 import xyz.ytora.ytool.json.JSON;
 
@@ -19,8 +18,8 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table(value = "sys_recycle_bin", idType = IdType.AUTO_INCREMENT, createIfNotExist = true, comment = "回收站")
-public class SysRecycleBin extends BaseEntity<SysRecycleBin> {
+@Table(value = "sys_recycle_bin", idType = IdType.SNOWFLAKE, createIfNotExist = true, comment = "回收站")
+public class SysRecycleBin extends Entity<SysRecycleBin> {
     /**
      * 删除人
      */
@@ -63,8 +62,10 @@ public class SysRecycleBin extends BaseEntity<SysRecycleBin> {
     @Column(comment = "原始数据，JSON", type = ColumnType.JSON, notNull = true)
     private JSON originalData;
 
-    @Override
-    public BaseResp<SysRecycleBin> toResp() {
-        return null;
-    }
+    /**
+     * redo,还原SQL
+     */
+    @Index(7)
+    @Column(comment = "redo,还原SQL", notNull = true)
+    private String restoreSql;
 }
