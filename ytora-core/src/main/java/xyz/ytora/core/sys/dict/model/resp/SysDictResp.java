@@ -2,14 +2,15 @@ package xyz.ytora.core.sys.dict.model.resp;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import xyz.ytora.base.mvc.BaseExcel;
 import xyz.ytora.base.mvc.BaseResp;
 import xyz.ytora.core.sys.dict.model.entity.SysDict;
-import xyz.ytora.core.sys.file.model.entity.SysFile;
 
 /**
  * 系统字典
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class SysDictResp extends BaseResp<SysDict> {
     /**
      * 字典名称
@@ -26,4 +27,8 @@ public class SysDictResp extends BaseResp<SysDict> {
      */
     private Integer index;
 
+    @Override
+    public BaseExcel<SysDict> toExcel() {
+        return null;
+    }
 }

@@ -4,8 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.BaseResp;
+import xyz.ytora.core.rbac.depart.model.SysDepartMapper;
 import xyz.ytora.core.rbac.depart.model.entity.SysDepart;
-import xyz.ytora.core.rbac.permission.model.resp.SysPermissionResp;
+import xyz.ytora.core.rbac.depart.model.excel.SysDepartExcel;
 import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.ytool.anno.Index;
 import xyz.ytora.ytool.tree.ITree;
@@ -89,5 +90,10 @@ public class SysDepartResp extends BaseResp<SysDepart> implements ITree<SysDepar
     @Override
     public void hasChildren(Boolean hasChildren) {
         this.hasChildren = hasChildren;
+    }
+
+    @Override
+    public SysDepartExcel toExcel() {
+        return SysDepartMapper.mapper.toExcel(this);
     }
 }

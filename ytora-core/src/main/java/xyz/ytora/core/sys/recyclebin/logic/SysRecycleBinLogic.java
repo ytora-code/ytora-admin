@@ -120,6 +120,14 @@ public class SysRecycleBinLogic {
     }
 
     /**
+     * 清空指定表的回收站数据
+     * @param table
+     */
+    public void clear(String table) {
+        sqlHelper.delete().from(SysRecycleBin.class).where(w -> w.eq(SysRecycleBin::getOriginalTable, table)).submit();
+    }
+
+    /**
      * 将简单 where 片段（AND 连接）改写为回收站查询片段：
      * - 普通列（如 table_name）保持不变
      * - 其他字段统一改写为 original_data->>'field'
@@ -127,7 +135,7 @@ public class SysRecycleBinLogic {
      *  "table_name = ? AND age >= ? AND name LIKE ?"
      *      =>"table_name = ? AND original_data->>'age' >= ? AND original_data->>'name' LIKE ?"
      */
-    public String rewriteWhereForRecycleBin(String whereFragment) {
+    private String rewriteWhereForRecycleBin(String whereFragment) {
         if (whereFragment == null || whereFragment.trim().isEmpty()) return whereFragment;
 
         // 按顶层 AND 拆（假设片段里 AND 只作为连接符）

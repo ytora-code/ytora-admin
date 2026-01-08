@@ -2,6 +2,7 @@ package xyz.ytora.core.sys.file.model.resp;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import xyz.ytora.base.mvc.BaseExcel;
 import xyz.ytora.base.mvc.BaseResp;
 import xyz.ytora.core.sys.file.model.entity.SysFile;
 
@@ -42,4 +43,8 @@ public class SysFileResp extends BaseResp<SysFile> {
      */
     private Integer downloadCount;
 
+    @Override
+    public BaseExcel<SysFile> toExcel() {
+        return null;
+    }
 }

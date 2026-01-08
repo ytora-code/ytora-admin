@@ -32,6 +32,7 @@ public class DownloadMapperAspect {
 
     private static final List<Class<?>> SUPPORTED = List.of(List.class, InputStream.class, File.class);
 
+    @SuppressWarnings("unchecked")
     @Around("@annotation(downloadMapper)")
     public Object handleDownload(ProceedingJoinPoint joinPoint, DownloadMapper downloadMapper) throws Throwable {
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
@@ -62,34 +63,36 @@ public class DownloadMapperAspect {
         RespUtil.downloadResponse(downloadMapper.filename(), downloadMapper.mime());
 
         try (ServletOutputStream out = response.getOutputStream()) {
-            if (result instanceof byte[] bytesResult) {
-                //如果接口返回数据是字节，则直接将字节写入响应流
-                out.write(bytesResult);
-            } else if (result instanceof List listResult) {
-                //如果接口返回数据是List，将List转为Excel文件流，再响应
-                Class<?> type = downloadMapper.type();
-                String userName = ScopedValueItem.LOGIN_USER.get().getUserName();
-                ExcelConfig<?> config = new ExcelConfig<>(type)
-                        .to(out)
-                        .setShowExpertInfo(downloadMapper.showExpertInfo())
-                        .setExpertUser(userName)
-                        .setCount(listResult.size());
-                Excels.write(listResult, config);
-            } else if (result instanceof InputStream isResult) {
-                //如果接口返回数据是流，直接写入
-                Ios.copyAndClose(isResult, out);
-            } else if (result instanceof File fileResult) {
-                //如果接口返回数据是File对象，则将File转为流，再写入
-                if (!fileResult.exists()) {
-                    throw new BaseException("接口返回的文件不存在");
+            switch (result) {
+                case byte[] bytesResult ->
+                    //如果接口返回数据是字节，则直接将字节写入响应流
+                        out.write(bytesResult);
+                case List listResult -> {
+                    //如果接口返回数据是List，将List转为Excel文件流，再响应
+                    Class<?> type = downloadMapper.type();
+                    String userName = ScopedValueItem.LOGIN_USER.get().getUserName();
+                    ExcelConfig<?> config = new ExcelConfig<>(type)
+                            .to(out)
+                            .setShowExpertInfo(downloadMapper.showExpertInfo())
+                            .setExpertUser(userName)
+                            .setCount(listResult.size());
+                    Excels.write(listResult, config);
                 }
-                //获取文件长度
-                response.setContentLengthLong(fileResult.length());
-                //将文件写入响应
-                BufferedInputStream bis = new BufferedInputStream(new FileInputStream(fileResult));
-                Ios.copyAndClose(bis, out);
-            } else {
-                throw new IllegalArgumentException("不支持的返回类型：" + result.getClass());
+                case InputStream isResult ->
+                    //如果接口返回数据是流，直接写入
+                        Ios.copyAndClose(isResult, out);
+                case File fileResult -> {
+                    //如果接口返回数据是File对象，则将File转为流，再写入
+                    if (!fileResult.exists()) {
+                        throw new BaseException("接口返回的文件不存在");
+                    }
+                    //获取文件长度
+                    response.setContentLengthLong(fileResult.length());
+                    //将文件写入响应
+                    BufferedInputStream bis = new BufferedInputStream(new FileInputStream(fileResult));
+                    Ios.copyAndClose(bis, out);
+                }
+                default -> throw new IllegalArgumentException("不支持的返回类型：" + result.getClass());
             }
             out.flush();
         }

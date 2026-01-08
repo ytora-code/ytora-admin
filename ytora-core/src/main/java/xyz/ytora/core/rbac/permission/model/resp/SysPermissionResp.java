@@ -5,7 +5,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import xyz.ytora.base.dict.Dict;
 import xyz.ytora.base.mvc.BaseResp;
+import xyz.ytora.core.rbac.permission.model.SysPermissionMapper;
 import xyz.ytora.core.rbac.permission.model.entity.SysPermission;
+import xyz.ytora.core.rbac.permission.model.excel.SysPermissionExcel;
 import xyz.ytora.ytool.tree.ITree;
 
 import java.util.List;
@@ -101,7 +103,7 @@ public class SysPermissionResp extends BaseResp<SysPermission> implements ITree<
 
     @Override
     public String getKey() {
-        return this.permissionCode;
+        return this.permissionName;
     }
 
     @Override
@@ -109,4 +111,8 @@ public class SysPermissionResp extends BaseResp<SysPermission> implements ITree<
         this.hasChildren = hasChildren;
     }
 
+    @Override
+    public SysPermissionExcel toExcel() {
+        return SysPermissionMapper.mapper.toExcel(this);
+    }
 }

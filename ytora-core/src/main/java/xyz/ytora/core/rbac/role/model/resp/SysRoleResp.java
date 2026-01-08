@@ -4,7 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.BaseResp;
+import xyz.ytora.core.rbac.role.model.SysRoleMapper;
 import xyz.ytora.core.rbac.role.model.entity.SysRole;
+import xyz.ytora.core.rbac.role.model.excel.SysRoleExcel;
 import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.ytool.anno.Index;
 
@@ -28,4 +30,9 @@ public class SysRoleResp extends BaseResp<SysRole> {
     @Index(2)
     @Column(comment = "角色编码", notNull = true)
     private String roleCode;
+
+    @Override
+    public SysRoleExcel toExcel() {
+        return SysRoleMapper.mapper.toExcel(this);
+    }
 }

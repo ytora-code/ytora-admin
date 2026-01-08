@@ -3,6 +3,7 @@ package xyz.ytora.core.rbac.role.model;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import xyz.ytora.core.rbac.role.model.entity.SysRole;
+import xyz.ytora.core.rbac.role.model.excel.SysRoleExcel;
 import xyz.ytora.core.rbac.role.model.req.SysRoleReq;
 import xyz.ytora.core.rbac.role.model.resp.SysRoleResp;
 
@@ -22,4 +23,14 @@ public interface SysRoleMapper {
      * ENTITY 转 RESP
      */
     SysRoleResp toResp(SysRole sysRole);
+
+    /**
+     * EXCEL 转 ENTITY
+     */
+    SysRole toEntity(SysRoleExcel SysRoleExcel);
+
+    /**
+     * ENTITY 转 EXCEL
+     */
+    SysRoleExcel toExcel(SysRoleResp SysRoleResp);
 }

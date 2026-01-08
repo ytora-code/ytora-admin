@@ -1,12 +1,10 @@
-package xyz.ytora.core.rbac.user.model.excel;
+package xyz.ytora.core.rbac.role.model.excel;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.BaseExcel;
-import xyz.ytora.core.rbac.user.model.SysUserMapper;
-import xyz.ytora.core.rbac.user.model.entity.SysUser;
-import xyz.ytora.sql4j.anno.Column;
-import xyz.ytora.ytool.anno.Index;
+import xyz.ytora.core.rbac.role.model.SysRoleMapper;
+import xyz.ytora.core.rbac.role.model.entity.SysRole;
 import xyz.ytora.ytool.document.excel.Excel;
 
 import java.time.LocalDate;
@@ -17,65 +15,51 @@ import java.time.LocalDate;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Excel(fileName = "用户数据")
-public class SysUserExcel extends BaseExcel<SysUser> {
+public class SysRoleExcel extends BaseExcel<SysRole> {
     /**
      * 用户名
      */
     @Excel("用户名")
-    @Index(1)
     private String userName;
 
     /**
      * 真实姓名
      */
     @Excel("真实姓名")
-    @Index(2)
     private String realName;
 
     /**
      * 头像
      */
     @Excel("头像")
-    @Index(3)
     private String avatar;
 
     /**
      * 手机号码
      */
     @Excel("手机号码")
-    @Index(4)
     private String phone;
 
     /**
      * 邮箱
      */
     @Excel("邮箱")
-    @Index(5)
     private String email;
 
     /**
      * 生日
      */
     @Excel("生日")
-    @Index(6)
     private LocalDate birthday;
 
     /**
      * 身份证
      */
     @Excel("身份证")
-    @Index(7)
     private String idCard;
 
-    /**
-     * 备注
-     */
-    @Excel("备注")
-    @Index(8)
-    private String remark;
-
     @Override
-    public SysUser toEntity() {
-        return SysUserMapper.mapper.toEntity(this);
+    public SysRole toEntity() {
+        return SysRoleMapper.mapper.toEntity(this);
     }
 }

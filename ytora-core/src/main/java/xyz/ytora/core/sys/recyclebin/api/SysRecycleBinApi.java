@@ -3,10 +3,7 @@ package xyz.ytora.core.sys.recyclebin.api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import xyz.ytora.base.mvc.R;
 import xyz.ytora.core.sys.recyclebin.logic.SysRecycleBinLogic;
 import xyz.ytora.sql4j.orm.Page;
@@ -48,11 +45,21 @@ public class SysRecycleBinApi {
     /**
      * 彻底删除
      */
-    @GetMapping("/deleteCompletely")
+    @DeleteMapping("/deleteCompletely")
     @Operation(summary = "彻底删除", description = "delete?id=1,2,3：表示删除id为1,2,3的数据")
-    public R<String> deleteCompletely(String ids) {
+    public R<String> deleteCompletely(@RequestParam String ids) {
         logic.deleteCompletely(ids);
         return R.success("删除成功");
+    }
+
+    /**
+     * 清空
+     */
+    @DeleteMapping("/clear")
+    @Operation(summary = "清空回收站数据", description = "清空指定表的回收站数据")
+    public R<String> clear(@RequestParam String table) {
+        logic.clear(table);
+        return R.success("操作成功");
     }
 
 }

@@ -11,6 +11,7 @@ import xyz.ytora.base.RespUtil;
 import xyz.ytora.base.enums.RespCode;
 import xyz.ytora.base.mvc.R;
 import xyz.ytora.sql4j.Sql4JException;
+import xyz.ytora.ytool.document.DocException;
 
 /**
  * 全局异常处理器
@@ -38,10 +39,8 @@ public class GlobalExceptionHandler {
     public R<?> downloadExceptionHandler(DownloadException e) {
         HttpServletResponse resp = RespUtil.getResp();
         resp.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
         log.error(e.getMessage(), e);
         logging(e);
-
         return R.error(e.getCode(), e.getMessage());
     }
 
@@ -50,6 +49,15 @@ public class GlobalExceptionHandler {
         log.error(e.getMessage(), e.getCause());
         logging(e);
         return R.error(e.getCode(), e.getMessage());
+    }
+
+    @ExceptionHandler(DocException.class)
+    public R<?> docExceptionHandler(DocException e) {
+        HttpServletResponse resp = RespUtil.getResp();
+        resp.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        log.error(e.getMessage(), e.getCause());
+        logging(e);
+        return R.error(RespCode.FILE_DOWNLOAD_FAIL.code, e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

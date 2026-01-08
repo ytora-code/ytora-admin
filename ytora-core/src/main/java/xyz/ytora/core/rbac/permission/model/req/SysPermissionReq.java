@@ -81,6 +81,6 @@ public class SysPermissionReq extends BaseReq<SysPermission> {
     @Override
     public SysPermission toEntity() {
         SysPermissionMapper mapper = SysPermissionMapper.mapper;
-        return mapper.reqToEntity(this);
+        return mapper.toEntity(this);
     }
 }

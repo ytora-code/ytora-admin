@@ -3,6 +3,7 @@ package xyz.ytora.core.rbac.permission.model;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import xyz.ytora.core.rbac.permission.model.entity.SysPermission;
+import xyz.ytora.core.rbac.permission.model.excel.SysPermissionExcel;
 import xyz.ytora.core.rbac.permission.model.req.SysPermissionReq;
 import xyz.ytora.core.rbac.permission.model.resp.SysPermissionResp;
 
@@ -14,8 +15,17 @@ import xyz.ytora.core.rbac.permission.model.resp.SysPermissionResp;
 public interface SysPermissionMapper {
     SysPermissionMapper mapper = Mappers.getMapper(SysPermissionMapper.class);
 
-    SysPermission reqToEntity(SysPermissionReq req);
+    SysPermission toEntity(SysPermissionReq req);
 
-    SysPermissionResp entityToResp(SysPermission SysPermission);
+    SysPermissionResp toResp(SysPermission SysPermission);
 
+    /**
+     * EXCEL 转 ENTITY
+     */
+    SysPermission toEntity(SysPermissionExcel SysPermissionExcel);
+
+    /**
+     * ENTITY 转 EXCEL
+     */
+    SysPermissionExcel toExcel(SysPermissionResp SysPermissionResp);
 }

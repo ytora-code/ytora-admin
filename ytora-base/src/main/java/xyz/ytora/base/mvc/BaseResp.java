@@ -65,4 +65,9 @@ public abstract class BaseResp<T extends BaseEntity<T>> implements Serializable 
      */
     @Index(7)
     private String status;
+
+    /**
+     * RESP 类转为 EXCEL 类
+     */
+    public abstract BaseExcel<T> toExcel();
 }

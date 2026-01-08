@@ -13,7 +13,9 @@ import xyz.ytora.base.enums.RespCode;
 import xyz.ytora.base.exception.BaseException;
 import xyz.ytora.base.mvc.R;
 import xyz.ytora.core.sys.login.loginc.LoginLogic;
+import xyz.ytora.core.sys.login.model.req.CheckPasswordReq;
 import xyz.ytora.core.sys.login.model.req.LoginReq;
+import xyz.ytora.core.sys.login.model.req.RefreshPasswordReq;
 import xyz.ytora.core.sys.login.model.resp.LoginUserDetailResp;
 import xyz.ytora.ytool.str.Strs;
 
@@ -27,6 +29,15 @@ public class LoginController {
 
     private final LoginLogic loginService;
     private final Caches caches;
+
+    /**
+     * 获取登录验证码
+     */
+    @GetMapping("/getCode")
+    @Operation(summary = "获取登录Code", description = "code可能是图形码，可能是短信，可能是邮寄，根据业务而定")
+    public R<?> getCaptcha() {
+        return R.success();
+    }
 
     /**
      * 执行登录
@@ -75,6 +86,24 @@ public class LoginController {
         }
 
         return R.success(loginService.queryUserDetail(loginUser.getId()));
+    }
+
+    /**
+     * 校验密码
+     */
+    @PostMapping("/checkPassword")
+    @Operation(summary = "校验密码", description = "校验密码")
+    public R<String> checkPassword(@RequestBody @Valid CheckPasswordReq checkPasswordReq) {
+        return null;
+    }
+
+    /**
+     * 更新密码
+     */
+    @PostMapping("/refreshPassword")
+    @Operation(summary = "更新密码", description = "更新密码")
+    public String refreshPassword(@RequestBody @Valid RefreshPasswordReq refreshPasswordReq) {
+        return null;
     }
 
 }

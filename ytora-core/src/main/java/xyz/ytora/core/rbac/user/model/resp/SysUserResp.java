@@ -4,7 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.BaseResp;
+import xyz.ytora.core.rbac.user.model.SysUserMapper;
 import xyz.ytora.core.rbac.user.model.entity.SysUser;
+import xyz.ytora.core.rbac.user.model.excel.SysUserExcel;
 
 import java.time.LocalDate;
 
@@ -62,4 +64,9 @@ public class SysUserResp extends BaseResp<SysUser> {
      */
     @Schema(description = "身份证")
     private String idCard;
+
+    @Override
+    public SysUserExcel toExcel() {
+        return SysUserMapper.mapper.toExcel(this);
+    }
 }

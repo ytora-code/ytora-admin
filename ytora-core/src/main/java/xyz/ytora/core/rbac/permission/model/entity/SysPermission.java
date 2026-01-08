@@ -10,8 +10,6 @@ import xyz.ytora.sql4j.anno.Column;
 import xyz.ytora.sql4j.anno.Table;
 import xyz.ytora.sql4j.enums.IdType;
 import xyz.ytora.ytool.anno.Index;
-import xyz.ytora.ytool.json.JSON;
-import xyz.ytora.ytool.json.Jsons;
 
 /**
  * 资源表
@@ -56,7 +54,7 @@ public class SysPermission extends BaseEntity<SysPermission> {
     private String icon;
 
     /**
-     * 图标
+     * 资源的元数据
      */
     @Index(7)
     @Column(comment = "资源的元数据")
@@ -78,7 +76,7 @@ public class SysPermission extends BaseEntity<SysPermission> {
 
     @Override
     public SysPermissionResp toResp() {
-        SysPermissionResp permissionResp = SysPermissionMapper.mapper.entityToResp(this);
+        SysPermissionResp permissionResp = SysPermissionMapper.mapper.toResp(this);
 
         // 如果该资源属于菜单，则需要获取其对应的页面组件路径
         if (permissionResp.getPermissionType() == 2) {
