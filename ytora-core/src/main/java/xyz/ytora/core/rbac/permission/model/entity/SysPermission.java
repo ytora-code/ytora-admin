@@ -18,7 +18,7 @@ import xyz.ytora.ytool.json.Jsons;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table(value = "sys_permission", idType = IdType.SNOWFLAKE, createIfNotExist = true, comment = "资源表")
+@Table(value = "sys_permission", idType = IdType.SNOWFLAKE, backupOnDelete = true, createIfNotExist = true, comment = "资源表")
 public class SysPermission extends BaseEntity<SysPermission> {
     /**
      * 父资源id

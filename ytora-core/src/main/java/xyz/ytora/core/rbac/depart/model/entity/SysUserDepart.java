@@ -15,7 +15,7 @@ import xyz.ytora.ytool.anno.Index;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table(value = "sys_user_depart", idType = IdType.SNOWFLAKE, createIfNotExist = true, comment = "用户-部门关系表")
+@Table(value = "sys_user_depart", idType = IdType.SNOWFLAKE, backupOnDelete = true, createIfNotExist = true, comment = "用户-部门关系表")
 public class SysUserDepart extends BaseEntity<SysUserDepart> {
     /**
      * 用户ID

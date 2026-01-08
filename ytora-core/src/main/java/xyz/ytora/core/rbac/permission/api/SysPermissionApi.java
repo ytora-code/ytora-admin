@@ -15,6 +15,7 @@ import xyz.ytora.core.rbac.permission.model.resp.SysPermissionResp;
 import xyz.ytora.core.rbac.permission.model.resp.SysRolePermissionResp;
 import xyz.ytora.core.rbac.permission.repo.SysPermissionRepo;
 import xyz.ytora.sql4j.sql.select.SelectBuilder;
+import xyz.ytora.ytool.str.Strs;
 
 import java.util.List;
 
@@ -55,12 +56,16 @@ public class SysPermissionApi extends BaseApi<SysPermission, SysPermissionLogic,
      */
     @PostMapping("/insertOrUpdate")
     @Operation(summary = "新增或编辑", description = "新增或编辑")
-    public R<String> insertOrUpdate(@RequestBody SysPermissionReq SysPermissionReq) {
-        if (SysPermissionReq.getId() == null) {
-            repository.insert(SysPermissionReq.toEntity());
+    public R<String> insertOrUpdate(@RequestBody SysPermissionReq data) {
+        if (data.getId() == null) {
+            if (Strs.isEmpty(data.getPid())) {
+                data.setPid("0");
+            }
+            repository.insert(data.toEntity());
             return R.success("新增成功");
         } else {
-            repository.update(SysPermissionReq.toEntity(), w -> w.eq(SysPermission::getId, SysPermissionReq.getId()));
+            data.setPid(null);
+            repository.update(data.toEntity(), w -> w.eq(SysPermission::getId, data.getId()));
             return R.success("编辑成功");
         }
     }

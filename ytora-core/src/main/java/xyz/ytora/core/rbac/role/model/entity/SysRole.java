@@ -15,7 +15,7 @@ import xyz.ytora.ytool.anno.Index;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table(value = "sys_role", idType = IdType.SNOWFLAKE, createIfNotExist = true, comment = "角色表")
+@Table(value = "sys_role", idType = IdType.SNOWFLAKE, backupOnDelete = true, createIfNotExist = true, comment = "角色表")
 public class SysRole extends BaseEntity<SysRole> {
 
     /**
