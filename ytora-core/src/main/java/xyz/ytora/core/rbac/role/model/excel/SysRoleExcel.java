@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.BaseExcel;
 import xyz.ytora.core.rbac.role.model.SysRoleMapper;
 import xyz.ytora.core.rbac.role.model.entity.SysRole;
+import xyz.ytora.sql4j.anno.Column;
+import xyz.ytora.ytool.anno.Index;
 import xyz.ytora.ytool.document.excel.Excel;
 
 import java.time.LocalDate;
@@ -14,49 +16,19 @@ import java.time.LocalDate;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Excel(fileName = "用户数据")
+@Excel(fileName = "角色EXCEL数据")
 public class SysRoleExcel extends BaseExcel<SysRole> {
     /**
-     * 用户名
+     * 角色名称
      */
-    @Excel("用户名")
-    private String userName;
+    @Excel("角色名称")
+    private String roleName;
 
     /**
-     * 真实姓名
+     * 角色编码
      */
-    @Excel("真实姓名")
-    private String realName;
-
-    /**
-     * 头像
-     */
-    @Excel("头像")
-    private String avatar;
-
-    /**
-     * 手机号码
-     */
-    @Excel("手机号码")
-    private String phone;
-
-    /**
-     * 邮箱
-     */
-    @Excel("邮箱")
-    private String email;
-
-    /**
-     * 生日
-     */
-    @Excel("生日")
-    private LocalDate birthday;
-
-    /**
-     * 身份证
-     */
-    @Excel("身份证")
-    private String idCard;
+    @Excel("角色编码")
+    private String roleCode;
 
     @Override
     public SysRole toEntity() {

@@ -47,7 +47,7 @@ public abstract class SysPermissionRepo implements IRepo<SysPermission> {
         }
         return sqlHelper().select().from(SysPermission.class)
                 .where(w -> w
-                        .in(SysPermission::getPermissionType, 3)
+                        .in(SysPermission::getPermissionType, 3, 4, 5, 6)
                         .in(
                                 SysPermission::getId,
                                 sqlHelper().distinct().select(SysRolePermission::getPermissionId)

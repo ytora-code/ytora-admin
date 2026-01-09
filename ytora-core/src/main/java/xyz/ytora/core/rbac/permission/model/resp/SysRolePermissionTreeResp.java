@@ -26,6 +26,12 @@ public class SysRolePermissionTreeResp implements ITree<SysRolePermissionTreeRes
     private String permissionName;
 
     /**
+     * 资源类型
+     */
+    @Schema(description = "资源类型")
+    private Integer permissionType;
+
+    /**
      * 子元数集合
      */
     private List<SysRolePermissionTreeResp> children;

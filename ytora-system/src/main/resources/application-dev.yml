@@ -2,6 +2,11 @@ server:
   port: 9876
   servlet:
     context-path: /ytora
+spring:
+  servlet:
+    multipart:
+      max-file-size: 2048MB
+      max-request-size: 2048MB
 logging:
   config: classpath:log/logback-dev.xml
 knife4j:

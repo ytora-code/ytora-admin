@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import xyz.ytora.base.RespUtil;
 import xyz.ytora.base.enums.RespCode;
 import xyz.ytora.base.mvc.R;
+import xyz.ytora.base.storage.StorageException;
 import xyz.ytora.sql4j.Sql4JException;
 import xyz.ytora.ytool.document.DocException;
 
@@ -58,6 +59,13 @@ public class GlobalExceptionHandler {
         log.error(e.getMessage(), e.getCause());
         logging(e);
         return R.error(RespCode.FILE_DOWNLOAD_FAIL.code, e.getMessage());
+    }
+
+    @ExceptionHandler(StorageException.class)
+    public R<?> storageExceptionHandler(StorageException e) {
+        log.error(e.getMessage(), e);
+        logging(e);
+        return R.error(RespCode.FAIL.code, e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

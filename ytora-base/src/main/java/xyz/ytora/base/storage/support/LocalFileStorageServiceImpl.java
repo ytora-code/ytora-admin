@@ -94,7 +94,7 @@ public class LocalFileStorageServiceImpl implements IFileStorageService {
         } catch (IOException e) {
             // 失败时清理已创建的文件
             clean(path);
-            throw new StorageException(RespCode.FILE_UPLOAD_FAIL);
+            throw new StorageException(e);
         }
         log.info("文件上传成功，fileId: {}", fileId);
         return fileId;
