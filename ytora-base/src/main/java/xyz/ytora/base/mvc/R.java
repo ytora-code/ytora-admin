@@ -2,7 +2,6 @@ package xyz.ytora.base.mvc;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
-import xyz.ytora.base.enums.RespCode;
 
 /**
  * 统一返回对象，result

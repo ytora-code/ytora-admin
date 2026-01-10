@@ -2,7 +2,7 @@ package xyz.ytora.base.exception;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import xyz.ytora.base.enums.RespCode;
+import xyz.ytora.base.mvc.RespCode;
 
 /**
  * 文件下载异常，对应某些需要返回文件流的接口，抛出这个异常可以返回json数据（用于业务提示）

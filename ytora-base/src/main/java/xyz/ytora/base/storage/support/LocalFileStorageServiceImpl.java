@@ -3,7 +3,7 @@ package xyz.ytora.base.storage.support;
 import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import xyz.ytora.base.enums.RespCode;
+import xyz.ytora.base.mvc.RespCode;
 import xyz.ytora.base.storage.FileMeta;
 import xyz.ytora.base.storage.IFileStorageService;
 import xyz.ytora.base.storage.StorageException;

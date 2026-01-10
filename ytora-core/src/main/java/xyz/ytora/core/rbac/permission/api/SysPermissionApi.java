@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import xyz.ytora.base.mvc.BaseApi;
 import xyz.ytora.base.mvc.R;
+import xyz.ytora.core.rbac.datarule.model.entity.SysDataRule;
 import xyz.ytora.core.rbac.permission.logic.SysPermissionLogic;
 import xyz.ytora.core.rbac.permission.model.entity.SysPermission;
 import xyz.ytora.core.rbac.permission.model.req.SysPermissionReq;
@@ -98,6 +99,35 @@ public class SysPermissionApi extends BaseApi<SysPermission, SysPermissionLogic,
     public R<String> refreshRolePermission(@RequestBody SysRolePermissionReq rolePermissionReq) {
         logic.refreshRolePermission(rolePermissionReq);
         return R.success("更新成功");
+    }
+
+    /**
+     * 获取指定资源的数据规则
+     */
+    @GetMapping("/listDataRule")
+    @Operation(summary = "获取指定资源的数据规则", description = "获取指定资源的数据规则")
+    public List<SysDataRule> listDataRule(@RequestParam String permissionId) {
+        return logic.listDataRule(permissionId);
+    }
+
+    /**
+     * 新增或编辑指定资源的数据规则
+     */
+    @PostMapping("/addOrUpdateDataRule")
+    @Operation(summary = "新增或编辑指定资源的数据规则", description = "新增或编辑指定资源的数据规则")
+    public R<String> addOrUpdateDataRule(@RequestBody SysDataRule data) {
+        logic.addOrUpdateDataRule(data);
+        return R.success("操作成功");
+    }
+
+    /**
+     * 删除指定数据规则
+     */
+    @DeleteMapping("/deleteDataRule")
+    @Operation(summary = "删除指定数据规则", description = "删除指定数据规则")
+    public R<String> deleteDataRule(@RequestParam String id) {
+        logic.deleteDataRule(id);
+        return R.success("删除成功");
     }
 
 }

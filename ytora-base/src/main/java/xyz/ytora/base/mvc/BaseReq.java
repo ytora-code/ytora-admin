@@ -18,19 +18,19 @@ public abstract class BaseReq<T extends BaseEntity<T>> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "主键ID")
-    private String id;
+    protected String id;
 
     /**
      * 数据备注
      */
     @Schema(description = "数据备注")
-    private String remark;
+    protected String remark;
 
     /**
      * 数据状态
      */
     @Schema(description = "数据状态")
-    private String status;
+    protected String status;
 
     /**
      * REQ类转为实体类

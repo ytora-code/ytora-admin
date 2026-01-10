@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import xyz.ytora.base.RespUtil;
-import xyz.ytora.base.enums.RespCode;
+import xyz.ytora.base.mvc.RespCode;
 import xyz.ytora.base.mvc.R;
 import xyz.ytora.base.storage.StorageException;
 import xyz.ytora.sql4j.Sql4JException;

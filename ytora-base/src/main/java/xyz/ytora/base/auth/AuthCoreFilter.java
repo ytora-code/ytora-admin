@@ -17,7 +17,7 @@ import xyz.ytora.base.auth.handler.AuthzHandler;
 import xyz.ytora.base.auth.handler.CorsHandler;
 import xyz.ytora.base.auth.handler.PublicResourcesHandler;
 import xyz.ytora.base.RespUtil;
-import xyz.ytora.base.enums.RespCode;
+import xyz.ytora.base.mvc.RespCode;
 import xyz.ytora.base.scope.ScopedValueItem;
 
 import java.io.IOException;

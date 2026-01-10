@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.ytora.base.RespUtil;
 import xyz.ytora.base.download.Mimes;
-import xyz.ytora.base.enums.RespCode;
+import xyz.ytora.base.mvc.RespCode;
 import xyz.ytora.base.exception.BaseException;
 import xyz.ytora.base.exception.DownloadException;
 import xyz.ytora.base.mvc.BaseApi;

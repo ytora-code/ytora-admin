@@ -11,7 +11,7 @@ import xyz.ytora.base.auth.AuthException;
 import xyz.ytora.base.auth.LoginUser;
 import xyz.ytora.base.auth.handler.AuthnHandler;
 import xyz.ytora.base.cache.Caches;
-import xyz.ytora.base.enums.RespCode;
+import xyz.ytora.base.mvc.RespCode;
 import xyz.ytora.sql4j.core.SQLHelper;
 import xyz.ytora.sql4j.func.support.Raw;
 

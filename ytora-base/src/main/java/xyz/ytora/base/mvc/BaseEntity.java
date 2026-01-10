@@ -23,49 +23,49 @@ public abstract class BaseEntity<T extends BaseEntity<T>> extends Entity<T> {
      */
     @Index(1)
     @Column(comment = "创建人", type = ColumnType.VARCHAR16, fill = CreateUserFiller.class)
-    private String createBy;
+    protected String createBy;
 
     /**
      * 创建时间
      */
     @Index(2)
     @Column(comment = "创建时间", fill = CreateTimeFiller.class)
-    private LocalDateTime createTime;
+    protected LocalDateTime createTime;
 
     /**
      * 更新人
      */
     @Index(3)
     @Column(comment = "更新人", type = ColumnType.VARCHAR16, fill = UpdateUserFiller.class)
-    private String updateBy;
+    protected String updateBy;
 
     /**
      * 更新时间
      */
     @Index(4)
     @Column(comment = "更新时间", fill = UpdateTimeFiller.class)
-    private LocalDateTime updateTime;
+    protected LocalDateTime updateTime;
 
     /**
      * 创建者所属部门
      */
     @Index(5)
     @Column(comment = "创建者所属部门", fill = DepartCodeFiller.class)
-    private String departCode;
+    protected String departCode;
 
     /**
      * 数据备注
      */
     @Index(6)
     @Column(comment = "数据备注")
-    private String remark;
+    protected String remark;
 
     /**
      * 数据状态
      */
     @Index(7)
     @Column(comment = "数据状态")
-    private String status;
+    protected String status;
 
     /**
      * 实体类转为RESP类

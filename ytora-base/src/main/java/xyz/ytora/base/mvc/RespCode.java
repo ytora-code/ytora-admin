@@ -1,4 +1,4 @@
-package xyz.ytora.base.enums;
+package xyz.ytora.base.mvc;
 
 import java.util.HashMap;
 import java.util.Map;

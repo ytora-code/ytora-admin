@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import xyz.ytora.base.auth.Identity;
 import xyz.ytora.base.auth.LoginUser;
 import xyz.ytora.base.cache.Caches;
-import xyz.ytora.base.enums.RespCode;
+import xyz.ytora.base.mvc.RespCode;
 import xyz.ytora.base.exception.BaseException;
 import xyz.ytora.base.scope.ScopedValueItem;
 import xyz.ytora.core.rbac.permission.logic.SysPermissionLogic;

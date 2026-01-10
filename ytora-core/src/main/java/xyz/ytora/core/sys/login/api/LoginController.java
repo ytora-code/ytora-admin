@@ -9,7 +9,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.*;
 import xyz.ytora.base.auth.LoginUser;
 import xyz.ytora.base.cache.Caches;
-import xyz.ytora.base.enums.RespCode;
+import xyz.ytora.base.mvc.RespCode;
 import xyz.ytora.base.exception.BaseException;
 import xyz.ytora.base.mvc.R;
 import xyz.ytora.core.sys.login.loginc.LoginLogic;
@@ -18,8 +18,6 @@ import xyz.ytora.core.sys.login.model.req.LoginReq;
 import xyz.ytora.core.sys.login.model.req.RefreshPasswordReq;
 import xyz.ytora.core.sys.login.model.resp.LoginUserDetailResp;
 import xyz.ytora.ytool.str.Strs;
-
-import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/sys")

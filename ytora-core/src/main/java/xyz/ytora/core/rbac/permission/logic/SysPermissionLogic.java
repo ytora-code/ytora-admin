@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.ytora.base.mvc.BaseLogic;
+import xyz.ytora.core.rbac.datarule.model.entity.SysDataRule;
 import xyz.ytora.core.rbac.permission.model.entity.SysPermission;
 import xyz.ytora.core.rbac.permission.model.entity.SysRolePermission;
 import xyz.ytora.core.rbac.permission.model.req.SysRolePermissionReq;
@@ -14,7 +15,9 @@ import xyz.ytora.core.rbac.permission.repo.SysPermissionRepo;
 import xyz.ytora.sql4j.core.SQLHelper;
 import xyz.ytora.sql4j.enums.OrderType;
 import xyz.ytora.sql4j.sql.insert.IntoStage;
+import xyz.ytora.sql4j.util.OrmUtil;
 import xyz.ytora.ytool.coll.Colls;
+import xyz.ytora.ytool.str.Strs;
 import xyz.ytora.ytool.tree.Trees;
 
 import java.util.ArrayList;
@@ -120,5 +123,32 @@ public class SysPermissionLogic extends BaseLogic<SysPermission, SysPermissionRe
                                     .in(SysRolePermission::getPermissionId, removeIds)
                     ).submit();
         }
+    }
+
+    /**
+     * 获取指定资源的数据规则
+     */
+    public List<SysDataRule> listDataRule(String permissionId) {
+        return sqlHelper.select().from(SysDataRule.class)
+                .where(w -> w.eq(SysDataRule::getPermissionId, permissionId))
+                .submit(SysDataRule.class);
+    }
+
+    /**
+     * 新增或编辑指定资源的数据规则
+     */
+    public void addOrUpdateDataRule(SysDataRule data) {
+        if (Strs.isEmpty(data.getId())) {
+            OrmUtil.insert(SysDataRule.class, data);
+        } else {
+            OrmUtil.update(SysDataRule.class, data, w -> w.eq(SysDataRule::getId, data.getId()));
+        }
+    }
+
+    /**
+     * 删除指定数据规则
+     */
+    public void deleteDataRule(String id) {
+        sqlHelper.delete().from(SysDataRule.class).where(w -> w.eq(SysDataRule::getId, id)).submit();
     }
 }

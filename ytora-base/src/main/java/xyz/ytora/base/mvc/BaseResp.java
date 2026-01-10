@@ -22,49 +22,49 @@ public abstract class BaseResp<T extends BaseEntity<T>> implements Serializable 
      * 主键ID
      */
     @Index(0)
-    private String id;
+    protected String id;
 
     /**
      * 创建人
      */
     @Index(1)
-    private String createBy;
+    protected String createBy;
 
     /**
      * 创建时间
      */
     @Index(2)
-    private LocalDateTime createTime;
+    protected LocalDateTime createTime;
 
     /**
      * 更新人
      */
     @Index(3)
-    private String updateBy;
+    protected String updateBy;
 
     /**
      * 更新时间
      */
     @Index(4)
-    private LocalDateTime updateTime;
+    protected LocalDateTime updateTime;
 
     /**
      * 创建者所属部门
      */
     @Index(5)
-    private String departCode;
+    protected String departCode;
 
     /**
      * 数据备注
      */
     @Index(6)
-    private String remark;
+    protected String remark;
 
     /**
      * 数据状态
      */
     @Index(7)
-    private String status;
+    protected String status;
 
     /**
      * RESP 类转为 EXCEL 类

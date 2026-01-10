@@ -2,7 +2,7 @@ package xyz.ytora.base.exception;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import xyz.ytora.base.enums.RespCode;
+import xyz.ytora.base.mvc.RespCode;
 import xyz.ytora.ytool.str.Strs;
 
 /**
