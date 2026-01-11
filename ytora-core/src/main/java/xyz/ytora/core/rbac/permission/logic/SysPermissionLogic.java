@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.ytora.base.mvc.BaseLogic;
 import xyz.ytora.core.rbac.datarule.model.entity.SysDataRule;
+import xyz.ytora.core.rbac.datarule.model.entity.SysRoleDataRule;
+import xyz.ytora.core.rbac.datarule.model.req.SysRoleDataRuleReq;
+import xyz.ytora.core.rbac.datarule.model.resp.SysRoleDataRuleResp;
 import xyz.ytora.core.rbac.permission.model.entity.SysPermission;
 import xyz.ytora.core.rbac.permission.model.entity.SysRolePermission;
 import xyz.ytora.core.rbac.permission.model.req.SysRolePermissionReq;
@@ -129,9 +132,19 @@ public class SysPermissionLogic extends BaseLogic<SysPermission, SysPermissionRe
      * 获取指定资源的数据规则
      */
     public List<SysDataRule> listDataRule(String permissionId) {
-        return sqlHelper.select().from(SysDataRule.class)
+        List<SysDataRule> dataRules = sqlHelper.select().from(SysDataRule.class)
                 .where(w -> w.eq(SysDataRule::getPermissionId, permissionId))
+                .orderBy(SysDataRule::getId, OrderType.ASC)
                 .submit(SysDataRule.class);
+        for (SysDataRule dataRule : dataRules) {
+            if (Strs.isEmpty(dataRule.getRuleField())) {
+                dataRule.setRuleField("-");
+            }
+            if (Strs.isEmpty(dataRule.getRuleValue())) {
+                dataRule.setRuleValue("-");
+            }
+        }
+        return dataRules;
     }
 
     /**
@@ -150,5 +163,66 @@ public class SysPermissionLogic extends BaseLogic<SysPermission, SysPermissionRe
      */
     public void deleteDataRule(String id) {
         sqlHelper.delete().from(SysDataRule.class).where(w -> w.eq(SysDataRule::getId, id)).submit();
+    }
+
+    /**
+     * 获取指定角色的数据规则信息
+     */
+    public SysRoleDataRuleResp listRoleDataRule(String roleId, String permissionId) {
+        // 获取指定资源的数据规则
+        List<SysDataRule> dataRules = listDataRule(permissionId);
+
+        // 获取指定角色在指定资源上的数据规则
+        List<String> ruleIds = sqlHelper.select(SysRoleDataRule::getRuleId).from(SysRoleDataRule.class)
+                .where(w -> w.eq(SysRoleDataRule::getRoleId, roleId).eq(SysRoleDataRule::getPermissionId, permissionId))
+                .submit(String.class);
+
+        SysRoleDataRuleResp roleDataRule = new SysRoleDataRuleResp();
+        roleDataRule.setDataRules(dataRules);
+        roleDataRule.setRuleIds(ruleIds);
+        return roleDataRule;
+    }
+
+    /**
+     * 更新角色-数据规则
+     */
+    public void refreshRoleDataRule(SysRoleDataRuleReq roleDataRuleReq) {
+        // 兜底
+        List<String> origin = Optional.ofNullable(roleDataRuleReq.getOriginDataRuleIds())
+                .orElse(Collections.emptyList());
+        List<String> current = Optional.ofNullable(roleDataRuleReq.getCurrentDataRuleIds())
+                .orElse(Collections.emptyList());
+
+        // 是否有变更
+        if (Colls.equals(origin, current)) {
+            return;
+        }
+
+        // 新增
+        List<String> addIds = Colls.diff(current, origin);
+
+        // 删除
+        List<String> removeIds = Colls.diff(origin, current);
+
+        if (!addIds.isEmpty()) {
+            List<SysRoleDataRule> list = new ArrayList<>();
+            for (String addId : addIds) {
+                SysRoleDataRule roleDataRule = new SysRoleDataRule();
+                roleDataRule.setRuleId(addId);
+                roleDataRule.setRoleId(roleDataRuleReq.getRoleId());
+                roleDataRule.setPermissionId(roleDataRuleReq.getPermissionId());
+                list.add(roleDataRule);
+            }
+            OrmUtil.insert(SysRoleDataRule.class, list);
+        }
+
+        if (!removeIds.isEmpty()) {
+            sqlHelper.delete().from(SysRoleDataRule.class)
+                    .where(
+                            w -> w.eq(SysRoleDataRule::getRoleId, roleDataRuleReq.getRoleId())
+                                    .eq(SysRoleDataRule::getPermissionId, roleDataRuleReq.getPermissionId())
+                                    .in(SysRoleDataRule::getRuleId, removeIds)
+                    ).submit();
+        }
     }
 }

@@ -26,9 +26,16 @@ public class SysRoleDataRule extends BaseEntity<SysRoleDataRule> {
     private String roleId;
 
     /**
-     * 数据规则ID
+     * 资源ID
      */
     @Index(2)
+    @Column(comment = "资源ID", notNull = true, type = ColumnType.INT8)
+    private String permissionId;
+
+    /**
+     * 数据规则ID
+     */
+    @Index(3)
     @Column(comment = "数据规则ID", notNull = true, type = ColumnType.INT8)
     private String ruleId;
 

@@ -5,7 +5,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.BaseExcel;
 import xyz.ytora.base.mvc.BaseResp;
+import xyz.ytora.core.rbac.datarule.model.entity.SysDataRule;
 import xyz.ytora.core.rbac.datarule.model.entity.SysRoleDataRule;
+
+import java.util.List;
 
 /**
  * 角色-数据规则关系表
@@ -15,16 +18,21 @@ import xyz.ytora.core.rbac.datarule.model.entity.SysRoleDataRule;
 public class SysRoleDataRuleResp extends BaseResp<SysRoleDataRule> {
 
     /**
-     * 角色ID
+     * 数据规则名称
      */
-    @Schema(description = "角色ID")
-    private String roleId;
+    @Schema(description = "数据规则名称")
+    private String ruleName;
+    /**
+     * 数据规则
+     */
+    @Schema(description = "数据规则")
+    List<SysDataRule> dataRules;
 
     /**
      * 数据规则ID
      */
     @Schema(description = "数据规则ID")
-    private String ruleId;
+    List<String> ruleIds;
 
     @Override
     public BaseExcel<SysRoleDataRule> toExcel() {

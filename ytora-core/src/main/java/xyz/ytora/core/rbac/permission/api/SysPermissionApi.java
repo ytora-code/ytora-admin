@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import xyz.ytora.base.mvc.BaseApi;
 import xyz.ytora.base.mvc.R;
 import xyz.ytora.core.rbac.datarule.model.entity.SysDataRule;
+import xyz.ytora.core.rbac.datarule.model.req.SysRoleDataRuleReq;
+import xyz.ytora.core.rbac.datarule.model.resp.SysRoleDataRuleResp;
 import xyz.ytora.core.rbac.permission.logic.SysPermissionLogic;
 import xyz.ytora.core.rbac.permission.model.entity.SysPermission;
 import xyz.ytora.core.rbac.permission.model.req.SysPermissionReq;
@@ -19,6 +21,7 @@ import xyz.ytora.sql4j.sql.select.SelectBuilder;
 import xyz.ytora.ytool.str.Strs;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 资源 控制器
@@ -128,6 +131,25 @@ public class SysPermissionApi extends BaseApi<SysPermission, SysPermissionLogic,
     public R<String> deleteDataRule(@RequestParam String id) {
         logic.deleteDataRule(id);
         return R.success("删除成功");
+    }
+
+    /**
+     * 获取指定角色在指定资源下配置的的数据规则信息
+     */
+    @GetMapping("/listRoleDataRule")
+    @Operation(summary = "获取指定角色的数据规则信息", description = "获取指定角色在指定资源下配置的的数据规则信息")
+    public SysRoleDataRuleResp listRoleDataRule(@RequestParam String roleId, @RequestParam String permissionId) {
+        return logic.listRoleDataRule(roleId, permissionId);
+    }
+
+    /**
+     * 更新角色-数据规则
+     */
+    @PostMapping("/refreshRoleDataRule")
+    @Operation(summary = "更新角色-数据规则", description = "更新角色-数据规则")
+    public R<String> refreshRolePermission(@RequestBody SysRoleDataRuleReq rolePermissionReq) {
+        logic.refreshRoleDataRule(rolePermissionReq);
+        return R.success("更新成功");
     }
 
 }

@@ -6,8 +6,10 @@ import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.BaseReq;
 import xyz.ytora.core.rbac.datarule.model.entity.SysRoleDataRule;
 
+import java.util.List;
+
 /**
- * 角色-数据规则关系表
+ * 角色-数据规则请求关系表
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -20,16 +22,27 @@ public class SysRoleDataRuleReq extends BaseReq<SysRoleDataRule> {
     private String roleId;
 
     /**
-     * 数据规则ID
+     * 资源ID
      */
-    @Schema(description = "数据规则ID")
-    private String ruleId;
+    @Schema(description = "资源ID")
+    private String permissionId;
+
+    /**
+     * 原始规则ID数组
+     */
+    @Schema(description = "原始规则ID数组")
+    private List<String> originDataRuleIds;
+
+    /**
+     * 最新的规则ID数组
+     */
+    @Schema(description = "最新的规则ID数组")
+    private List<String> currentDataRuleIds;
 
     @Override
     public SysRoleDataRule toEntity() {
         SysRoleDataRule mapper = new SysRoleDataRule();
         mapper.setRoleId(roleId);
-        mapper.setRuleId(ruleId);
         return mapper;
     }
 }
