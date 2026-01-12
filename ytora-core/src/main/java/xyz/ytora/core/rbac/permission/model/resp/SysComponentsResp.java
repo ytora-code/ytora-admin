@@ -6,6 +6,9 @@ import xyz.ytora.sql4j.caster.SQLReader;
 import xyz.ytora.sql4j.caster.SQLWriter;
 import xyz.ytora.ytool.json.JSON;
 import xyz.ytora.ytool.json.Jsons;
+import xyz.ytora.ytool.str.Strs;
+
+import java.math.BigDecimal;
 
 /**
  * created by YT on 2026/1/1 23:46:24
@@ -58,6 +61,32 @@ public class SysComponentsResp implements SQLReader, SQLWriter {
 
     @Override
     public Object write() {
+        // 在可以转换的情况下，转换attr的value为bool或者数组
+        for (String key : attr.keySet()) {
+            try {
+                Object value = attr.get(key);
+                if (value instanceof String strVal) {
+                    // 如果value是"null"字符串，直接转换为null
+                    if (strVal.equalsIgnoreCase("null")) {
+                        attr.put(key, null);
+                    }
+                    // 如果value是true或false，直接转换
+                    else if (strVal.equalsIgnoreCase("true")) {
+                        attr.put(key, true);
+                    } else if (strVal.equalsIgnoreCase("false")) {
+                        attr.put(key, false);
+                    } else {
+                        // 如果是数字，直接转换。转换失败会返回NULL
+                        BigDecimal decimalVal = Strs.tryToBigDecimal(strVal);
+                        if (decimalVal != null) {
+                            attr.put(key, decimalVal);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                // 转换失败，跳过
+            }
+        }
         return Jsons.toJsonStr(this);
     }
 }

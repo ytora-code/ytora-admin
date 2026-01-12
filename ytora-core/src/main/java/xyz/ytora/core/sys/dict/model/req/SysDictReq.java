@@ -51,6 +51,11 @@ public class SysDictReq extends BaseReq<SysDict> {
      */
     private Integer type;
 
+    /**
+     * 备注
+     */
+    private String remark;
+
     @Override
     public SysDict toEntity() {
         return SysDictMapper.mapper.toEntity(this);

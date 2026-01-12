@@ -64,7 +64,7 @@ public abstract class BaseEntity<T extends BaseEntity<T>> extends Entity<T> {
      * 数据状态
      */
     @Index(7)
-    @Column(comment = "数据状态")
+    @Column(comment = "数据状态", defaultVal = "1")
     protected String status;
 
     /**

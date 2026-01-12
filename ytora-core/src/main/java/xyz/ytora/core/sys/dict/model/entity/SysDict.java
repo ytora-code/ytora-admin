@@ -25,7 +25,7 @@ public class SysDict extends BaseEntity<SysDict> {
      * 父字典ID
      */
     @Index(1)
-    @Column(comment = "父字典ID", notNull = true)
+    @Column(comment = "父字典ID", notNull = true, defaultVal = "0")
     private String pid;
 
     /**

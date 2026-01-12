@@ -60,7 +60,7 @@ public class SysPermissionApi extends BaseApi<SysPermission, SysPermissionLogic,
     @PostMapping("/insertOrUpdate")
     @Operation(summary = "新增或编辑", description = "新增或编辑")
     public R<String> insertOrUpdate(@RequestBody SysPermissionReq data) {
-        if (data.getId() == null) {
+        if (Strs.isEmpty(data.getId())) {
             if (Strs.isEmpty(data.getPid())) {
                 data.setPid("0");
             }

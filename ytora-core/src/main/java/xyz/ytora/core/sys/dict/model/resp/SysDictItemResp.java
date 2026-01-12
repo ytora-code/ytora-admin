@@ -11,6 +11,14 @@ import xyz.ytora.core.sys.dict.model.entity.SysDict;
 @Data
 public class SysDictItemResp {
     /**
+     * id
+     */
+    private String id;
+    /**
+     * 字典项编码
+     */
+    private String dictCode;
+    /**
      * 字典项值
      */
     private String dictItemValue;
@@ -24,5 +32,10 @@ public class SysDictItemResp {
      * 字典排序
      */
     private Integer index;
+
+    /**
+     * 备注
+     */
+    private String remark;
 
 }
