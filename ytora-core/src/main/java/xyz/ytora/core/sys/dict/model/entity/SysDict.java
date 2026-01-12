@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.BaseEntity;
 import xyz.ytora.base.mvc.BaseResp;
+import xyz.ytora.core.sys.dict.model.SysDictMapper;
 import xyz.ytora.core.sys.dict.model.resp.SysDictResp;
 import xyz.ytora.core.sys.file.model.SysFileMapper;
 import xyz.ytora.core.sys.file.model.resp.SysFileResp;
@@ -71,6 +72,6 @@ public class SysDict extends BaseEntity<SysDict> {
 
     @Override
     public SysDictResp toResp() {
-        return null;
+        return SysDictMapper.mapper.toResp(this);
     }
 }

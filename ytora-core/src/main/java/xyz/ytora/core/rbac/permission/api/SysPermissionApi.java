@@ -7,9 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import xyz.ytora.base.mvc.BaseApi;
 import xyz.ytora.base.mvc.R;
-import xyz.ytora.core.rbac.datarule.model.entity.SysDataRule;
-import xyz.ytora.core.rbac.datarule.model.req.SysRoleDataRuleReq;
-import xyz.ytora.core.rbac.datarule.model.resp.SysRoleDataRuleResp;
+import xyz.ytora.core.rbac.permission.model.entity.SysDataRule;
+import xyz.ytora.core.rbac.permission.model.req.SysRoleDataRuleReq;
+import xyz.ytora.core.rbac.permission.model.resp.SysRoleDataRuleResp;
 import xyz.ytora.core.rbac.permission.logic.SysPermissionLogic;
 import xyz.ytora.core.rbac.permission.model.entity.SysPermission;
 import xyz.ytora.core.rbac.permission.model.req.SysPermissionReq;
@@ -21,7 +21,6 @@ import xyz.ytora.sql4j.sql.select.SelectBuilder;
 import xyz.ytora.ytool.str.Strs;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 资源 控制器

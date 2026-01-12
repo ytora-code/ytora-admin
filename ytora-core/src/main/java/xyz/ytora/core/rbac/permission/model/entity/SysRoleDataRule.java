@@ -1,4 +1,4 @@
-package xyz.ytora.core.rbac.datarule.model.entity;
+package xyz.ytora.core.rbac.permission.model.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

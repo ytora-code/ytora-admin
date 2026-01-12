@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.BaseReq;
+import xyz.ytora.core.sys.dict.model.SysDictMapper;
 import xyz.ytora.core.sys.dict.model.entity.SysDict;
 
 /**
@@ -52,6 +53,6 @@ public class SysDictReq extends BaseReq<SysDict> {
 
     @Override
     public SysDict toEntity() {
-        return null;
+        return SysDictMapper.mapper.toEntity(this);
     }
 }

@@ -1,10 +1,10 @@
-package xyz.ytora.core.rbac.datarule.model.req;
+package xyz.ytora.core.rbac.permission.model.req;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.BaseReq;
-import xyz.ytora.core.rbac.datarule.model.entity.SysRoleDataRule;
+import xyz.ytora.core.rbac.permission.model.entity.SysRoleDataRule;
 
 import java.util.List;
 

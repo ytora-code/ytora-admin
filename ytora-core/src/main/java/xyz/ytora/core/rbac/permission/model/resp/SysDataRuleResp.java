@@ -1,12 +1,11 @@
-package xyz.ytora.core.rbac.datarule.model.req;
+package xyz.ytora.core.rbac.permission.model.resp;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import xyz.ytora.base.mvc.BaseReq;
+import xyz.ytora.base.mvc.BaseExcel;
 import xyz.ytora.base.mvc.BaseResp;
-import xyz.ytora.core.rbac.datarule.model.entity.SysDataRule;
-import xyz.ytora.core.rbac.datarule.model.resp.SysDataRuleResp;
+import xyz.ytora.core.rbac.permission.model.entity.SysDataRule;
 
 /**
  * created by YT on 2026/1/10 17:14:22
@@ -15,7 +14,7 @@ import xyz.ytora.core.rbac.datarule.model.resp.SysDataRuleResp;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SysDataRuleReq extends BaseReq<SysDataRule> {
+public class SysDataRuleResp extends BaseResp<SysDataRule> {
 
     /**
      * 资源ID
@@ -48,14 +47,7 @@ public class SysDataRuleReq extends BaseReq<SysDataRule> {
     private String ruleValue;
 
     @Override
-    public SysDataRule toEntity() {
-        SysDataRule rule = new SysDataRule();
-        rule.setId(id);
-        rule.setPermissionId(permissionId);
-        rule.setRuleName(ruleName);
-        rule.setRuleField(ruleField);
-        rule.setRuleType(ruleType);
-        rule.setRuleValue(ruleValue);
-        return rule;
+    public BaseExcel<SysDataRule> toExcel() {
+        return null;
     }
 }
