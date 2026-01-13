@@ -48,6 +48,11 @@ public interface ScopedValueItem {
      * 用户权限
      */
     ScopedValue<Object> USER_PERMISSION = ScopedValue.newInstance();
+
+    /**
+     * 数据权限
+     */
+    ScopedValue<String> DATA_RULE = ScopedValue.newInstance();
 }
 
 

@@ -24,38 +24,42 @@ public class SysFile extends BaseEntity<SysFile> {
     @Column(comment = "文件id", notNull = true)
     private String fileId;
 
+    @Index(2)
+    @Column(comment = "所在文件夹", notNull = true)
+    private String folderId;
+
     /**
      * 原始文件名称
      */
-    @Index(2)
+    @Index(3)
     @Column(comment = "原始文件名称")
     private String fileName;
 
     /**
      * 文件大小，单位字节
      */
-    @Index(3)
+    @Index(4)
     @Column(comment = "文件大小，单位字节")
     private Long fileSize;
 
     /**
      * 文件大小-文本
      */
-    @Index(4)
+    @Index(5)
     @Column(comment = "文件大小-文本")
     private String fileSizeText;
 
     /**
      * 文件类型
      */
-    @Index(5)
+    @Index(6)
     @Column(comment = "文件类型")
     private String fileType;
 
     /**
      * 下载次数
      */
-    @Index(6)
+    @Index(7)
     @Column(comment = "下载次数")
     private Integer downloadCount;
 

@@ -3,6 +3,8 @@ package xyz.ytora.base.auth;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 /**
  * 登录用户
  */
@@ -44,5 +46,10 @@ public class LoginUser {
      * 请求次数
      */
     private Long requestCount;
+
+    /**
+     * 用户的角色编码
+     */
+    private List<String> roleCodes;
 
 }

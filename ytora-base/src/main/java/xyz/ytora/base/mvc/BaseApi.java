@@ -10,8 +10,6 @@ import xyz.ytora.sql4j.orm.Pages;
 import xyz.ytora.sql4j.orm.querygen.QueryGenerator;
 import xyz.ytora.sql4j.sql.select.SelectBuilder;
 
-import java.util.List;
-
 /**
  * created by YT on 2025/12/23 22:01:30
  * <br/>

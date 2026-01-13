@@ -2,28 +2,96 @@ package xyz.ytora.core.sys.file.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.ytora.base.download.DownloadMapper;
 import xyz.ytora.base.mvc.BaseApi;
+import xyz.ytora.base.mvc.R;
 import xyz.ytora.core.sys.file.logic.SysFileLogic;
 import xyz.ytora.core.sys.file.model.entity.SysFile;
+import xyz.ytora.core.sys.file.model.entity.SysFolder;
 import xyz.ytora.core.sys.file.model.req.SysFileReq;
+import xyz.ytora.core.sys.file.model.req.SysFolderReq;
 import xyz.ytora.core.sys.file.model.resp.SysFileResp;
+import xyz.ytora.core.sys.file.model.resp.SysFolderResp;
 import xyz.ytora.core.sys.file.resp.SysFileRepo;
+import xyz.ytora.sql4j.core.SQLHelper;
 import xyz.ytora.sql4j.orm.Page;
 import xyz.ytora.sql4j.orm.Pages;
 import xyz.ytora.sql4j.sql.select.SelectBuilder;
+import xyz.ytora.sql4j.util.OrmUtil;
+import xyz.ytora.ytool.str.Strs;
+
+import java.util.List;
 
 /**
  * created by YT on 2025/12/28 00:53:46
  * <br/>
+ * 文件
  */
 @RestController
 @RequestMapping("/sys/file")
 @Tag(name = "文件")
+@RequiredArgsConstructor
 public class SysFileApi extends BaseApi<SysFile, SysFileLogic, SysFileRepo> {
+    private final SQLHelper sqlHelper;
+
+    // ============================== 文件夹 =================================>
+
+    /**
+     * 根据PID获取文件夹
+     */
+    @GetMapping("/listFolderByPid")
+    @Operation(summary = "根据PID获取文件夹", description = "根据PID获取文件夹")
+    public List<SysFolderResp> page(@RequestParam String pid) {
+        List<SysFolder> folders = sqlHelper.select().from(SysFolder.class).where(w -> w.eq(SysFolder::getPid, pid)).submit(SysFolder.class);
+        return folders.stream().map(SysFolder::toResp).toList();
+    }
+
+    /**
+     * 添加或修改文件夹
+     */
+    @PostMapping("/insertOrUpdateFolder")
+    @Operation(summary = "添加或修改文件夹", description = "添加或修改文件夹")
+    public R<String> insertOrUpdateFolder(@RequestBody SysFolderReq param) {
+        // 新增
+        if (Strs.isEmpty(param.getId())) {
+            // 获取上一层级深度
+            int depth;
+            String pid = "0";
+            if (Strs.isNotEmpty(param.getPid())) {
+                List<Integer> depths = sqlHelper.select(SysFolder::getDepth).from(SysFolder.class).where(w -> w.eq(SysFolder::getId, param.getPid())).submit(Integer.class);
+                depth = depths.getFirst();
+                pid = param.getPid();
+            } else {
+                depth = 1;
+            }
+
+            SysFolder entity = param.toEntity();
+            entity.setDepth(depth);
+            entity.setPid(pid);
+            OrmUtil.insert(SysFolder.class, entity);
+        }
+        // 编辑，只能编辑文件夹名称
+        else {
+            sqlHelper.update(SysFolder.class).set(SysFolder::getPath, param.getPath()).where(w -> w.eq(SysFolder::getId, param.getId())).submit();
+        }
+        return R.success("操作成功");
+    }
+
+    /**
+     * 删除文件夹
+     */
+    @DeleteMapping("/deleteFolder")
+    @Operation(summary = "删除文件夹", description = "删除文件夹，只删除文件夹本身，并不会删除文件夹下面的子文件夹和文件")
+    public R<String> deleteFolder(@RequestParam String id) {
+        sqlHelper.delete().from(SysFolder.class).where(w -> w.eq(SysFolder::getId, id)).submit();
+        return R.success("操作成功");
+    }
+
+    // ============================== 文件 =================================>
 
     /**
      * 分页查询文件

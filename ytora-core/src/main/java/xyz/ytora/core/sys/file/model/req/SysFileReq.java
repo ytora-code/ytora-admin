@@ -2,6 +2,7 @@ package xyz.ytora.core.sys.file.model.req;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.BaseReq;
 import xyz.ytora.core.sys.file.model.SysFileMapper;
 import xyz.ytora.core.sys.file.model.entity.SysFile;
@@ -10,6 +11,7 @@ import xyz.ytora.core.sys.file.model.entity.SysFile;
  * 系统文件表请求数据
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Schema(description = "文件表请求数据")
 public class SysFileReq extends BaseReq<SysFile> {
 
