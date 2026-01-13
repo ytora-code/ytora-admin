@@ -5,15 +5,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.ytora.base.mvc.BaseLogic;
 import xyz.ytora.core.rbac.permission.model.entity.SysDataRule;
-import xyz.ytora.core.rbac.permission.model.entity.SysRoleDataRule;
-import xyz.ytora.core.rbac.permission.model.req.SysRoleDataRuleReq;
-import xyz.ytora.core.rbac.permission.model.resp.SysRoleDataRuleResp;
 import xyz.ytora.core.rbac.permission.model.entity.SysPermission;
+import xyz.ytora.core.rbac.permission.model.entity.SysRoleDataRule;
 import xyz.ytora.core.rbac.permission.model.entity.SysRolePermission;
+import xyz.ytora.core.rbac.permission.model.req.SysRoleDataRuleReq;
 import xyz.ytora.core.rbac.permission.model.req.SysRolePermissionReq;
-import xyz.ytora.core.rbac.permission.model.resp.SysPermissionResp;
-import xyz.ytora.core.rbac.permission.model.resp.SysRolePermissionResp;
-import xyz.ytora.core.rbac.permission.model.resp.SysRolePermissionTreeResp;
+import xyz.ytora.core.rbac.permission.model.resp.*;
 import xyz.ytora.core.rbac.permission.repo.SysPermissionRepo;
 import xyz.ytora.sql4j.core.SQLHelper;
 import xyz.ytora.sql4j.enums.OrderType;
@@ -131,12 +128,12 @@ public class SysPermissionLogic extends BaseLogic<SysPermission, SysPermissionRe
     /**
      * 获取指定资源的数据规则
      */
-    public List<SysDataRule> listDataRule(String permissionId) {
-        List<SysDataRule> dataRules = sqlHelper.select().from(SysDataRule.class)
+    public List<SysDataRuleResp> listDataRule(String permissionId) {
+        List<SysDataRuleResp> dataRules = sqlHelper.select().from(SysDataRule.class)
                 .where(w -> w.eq(SysDataRule::getPermissionId, permissionId))
                 .orderBy(SysDataRule::getId, OrderType.ASC)
-                .submit(SysDataRule.class);
-        for (SysDataRule dataRule : dataRules) {
+                .submit(SysDataRuleResp.class);
+        for (SysDataRuleResp dataRule : dataRules) {
             if (Strs.isEmpty(dataRule.getRuleField())) {
                 dataRule.setRuleField("-");
             }
@@ -170,7 +167,7 @@ public class SysPermissionLogic extends BaseLogic<SysPermission, SysPermissionRe
      */
     public SysRoleDataRuleResp listRoleDataRule(String roleId, String permissionId) {
         // 获取指定资源的数据规则
-        List<SysDataRule> dataRules = listDataRule(permissionId);
+        List<SysDataRuleResp> dataRules = listDataRule(permissionId);
 
         // 获取指定角色在指定资源上的数据规则
         List<String> ruleIds = sqlHelper.select(SysRoleDataRule::getRuleId).from(SysRoleDataRule.class)

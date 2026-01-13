@@ -5,10 +5,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import xyz.ytora.base.dict.Dict;
 import xyz.ytora.base.mvc.BaseApi;
 import xyz.ytora.base.mvc.R;
 import xyz.ytora.core.rbac.permission.model.entity.SysDataRule;
+import xyz.ytora.core.rbac.permission.model.req.SysDataRuleReq;
 import xyz.ytora.core.rbac.permission.model.req.SysRoleDataRuleReq;
+import xyz.ytora.core.rbac.permission.model.resp.SysDataRuleResp;
 import xyz.ytora.core.rbac.permission.model.resp.SysRoleDataRuleResp;
 import xyz.ytora.core.rbac.permission.logic.SysPermissionLogic;
 import xyz.ytora.core.rbac.permission.model.entity.SysPermission;
@@ -108,7 +111,8 @@ public class SysPermissionApi extends BaseApi<SysPermission, SysPermissionLogic,
      */
     @GetMapping("/listDataRule")
     @Operation(summary = "获取指定资源的数据规则", description = "获取指定资源的数据规则")
-    public List<SysDataRule> listDataRule(@RequestParam String permissionId) {
+    @Dict
+    public List<SysDataRuleResp> listDataRule(@RequestParam String permissionId) {
         return logic.listDataRule(permissionId);
     }
 
@@ -117,8 +121,8 @@ public class SysPermissionApi extends BaseApi<SysPermission, SysPermissionLogic,
      */
     @PostMapping("/addOrUpdateDataRule")
     @Operation(summary = "新增或编辑指定资源的数据规则", description = "新增或编辑指定资源的数据规则")
-    public R<String> addOrUpdateDataRule(@RequestBody SysDataRule data) {
-        logic.addOrUpdateDataRule(data);
+    public R<String> addOrUpdateDataRule(@RequestBody SysDataRuleReq data) {
+        logic.addOrUpdateDataRule(data.toEntity());
         return R.success("操作成功");
     }
 

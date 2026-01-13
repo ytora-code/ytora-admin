@@ -3,6 +3,7 @@ package xyz.ytora.core.rbac.permission.model.resp;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import xyz.ytora.base.dict.Dict;
 import xyz.ytora.base.mvc.BaseExcel;
 import xyz.ytora.base.mvc.BaseResp;
 import xyz.ytora.core.rbac.permission.model.entity.SysDataRule;
@@ -38,6 +39,7 @@ public class SysDataRuleResp extends BaseResp<SysDataRule> {
      * 规则类型
      */
     @Schema(description = "规则类型")
+    @Dict(code = "rule_type")
     private String ruleType;
 
     /**

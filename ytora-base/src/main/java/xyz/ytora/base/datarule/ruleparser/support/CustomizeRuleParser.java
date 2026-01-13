@@ -1,5 +1,6 @@
 package xyz.ytora.base.datarule.ruleparser.support;
 
+import org.springframework.stereotype.Component;
 import xyz.ytora.base.datarule.ruleparser.IRuleParser;
 
 /**
@@ -7,6 +8,7 @@ import xyz.ytora.base.datarule.ruleparser.IRuleParser;
  * <br/>
  * 自定义
  */
+@Component
 public class CustomizeRuleParser implements IRuleParser {
     @Override
     public boolean support(String ruleType) {

@@ -2,6 +2,7 @@ package xyz.ytora.core.rbac.permission.model.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import xyz.ytora.base.dict.Dict;
 import xyz.ytora.base.mvc.BaseEntity;
 import xyz.ytora.core.rbac.permission.model.resp.SysDataRuleResp;
 import xyz.ytora.sql4j.anno.Column;

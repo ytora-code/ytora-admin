@@ -69,7 +69,7 @@ public class SpringDocConfig {
     @Bean
     public GroupedOpenApi rbacGroup() {
         return GroupedOpenApi.builder()
-                .group("RBAC管理")
+                .group("权限管理")
                 .addOpenApiMethodFilter((e) -> e.isAnnotationPresent(Operation.class))
                 .pathsToMatch("/rbac/**")
                 .addOperationCustomizer(globalHeaderCustomizer())
@@ -85,6 +85,19 @@ public class SpringDocConfig {
                 .group("系统管理")
                 .addOpenApiMethodFilter((e) -> e.isAnnotationPresent(Operation.class))
                 .pathsToMatch("/sys/**")
+                .addOperationCustomizer(globalHeaderCustomizer())
+                .build();
+    }
+
+    /**
+     * 监控模块分组
+     */
+    @Bean
+    public GroupedOpenApi monitorGroup() {
+        return GroupedOpenApi.builder()
+                .group("监控模块")
+                .addOpenApiMethodFilter((e) -> e.isAnnotationPresent(Operation.class))
+                .pathsToMatch("/monitor/**")
                 .addOperationCustomizer(globalHeaderCustomizer())
                 .build();
     }

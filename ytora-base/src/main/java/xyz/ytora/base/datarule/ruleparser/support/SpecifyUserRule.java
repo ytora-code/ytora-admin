@@ -1,5 +1,6 @@
 package xyz.ytora.base.datarule.ruleparser.support;
 
+import org.springframework.stereotype.Component;
 import xyz.ytora.base.datarule.ruleparser.IRuleParser;
 
 import java.util.Arrays;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
  * <br/>
  * 指定用户
  */
+@Component
 public class SpecifyUserRule implements IRuleParser {
     @Override
     public boolean support(String ruleType) {
