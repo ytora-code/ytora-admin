@@ -41,13 +41,13 @@ public abstract class SysPermissionRepo implements IRepo<SysPermission> {
     /**
      * 根据 roleId 获取这些角色拥有的所有表格
      */
-    public List<SysPermission> listAllComponent(List<String> roleIds) {
+    public List<SysPermission> listComponentByType(List<String> roleIds, Integer... types) {
         if (Colls.isEmpty(roleIds)) {
             return Collections.emptyList();
         }
         return sqlHelper().select().from(SysPermission.class)
                 .where(w -> w
-                        .in(SysPermission::getPermissionType, 3, 4, 5, 6)
+                        .in(SysPermission::getPermissionType, types)
                         .in(
                                 SysPermission::getId,
                                 sqlHelper().distinct().select(SysRolePermission::getPermissionId)

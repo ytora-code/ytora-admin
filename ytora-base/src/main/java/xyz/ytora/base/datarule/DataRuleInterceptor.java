@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import xyz.ytora.base.auth.LoginUser;
 import xyz.ytora.base.scope.ScopedValueItem;
 import xyz.ytora.sql4j.core.SQLHelper;
-import xyz.ytora.sql4j.func.support.Raw;
 import xyz.ytora.sql4j.interceptor.SqlInterceptorAdapter;
 import xyz.ytora.sql4j.sql.SqlBuilder;
 import xyz.ytora.sql4j.sql.select.SelectBuilder;
@@ -46,7 +45,6 @@ public class DataRuleInterceptor extends SqlInterceptorAdapter {
                 }
             } catch (Exception e) {
                 // 当前上下文没有数据权限注解
-                System.out.println(e.getMessage());
             }
 
             return selectBuilder;

@@ -46,9 +46,33 @@ public class SysPermissionLogic extends BaseLogic<SysPermission, SysPermissionRe
     /**
      * 获取指定角色的组件
      */
-    public List<SysPermissionResp> listAllComponent(List<String> roleIds) {
-        List<SysPermission> table = repository.listAllComponent(roleIds);
-        return Trees.toTree(table.stream().map(SysPermission::toResp).toList());
+    public SysPermissionTypeResp listAllComponent(List<String> roleIds) {
+        // 获取所有页面元素
+        List<SysPermission> componentList = repository.listComponentByType(roleIds, 3, 4, 5);
+        List<SysPermissionResp> allPermissions = componentList.stream().map(SysPermission::toResp).toList();
+
+        // 基础组件元素，包括一些独立的按钮，输入框等组件
+        // 这里得到的 items 包含了全部的基础组件，只需要单独的组件元素，依附于table、form的组件需要在下面 findPermissionChildren 里进一步排除
+        List<SysPermissionResp> items = new ArrayList<>(allPermissions.stream().filter(i -> i.getPermissionType() == 3).toList());
+
+        // 表格
+        List<SysPermissionResp> tables = allPermissions.stream().filter(i -> i.getPermissionType() == 4).toList();
+        for (SysPermissionResp table : tables) {
+            table.setChildren(findPermissionChildren(table, allPermissions, items));
+        }
+
+        // 表单
+        List<SysPermissionResp> forms = allPermissions.stream().filter(i -> i.getPermissionType() == 5).toList();
+        for (SysPermissionResp form : forms) {
+            form.setChildren(findPermissionChildren(form, allPermissions, items));
+        }
+
+        // TODO 将来可能引入其他组件类型
+        SysPermissionTypeResp permissionType = new SysPermissionTypeResp();
+        permissionType.setTables(tables);
+        permissionType.setForms(forms);
+        permissionType.setItems(items);
+        return permissionType;
     }
 
     public List<SysPermissionResp> tree(String permissionName) {
@@ -221,5 +245,22 @@ public class SysPermissionLogic extends BaseLogic<SysPermission, SysPermissionRe
                                     .in(SysRoleDataRule::getRuleId, removeIds)
                     ).submit();
         }
+    }
+
+    /**
+     * 从 allPermissions 中收集 permission 的子数据
+     * 同时移除 items 里面依附于 table、form 的零散元素
+     */
+    private List<SysPermissionResp> findPermissionChildren(SysPermissionResp permission, List<SysPermissionResp> allPermissions, List<SysPermissionResp> items) {
+        List<SysPermissionResp> children = allPermissions.stream().filter(item -> item.getPid().equals(permission.getId())).toList();
+        if (Colls.isEmpty(children)) {
+            return null;
+        }
+        for (SysPermissionResp child : children) {
+            items.remove(child);
+            child.setChildren(findPermissionChildren(child, allPermissions, items));
+        }
+        permission.setChildren(children);
+        return children;
     }
 }

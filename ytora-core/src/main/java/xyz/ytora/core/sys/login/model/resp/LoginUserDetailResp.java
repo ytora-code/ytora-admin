@@ -75,8 +75,21 @@ public class LoginUserDetailResp {
     private List<SysPermissionResp> menus;
 
     /**
-     * 该用户拥有页面组件
+     * 该用户拥有 TABLE 组件
      */
-    @Schema(name = "该用户拥有页面组件")
-    private List<SysPermissionResp> components;
+    @Schema(name = "该用户拥有 TABLE 组件")
+    private List<SysPermissionResp> tables;
+
+    /**
+     * 该用户拥有 FORM 组件
+     */
+    @Schema(name = "该用户拥有 FORM 组件")
+    private List<SysPermissionResp> forms;
+
+    /**
+     * 该用户拥有其他组件
+     */
+    @Schema(name = "该用户拥有其他组件")
+    private List<SysPermissionResp> items;
+
 }

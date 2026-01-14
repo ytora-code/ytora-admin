@@ -9,11 +9,12 @@ import org.springframework.stereotype.Service;
 import xyz.ytora.base.auth.Identity;
 import xyz.ytora.base.auth.LoginUser;
 import xyz.ytora.base.cache.Caches;
-import xyz.ytora.base.mvc.RespCode;
 import xyz.ytora.base.exception.BaseException;
+import xyz.ytora.base.mvc.RespCode;
 import xyz.ytora.base.scope.ScopedValueItem;
 import xyz.ytora.core.rbac.permission.logic.SysPermissionLogic;
 import xyz.ytora.core.rbac.permission.model.resp.SysPermissionResp;
+import xyz.ytora.core.rbac.permission.model.resp.SysPermissionTypeResp;
 import xyz.ytora.core.rbac.role.logic.SysRoleLogic;
 import xyz.ytora.core.rbac.role.model.entity.SysRole;
 import xyz.ytora.core.rbac.user.model.entity.SysUser;
@@ -115,9 +116,11 @@ public class LoginLogic {
         List<SysPermissionResp> menus = permissionLogic.listAllMenu(roles.stream().map(Entity::getId).toList());
         userDetail.setMenus(menus);
 
-        // step4.查询该用户拥有的页面组件
-        List<SysPermissionResp> components = permissionLogic.listAllComponent(roles.stream().map(Entity::getId).toList());
-        userDetail.setComponents(components);
+        // step4.查询该用户拥有的组件
+        SysPermissionTypeResp permissionType = permissionLogic.listAllComponent(roles.stream().map(Entity::getId).toList());
+        userDetail.setTables(permissionType.getTables());
+        userDetail.setForms(permissionType.getForms());
+        userDetail.setItems(permissionType.getItems());
 
         return userDetail;
     }

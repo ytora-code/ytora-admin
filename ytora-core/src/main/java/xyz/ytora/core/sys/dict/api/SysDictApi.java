@@ -17,13 +17,11 @@ import xyz.ytora.core.sys.dict.model.req.SysDictReq;
 import xyz.ytora.core.sys.dict.model.resp.SysDictItemResp;
 import xyz.ytora.core.sys.dict.model.resp.SysDictResp;
 import xyz.ytora.core.sys.dict.repo.SysDictRepo;
-import xyz.ytora.sql4j.func.support.Raw;
 import xyz.ytora.sql4j.orm.Page;
 import xyz.ytora.sql4j.orm.Pages;
 import xyz.ytora.sql4j.sql.select.SelectBuilder;
 import xyz.ytora.ytool.bean.Beans;
 import xyz.ytora.ytool.document.excel.Excel;
-import xyz.ytora.ytool.str.Strs;
 
 import java.util.Collections;
 import java.util.List;
@@ -80,16 +78,7 @@ public class SysDictApi extends BaseApi<SysDict, SysDictLogic, SysDictRepo> {
     @PostMapping("/insertOrUpdate")
     @Operation(summary = "新增或编辑", description = "新增或编辑")
     public R<String> insertOrUpdate(@RequestBody SysDictReq data) {
-        if (data.getId() == null) {
-            if (Strs.isEmpty(data.getPid())) {
-                data.setPid("0");
-            }
-            repository.insert(data.toEntity());
-        } else {
-            data.setPid(null);
-            data.setType(null);
-            repository.update(data.toEntity(), w -> w.eq(Raw.of("id"), data.getId()));
-        }
+        logic.insertOrUpdate(data);
         return R.success(data.getId() == null ? "新增成功" : "编辑成功");
     }
 

@@ -47,7 +47,7 @@ public class SysDictReq extends BaseReq<SysDict> {
     private Integer index;
 
     /**
-     * 0-字典/1-字典项
+     * 1-字典/2-字典项
      */
     private Integer type;
 
