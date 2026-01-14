@@ -17,6 +17,7 @@ import xyz.ytora.core.sys.dict.model.req.SysDictReq;
 import xyz.ytora.core.sys.dict.model.resp.SysDictItemResp;
 import xyz.ytora.core.sys.dict.model.resp.SysDictResp;
 import xyz.ytora.core.sys.dict.repo.SysDictRepo;
+import xyz.ytora.sql4j.core.SQLHelper;
 import xyz.ytora.sql4j.orm.Page;
 import xyz.ytora.sql4j.orm.Pages;
 import xyz.ytora.sql4j.sql.select.SelectBuilder;
@@ -34,6 +35,8 @@ import java.util.List;
 @RequestMapping("/sys/dict")
 @RequiredArgsConstructor
 public class SysDictApi extends BaseApi<SysDict, SysDictLogic, SysDictRepo> {
+
+    private final SQLHelper sqlHelper;
 
     // ============================== CRUD =================================>
 
@@ -59,7 +62,10 @@ public class SysDictApi extends BaseApi<SysDict, SysDictLogic, SysDictRepo> {
     @GetMapping("/listDictItem")
     @Operation(summary = "查询字典项", description = "查询字典项")
     public List<SysDictItemResp> listDictItem(@RequestParam String dictCode) {
-        List<SysDict> list = repository.list(w -> w.eq(SysDict::getDictCode, dictCode).eq(SysDict::getType, 2));
+        SelectBuilder query = query();
+        query.addWhere(w -> w.eq(SysDict::getType, 2));
+        List<SysDict> list = repository.list(query);
+        // List<SysDict> list = repository.list(w -> w.eq(SysDict::getDictCode, dictCode).eq(SysDict::getType, 2));
         return Beans.transBean(list, SysDictItemResp.class);
     }
 

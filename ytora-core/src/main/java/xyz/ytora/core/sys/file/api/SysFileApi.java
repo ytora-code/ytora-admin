@@ -18,11 +18,13 @@ import xyz.ytora.core.sys.file.model.resp.SysFileResp;
 import xyz.ytora.core.sys.file.model.resp.SysFolderResp;
 import xyz.ytora.core.sys.file.resp.SysFileRepo;
 import xyz.ytora.sql4j.core.SQLHelper;
+import xyz.ytora.sql4j.enums.OrderType;
 import xyz.ytora.sql4j.orm.Page;
 import xyz.ytora.sql4j.orm.Pages;
 import xyz.ytora.sql4j.sql.select.SelectBuilder;
 import xyz.ytora.sql4j.util.OrmUtil;
 import xyz.ytora.ytool.str.Strs;
+import xyz.ytora.ytool.tree.Trees;
 
 import java.util.List;
 
@@ -41,11 +43,21 @@ public class SysFileApi extends BaseApi<SysFile, SysFileLogic, SysFileRepo> {
     // ============================== 文件夹 =================================>
 
     /**
+     * 获取所有文件夹的树形数据
+     */
+    @GetMapping("/treeFolder")
+    @Operation(summary = "获取所有文件夹的树形数据", description = "获取所有文件夹的树形数据")
+    public List<SysFolderResp> treeFolder() {
+        List<SysFolder> folders = sqlHelper.select().from(SysFolder.class).orderBy(SysFolder::getCreateTime, OrderType.ASC).submit(SysFolder.class);
+        return Trees.toTree(folders.stream().map(SysFolder::toResp).toList());
+    }
+
+    /**
      * 根据PID获取文件夹
      */
     @GetMapping("/listFolderByPid")
     @Operation(summary = "根据PID获取文件夹", description = "根据PID获取文件夹")
-    public List<SysFolderResp> page(@RequestParam String pid) {
+    public List<SysFolderResp> listFolderByPid(@RequestParam String pid) {
         List<SysFolder> folders = sqlHelper.select().from(SysFolder.class).where(w -> w.eq(SysFolder::getPid, pid)).submit(SysFolder.class);
         return folders.stream().map(SysFolder::toResp).toList();
     }

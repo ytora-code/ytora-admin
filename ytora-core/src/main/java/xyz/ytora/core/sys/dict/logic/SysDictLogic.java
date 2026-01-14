@@ -29,7 +29,7 @@ public class SysDictLogic extends BaseLogic<SysDict, SysDictRepo> {
             repository.insert(data.toEntity());
         } else {
             // 如果修改的是字典，则判断该字典的字典Code有没有被修改，如果Code修改了，则也要将所有字典项的Code同步更改
-            if (data.getType() == 1) {
+            if (data.getType() != null && data.getType() == 1) {
                 SysDict dict = repository.one(w -> w.eq(Raw.of("id"), data.getId()));
                 if (dict != null && !dict.getDictCode().equals(data.getDictCode())) {
                     // 进入这，说明字典Code变了，修改所有字典的Code
