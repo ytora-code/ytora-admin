@@ -2,6 +2,7 @@ package xyz.ytora.core.sys.file.logic;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.ytora.base.RespUtil;
@@ -28,6 +29,7 @@ import java.io.InputStream;
  * created by YT on 2025/12/28 00:53:05
  * <br/>
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SysFileLogic extends BaseLogic<SysFile, SysFileRepo> {
@@ -68,6 +70,7 @@ public class SysFileLogic extends BaseLogic<SysFile, SysFileRepo> {
     }
 
     public void download(String fileId) {
+        log.info("开始下载");
         SysFile sysFile = repository.one(w -> w.eq(SysFile::getFileId, fileId));
         if (sysFile == null) {
             throw new DownloadException(RespCode.FILE_NOT_FOUND);
@@ -89,6 +92,8 @@ public class SysFileLogic extends BaseLogic<SysFile, SysFileRepo> {
                     .where(w -> w.eq(SysFile::getId, sysFile.getId()));
         } catch (IOException e) {
             throw new BaseException(e);
+        } finally {
+            log.info("下载完毕");
         }
     }
 

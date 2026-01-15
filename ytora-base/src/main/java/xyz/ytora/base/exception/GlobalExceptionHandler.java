@@ -24,14 +24,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NullPointerException.class)
     public R<?> nullPointerExceptionHandler(NullPointerException e) {
-        log.error(e.getMessage(), e);
+        log.error("空指针", e);
         logging(e);
         return R.error(RespCode.NULL_ERROR.code, RespCode.NULL_ERROR.message);
     }
 
     @ExceptionHandler(BaseException.class)
     public R<?> baseExceptionHandler(BaseException e) {
-        log.error(e.getMessage(), e.getCause());
+        log.error("业务异常", e);
         logging(e);
         return R.error(e.getCode(), e.getMessage());
     }

@@ -37,15 +37,27 @@ public class SysFolderResp extends BaseResp<SysFolder> implements ITree<SysFolde
     private Integer depth;
 
     /**
-     * 子文件夹
+     * 类型，1-文件夹/2-文件
      */
     @Index(4)
+    private Integer type;
+
+    /**
+     * 扩展
+     */
+    @Index(5)
+    private String ext;
+
+    /**
+     * 子文件夹
+     */
+    @Index(6)
     private List<SysFolderResp> children;
 
     /**
      * 是否有子节点
      */
-    @Index(5)
+    @Index(7)
     private Boolean isLeaf = false;
 
     @Override

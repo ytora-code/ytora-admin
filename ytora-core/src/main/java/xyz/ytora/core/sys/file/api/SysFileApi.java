@@ -26,6 +26,7 @@ import xyz.ytora.sql4j.util.OrmUtil;
 import xyz.ytora.ytool.str.Strs;
 import xyz.ytora.ytool.tree.Trees;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,8 +59,29 @@ public class SysFileApi extends BaseApi<SysFile, SysFileLogic, SysFileRepo> {
     @GetMapping("/listFolderByPid")
     @Operation(summary = "根据PID获取文件夹", description = "根据PID获取文件夹")
     public List<SysFolderResp> listFolderByPid(@RequestParam String pid) {
+        // 查询文件夹
         List<SysFolder> folders = sqlHelper.select().from(SysFolder.class).where(w -> w.eq(SysFolder::getPid, pid)).submit(SysFolder.class);
-        return folders.stream().map(SysFolder::toResp).toList();
+        List<SysFolderResp> folderRespList = folders.stream().map(SysFolder::toResp).peek(folder -> {
+            folder.setType(1);
+            folder.setIsLeaf(false);
+        }).toList();
+
+        // 查询文件
+        List<SysFile> files = repository.list(w -> w.eq(SysFile::getFolderId, pid));
+        List<SysFolderResp> fileRespList = files.stream().map(file -> {
+            SysFolderResp folder = new SysFolderResp();
+            folder.setId(file.getId());
+            folder.setPath(file.getFileName());
+            folder.setExt(file.getFileType());
+            folder.setType(2);
+            folder.setIsLeaf(true);
+            return folder;
+        }).toList();
+
+        // 合并数据
+        ArrayList<SysFolderResp> all = new ArrayList<>(folderRespList);
+        all.addAll(fileRespList);
+        return all;
     }
 
     /**

@@ -21,6 +21,7 @@ public enum Mimes {
 
     // 二进制与流
     APPLICATION_OCTET_STREAM("application/octet-stream"),
+    APPLICATION_X_MSDOWNLOAD("application/x-msdownload"),
     //非标准的 MIME 类型，最好不用
     APPLICATION_STREAM("application/stream"),
 

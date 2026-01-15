@@ -25,7 +25,7 @@ public class SysFile extends BaseEntity<SysFile> {
     private String fileId;
 
     @Index(2)
-    @Column(comment = "所在文件夹", notNull = true)
+    @Column(comment = "所在文件夹")
     private String folderId;
 
     /**
