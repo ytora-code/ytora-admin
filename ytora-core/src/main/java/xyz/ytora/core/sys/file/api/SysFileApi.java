@@ -22,11 +22,8 @@ import xyz.ytora.sql4j.enums.OrderType;
 import xyz.ytora.sql4j.orm.Page;
 import xyz.ytora.sql4j.orm.Pages;
 import xyz.ytora.sql4j.sql.select.SelectBuilder;
-import xyz.ytora.sql4j.util.OrmUtil;
-import xyz.ytora.ytool.str.Strs;
 import xyz.ytora.ytool.tree.Trees;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,29 +56,7 @@ public class SysFileApi extends BaseApi<SysFile, SysFileLogic, SysFileRepo> {
     @GetMapping("/listFolderByPid")
     @Operation(summary = "根据PID获取文件夹", description = "根据PID获取文件夹")
     public List<SysFolderResp> listFolderByPid(@RequestParam String pid) {
-        // 查询文件夹
-        List<SysFolder> folders = sqlHelper.select().from(SysFolder.class).where(w -> w.eq(SysFolder::getPid, pid)).submit(SysFolder.class);
-        List<SysFolderResp> folderRespList = folders.stream().map(SysFolder::toResp).peek(folder -> {
-            folder.setType(1);
-            folder.setIsLeaf(false);
-        }).toList();
-
-        // 查询文件
-        List<SysFile> files = repository.list(w -> w.eq(SysFile::getFolderId, pid));
-        List<SysFolderResp> fileRespList = files.stream().map(file -> {
-            SysFolderResp folder = new SysFolderResp();
-            folder.setId(file.getId());
-            folder.setPath(file.getFileName());
-            folder.setExt(file.getFileType());
-            folder.setType(2);
-            folder.setIsLeaf(true);
-            return folder;
-        }).toList();
-
-        // 合并数据
-        ArrayList<SysFolderResp> all = new ArrayList<>(folderRespList);
-        all.addAll(fileRespList);
-        return all;
+        return logic.listFolderByPid(pid);
     }
 
     /**
@@ -89,30 +64,8 @@ public class SysFileApi extends BaseApi<SysFile, SysFileLogic, SysFileRepo> {
      */
     @PostMapping("/insertOrUpdateFolder")
     @Operation(summary = "添加或修改文件夹", description = "添加或修改文件夹")
-    public R<String> insertOrUpdateFolder(@RequestBody SysFolderReq param) {
-        // 新增
-        if (Strs.isEmpty(param.getId())) {
-            // 获取上一层级深度
-            int depth;
-            String pid = "0";
-            if (Strs.isNotEmpty(param.getPid())) {
-                List<Integer> depths = sqlHelper.select(SysFolder::getDepth).from(SysFolder.class).where(w -> w.eq(SysFolder::getId, param.getPid())).submit(Integer.class);
-                depth = depths.getFirst();
-                pid = param.getPid();
-            } else {
-                depth = 1;
-            }
-
-            SysFolder entity = param.toEntity();
-            entity.setDepth(depth);
-            entity.setPid(pid);
-            OrmUtil.insert(SysFolder.class, entity);
-        }
-        // 编辑，只能编辑文件夹名称
-        else {
-            sqlHelper.update(SysFolder.class).set(SysFolder::getPath, param.getPath()).where(w -> w.eq(SysFolder::getId, param.getId())).submit();
-        }
-        return R.success("操作成功");
+    public SysFolderResp insertOrUpdateFolder(@RequestBody SysFolderReq data) {
+        return logic.insertOrUpdateFolder(data);
     }
 
     /**
@@ -158,12 +111,14 @@ public class SysFileApi extends BaseApi<SysFile, SysFileLogic, SysFileRepo> {
      */
     @PostMapping("/insertOrUpdate")
     @Operation(summary = "新增或编辑", description = "新增或编辑")
-    public String insertOrUpdate(@RequestBody SysFileReq sysFileReq) {
-        if (sysFileReq.getId() == null) {
-            repository.insert(sysFileReq.toEntity());
+    public String insertOrUpdate(@RequestBody SysFileReq data) {
+        if (data.getId() == null) {
+            repository.insert(data.toEntity());
             return "新增成功";
-        } else {
-            repository.update(sysFileReq.toEntity(), w -> w.eq(SysFileReq::getId, sysFileReq.getId()));
+        }
+        // 只能编辑文件名称
+        else {
+            sqlHelper.update(SysFile.class).set(SysFile::getFileName, data.getFileName()).where(w -> w.eq(SysFile::getId, data.getId())).submit();
             return "编辑成功";
         }
     }
@@ -183,8 +138,8 @@ public class SysFileApi extends BaseApi<SysFile, SysFileLogic, SysFileRepo> {
      */
     @PostMapping("upload")
     @Operation(summary = "上传文件", description = "上传文件")
-    public String upload(@RequestPart MultipartFile file) {
-        return logic.upload(file);
+    public SysFileResp upload(@RequestPart MultipartFile file, String folderId) {
+        return logic.upload(file, folderId);
     }
 
     /**

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.BaseEntity;
 import xyz.ytora.base.mvc.BaseReq;
+import xyz.ytora.core.sys.file.model.SysFileMapper;
 import xyz.ytora.core.sys.file.model.entity.SysFolder;
 import xyz.ytora.core.sys.file.model.resp.SysFolderResp;
 import xyz.ytora.sql4j.anno.Column;
@@ -42,6 +43,11 @@ public class SysFolderReq extends BaseReq<SysFolder> {
 
     @Override
     public SysFolder toEntity() {
-        return null;
+        SysFolder  sysFolder = new SysFolder();
+        sysFolder.setId(id);
+        sysFolder.setPid(pid);
+        sysFolder.setPath(path);
+        sysFolder.setDepth(depth);
+        return sysFolder;
     }
 }

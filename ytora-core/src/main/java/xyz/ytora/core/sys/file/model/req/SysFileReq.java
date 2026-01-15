@@ -6,6 +6,8 @@ import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.BaseReq;
 import xyz.ytora.core.sys.file.model.SysFileMapper;
 import xyz.ytora.core.sys.file.model.entity.SysFile;
+import xyz.ytora.sql4j.anno.Column;
+import xyz.ytora.ytool.anno.Index;
 
 /**
  * 系统文件表请求数据
@@ -20,6 +22,12 @@ public class SysFileReq extends BaseReq<SysFile> {
      */
     @Schema(description = "文件id")
     private String fileId;
+
+    /**
+     * 文件夹id
+     */
+    @Schema(description = "文件夹id")
+    private String folderId;
 
     /**
      * 原始文件名称
