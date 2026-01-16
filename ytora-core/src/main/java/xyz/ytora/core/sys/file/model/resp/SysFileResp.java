@@ -43,6 +43,11 @@ public class SysFileResp extends BaseResp<SysFile> {
      */
     private Integer downloadCount;
 
+    /**
+     * 对应的磁盘上的文件是否存在
+     */
+    private Boolean fileExist;
+
     @Override
     public BaseExcel<SysFile> toExcel() {
         return null;

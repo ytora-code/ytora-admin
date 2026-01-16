@@ -40,6 +40,12 @@ public class StorageException extends RuntimeException {
         this.throwable = cause;
     }
 
+    public StorageException(String message, Throwable cause) {
+        super(message, cause);
+        this.message = message;
+        this.throwable = cause;
+    }
+
 
     @Override
     public String toString() {

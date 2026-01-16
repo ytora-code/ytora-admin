@@ -99,11 +99,7 @@ public class SysFileApi extends BaseApi<SysFile, SysFileLogic, SysFileRepo> {
     @GetMapping("/queryById")
     @Operation(summary = "根据ID查询", description = "根据ID查询")
     public SysFileResp queryById(@RequestParam String id) {
-        SysFile entity = repository.one(w -> w.eq(SysFileReq::getId, id));
-        if (entity == null) {
-            return null;
-        }
-        return entity.toResp();
+        return logic.queryById(id);
     }
 
     /**
@@ -112,15 +108,8 @@ public class SysFileApi extends BaseApi<SysFile, SysFileLogic, SysFileRepo> {
     @PostMapping("/insertOrUpdate")
     @Operation(summary = "新增或编辑", description = "新增或编辑")
     public String insertOrUpdate(@RequestBody SysFileReq data) {
-        if (data.getId() == null) {
-            repository.insert(data.toEntity());
-            return "新增成功";
-        }
-        // 只能编辑文件名称
-        else {
-            sqlHelper.update(SysFile.class).set(SysFile::getFileName, data.getFileName()).where(w -> w.eq(SysFile::getId, data.getId())).submit();
-            return "编辑成功";
-        }
+        logic.insertOrUpdate(data);
+        return data.getId() == null ? "新增成功" : "编辑成功";
     }
 
     /**

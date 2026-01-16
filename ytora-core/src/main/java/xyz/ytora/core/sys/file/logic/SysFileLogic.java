@@ -4,25 +4,25 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.ytora.base.RespUtil;
 import xyz.ytora.base.download.Mimes;
 import xyz.ytora.base.exception.BaseException;
 import xyz.ytora.base.exception.DownloadException;
-import xyz.ytora.base.mvc.BaseApi;
 import xyz.ytora.base.mvc.BaseLogic;
 import xyz.ytora.base.mvc.RespCode;
 import xyz.ytora.base.scope.ScopedValueItem;
 import xyz.ytora.base.storage.IFileStorageService;
 import xyz.ytora.core.sys.file.model.entity.SysFile;
 import xyz.ytora.core.sys.file.model.entity.SysFolder;
+import xyz.ytora.core.sys.file.model.req.SysFileReq;
 import xyz.ytora.core.sys.file.model.req.SysFolderReq;
 import xyz.ytora.core.sys.file.model.resp.SysFileResp;
 import xyz.ytora.core.sys.file.model.resp.SysFolderResp;
 import xyz.ytora.core.sys.file.resp.SysFileRepo;
 import xyz.ytora.sql4j.core.SQLHelper;
-import xyz.ytora.sql4j.sql.ConditionExpressionBuilder;
-import xyz.ytora.sql4j.sql.select.SelectBuilder;
+import xyz.ytora.sql4j.enums.OrderType;
 import xyz.ytora.sql4j.util.OrmUtil;
 import xyz.ytora.ytool.io.Ios;
 import xyz.ytora.ytool.str.Strs;
@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -54,14 +55,14 @@ public class SysFileLogic extends BaseLogic<SysFile, SysFileRepo> {
      */
     public List<SysFolderResp> listFolderByPid(String pid) {
         // 查询文件夹
-        List<SysFolder> folders = sqlHelper.select().from(SysFolder.class).where(w -> w.eq(SysFolder::getPid, pid)).submit(SysFolder.class);
+        List<SysFolder> folders = sqlHelper.select().from(SysFolder.class).where(w -> w.eq(SysFolder::getPid, pid)).orderBy(SysFolder::getId, OrderType.ASC).submit(SysFolder.class);
         List<SysFolderResp> folderRespList = folders.stream().map(SysFolder::toResp).peek(folder -> {
             folder.setType(1);
             folder.setIsLeaf(false);
         }).toList();
 
         // 查询文件
-        List<SysFile> files = repository.list(w -> w.eq(SysFile::getFolderId, pid));
+        List<SysFile> files = sqlHelper.select().from(SysFile.class).where(w -> w.eq(SysFile::getFolderId, pid)).orderBy(SysFile::getId, OrderType.ASC).submit(SysFile.class);
         List<SysFolderResp> fileRespList = files.stream().map(file -> {
             SysFolderResp folder = new SysFolderResp();
             folder.setId(file.getId());
@@ -82,25 +83,29 @@ public class SysFileLogic extends BaseLogic<SysFile, SysFileRepo> {
      * 添加或修改文件夹
      */
     public SysFolderResp insertOrUpdateFolder(SysFolderReq data) {
-        // 校验
+        // 校验同级文件夹下是否有重名的子文件夹
+        if (Strs.isEmpty(data.getPid())) {
+            data.setPid("0");
+        }
+        List<Map<String, Object>> count = sqlHelper.select(SysFolder::getId).from(SysFolder.class)
+                .where(w -> w.eq(SysFolder::getPid, data.getPid()).eq(SysFolder::getPath, data.getPath())).submit();
+        if (!count.isEmpty()) {
+            throw new BaseException("禁止重名的文件夹!");
+        }
+
+        // 校验文件夹名称有消息
         validateFolderName(data.getPath());
 
         // 新增
         if (Strs.isEmpty(data.getId())) {
             // 获取上一层级深度
             int depth;
-            String pid = "0";
-            if (Strs.isNotEmpty(data.getPid())) {
-                List<Integer> depths = sqlHelper.select(SysFolder::getDepth).from(SysFolder.class).where(w -> w.eq(SysFolder::getId, data.getPid())).submit(Integer.class);
-                depth = depths.isEmpty() ? 0 : depths.getFirst();
-                pid = data.getPid();
-            } else {
-                depth = 0;
-            }
+            List<Integer> depths = sqlHelper.select(SysFolder::getDepth).from(SysFolder.class).where(w -> w.eq(SysFolder::getId, data.getPid())).submit(Integer.class);
+            depth = depths.isEmpty() ? 0 : depths.getFirst();
 
             SysFolder entity = data.toEntity();
             entity.setDepth(depth);
-            entity.setPid(pid);
+            entity.setPid(data.getPid());
             OrmUtil.insert(SysFolder.class, entity);
             return entity.toResp();
         }
@@ -117,12 +122,52 @@ public class SysFileLogic extends BaseLogic<SysFile, SysFileRepo> {
         }
     }
 
-    public void delete(String id) {
-        SelectBuilder selectBuilder = BaseApi.query();
-        ConditionExpressionBuilder where = selectBuilder.getWhereStage().getWhere();
-        if (Strs.isNotEmpty(where.build())) {
-            repository.delete(where);
+    /**
+     * 根据ID查询
+     */
+    public SysFileResp queryById(String id) {
+        SysFile entity = repository.one(w -> w.eq(SysFileReq::getId, id));
+        if (entity == null) {
+            throw new BaseException("文件[" + id + "]不存在");
         }
+        SysFileResp resp = entity.toResp();
+        resp.setFileExist(fileStorageService.exist(entity.getFileId()));
+        return resp;
+    }
+
+    /**
+     * 新增或编辑文件
+     */
+    public void insertOrUpdate(SysFileReq data) {
+        // 校验所属文件夹下是否有重名的文件
+        List<Map<String, Object>> count = sqlHelper.select(SysFile::getId).from(SysFile.class)
+                .where(w -> w.eq(SysFile::getFolderId, data.getFolderId()).eq(SysFile::getFileName, data.getFileName())).submit();
+        if (!count.isEmpty()) {
+            throw new BaseException("禁止重名的文件!");
+        }
+
+        if (data.getId() == null) {
+            repository.insert(data.toEntity());
+        }
+        // 只能编辑文件名称
+        else {
+            sqlHelper.update(SysFile.class).set(SysFile::getFileName, data.getFileName()).where(w -> w.eq(SysFile::getId, data.getId())).submit();
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(String id) {
+        // 获取数据库文件信息
+        SysFile file = repository.one(w -> w.eq(SysFile::getId, id));
+        if (file == null) {
+            throw new BaseException("文件在数据库中不存在");
+        }
+
+        // 删除磁盘文件
+        fileStorageService.remove(file.getFileId());
+
+        // 删除数据库
+        repository.delete(w -> w.eq(SysFile::getId, id));
     }
 
     public SysFileResp upload(MultipartFile file, String folderId) {
@@ -170,7 +215,8 @@ public class SysFileLogic extends BaseLogic<SysFile, SysFileRepo> {
 
             sqlHelper.update(SysFile.class)
                     .set(SysFile::getDownloadCount, sysFile.getDownloadCount() + 1)
-                    .where(w -> w.eq(SysFile::getId, sysFile.getId()));
+                    .where(w -> w.eq(SysFile::getId, sysFile.getId()))
+                    .submit();
         } catch (IOException e) {
             throw new BaseException(e);
         } finally {
@@ -210,5 +256,6 @@ public class SysFileLogic extends BaseLogic<SysFile, SysFileRepo> {
             }
         }
     }
+
 
 }

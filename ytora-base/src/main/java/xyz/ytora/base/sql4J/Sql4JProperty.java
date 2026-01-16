@@ -68,7 +68,7 @@ public class Sql4JProperty {
     /**
      * 多数据源
      */
-    private Map<String, DataSourceProperties> dynamicDs;
+    private Map<String, CustomerDataSourceProperties> dynamicDs;
 
     /**
      * 数据库连接池参数
@@ -78,7 +78,7 @@ public class Sql4JProperty {
     /**
      * 获取多数据源
      */
-    public Map<String, DataSourceProperties> getDynamicDs() {
+    public Map<String, CustomerDataSourceProperties> getDynamicDs() {
         if (dynamicDs == null) {
             throw new IllegalArgumentException("多数据源列表为空");
         }
@@ -88,7 +88,7 @@ public class Sql4JProperty {
     /**
      * 设置多数据源
      */
-    public void setMultipleDatasource(Map<String, DataSourceProperties> dynamicDs) {
+    public void setMultipleDatasource(Map<String, CustomerDataSourceProperties> dynamicDs) {
         if (!dynamicDs.containsKey(PRIMARY_KEY)) {
             throw new IllegalArgumentException("多数据源必须要有一个名称为【" + PRIMARY_KEY + "】的数据源作为主数据");
         }

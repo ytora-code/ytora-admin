@@ -29,6 +29,7 @@ ytora:
       local: xyz.ytora.base.cache.support.local.CacheByLocal
   storage:
     type: xyz.ytora.base.storage.support.LocalFileStorageServiceImpl
+    strategy: xyz.ytora.base.storage.strategy.Murmur3_128StrategyImpl
     max: 100MB
     path: "file-storage/"
   sql4j:
@@ -39,9 +40,16 @@ ytora:
     create-table-if-not-exist: true
     dynamic-ds:
       primary:
-        #连接基本信息
+        desc: '主业务库'
         driver-class-name: org.postgresql.Driver
         url: jdbc:postgresql://localhost:5432/ytora?currentSchema=ytora&ssl=false&stringtype=unspecified
         username: ytora
+        password: 220600
+        type: com.zaxxer.hikari.HikariDataSource
+      test:
+        desc: '测试库'
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://localhost:5432/postgres?currentSchema=public&ssl=false&stringtype=unspecified
+        username: root
         password: 220600
         type: com.zaxxer.hikari.HikariDataSource

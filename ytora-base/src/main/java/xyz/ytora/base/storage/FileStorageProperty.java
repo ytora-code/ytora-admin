@@ -18,6 +18,11 @@ public class FileStorageProperty {
     private Class<? extends IFileStorageService> type;
 
     /**
+     * 文件桶产生策略
+     */
+    private Class<? extends IBucketStrategy> strategy;
+
+    /**
      * 文件最大上传的字节数(byte)
      */
     private String max;

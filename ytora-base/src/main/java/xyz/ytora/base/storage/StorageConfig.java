@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import xyz.ytora.base.storage.support.LocalFileStorageServiceImpl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 /**
@@ -15,9 +16,13 @@ import java.util.Map;
 public class StorageConfig {
 
     @Bean
-    public IFileStorageService create(FileStorageProperty fileStorageProperty) {
-        LocalFileStorageServiceImpl localFileStorageService = new LocalFileStorageServiceImpl(fileStorageProperty.getPath());
-        return localFileStorageService;
+    public IFileStorageService create(FileStorageProperty fileStorageProperty) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        Class<? extends IBucketStrategy> strategy = fileStorageProperty.getStrategy();
+        if (strategy == null) {
+            throw new IllegalArgumentException("必须指定文件模块的桶策略");
+        }
+        IBucketStrategy strategyImpl = strategy.getConstructor().newInstance();
+        return new LocalFileStorageServiceImpl(fileStorageProperty.getPath(), strategyImpl);
     }
 
 }

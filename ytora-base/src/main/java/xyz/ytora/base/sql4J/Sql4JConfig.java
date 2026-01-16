@@ -20,6 +20,7 @@ import xyz.ytora.sql4j.core.SQLHelper;
 import xyz.ytora.sql4j.enums.DbType;
 import xyz.ytora.sql4j.interceptor.SqlInterceptor;
 import xyz.ytora.sql4j.log.ISqlLogger;
+import xyz.ytora.sql4j.meta.IMetaService;
 import xyz.ytora.sql4j.orm.creator.TableCreatorManager;
 import xyz.ytora.sql4j.orm.scanner.EntityScanner;
 import xyz.ytora.sql4j.translate.ITranslator;
@@ -160,6 +161,13 @@ public class Sql4JConfig {
         return sqlHelper;
     }
 
+    /**
+     * 数据库元数据服务
+     */
+    @Bean
+    public IMetaService metaService(SQLHelper sqlHelper) {
+        return sqlHelper.getMetaService();
+    }
 
     /**
      * 根据DataSourceProperties判断应该创建什么类型的数据库连接池
