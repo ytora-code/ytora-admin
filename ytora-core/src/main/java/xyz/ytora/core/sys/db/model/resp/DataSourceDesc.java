@@ -2,7 +2,6 @@ package xyz.ytora.core.sys.db.model.resp;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import xyz.ytora.sql4j.enums.DbType;
 
 /**
  * created by YT on 2026/1/17 02:41:19
@@ -25,7 +24,7 @@ public class DataSourceDesc {
     private String dbType;
 
     @Schema(description = "当前数据源连接的数据库")
-    private String database;
+    private String catalog;
 
     @Schema(description = "当前数据源连接的schema")
     private String schema;

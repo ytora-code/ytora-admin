@@ -42,7 +42,7 @@ public class Sql4JRepoRegistrar implements BeanDefinitionRegistryPostProcessor, 
         // 3. 循环注册为 FactoryBean
         for (Class<?> clazz : interfaces) {
             BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(Sql4JRepoFactoryBean.class);
-            // !关键：使用构造函数注入，确保类型元数据第一时间被注入，如果使用属性依赖注入，可能会报错
+            // !使用构造函数注入，确保类型元数据第一时间被注入，如果使用属性依赖注入，可能会报错
             builder.addConstructorArgValue(clazz);
             builder.addConstructorArgValue(repoPath);
 //            builder.addPropertyValue("repoInterface", clazz);
