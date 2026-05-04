@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>xyz.ytora</groupId>
+    <artifactId>ytora-admin</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <name>ytora-admin</name>
+    <description>通用后台管理系统父工程，统一管理模块版本、构建插件、编码规范和基础技术栈。</description>
+
+    <modules>
+        <module>ytora-base</module>
+        <module>ytora-core</module>
+        <module>ytora-system</module>
+    </modules>
+
+    <properties>
+        <!-- 项目统一版本号；所有子模块默认继承该版本。 -->
+        <revision>1.0</revision>
+        <!--项目名称-->
+        <project.name>ytora-admin</project.name>
+        <!-- Java 语言版本；编译插件、环境检查插件都会引用该值。 -->
+        <java.version>25</java.version>
+        <!-- Maven 最低版本要求；用于 enforcer 插件校验构建环境。 -->
+        <maven.version>3.9.0</maven.version>
+        <!-- 源码和资源文件的默认编码；防止中文源码、配置文件在不同环境下乱码。 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Maven 报告输出编码；用于测试报告、站点报告等输出内容。 -->
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- javac release 参数；控制编译产物面向的 Java 平台版本。 -->
+        <maven.compiler.release>${java.version}</maven.compiler.release>
+
+        <!-- Spring Boot 依赖 BOM 版本；统一管理 Spring、Jackson、Tomcat、JUnit 等生态依赖版本。 -->
+        <spring-boot.version>3.5.14</spring-boot.version>
+
+        <!-- postgresql数据库驱动版本。 -->
+        <postgresql.version>42.7.11</postgresql.version>
+        <!-- Knife4j 版本；用于提供增强版接口文档 UI。官方 com.github.xiaoymin 最新正式版为 4.5.0。 -->
+        <knife4j.version>4.5.0</knife4j.version>
+        <!-- Tomcat 版本；覆盖 Spring Boot 3.5.13 默认的 10.1.53，修复 Tomcat 10.1.54 已修复的安全问题。 -->
+        <tomcat.version>10.1.54</tomcat.version>
+        <!-- 工具类版本。 -->
+        <toolkit.version>1.0</toolkit.version>
+        <!-- guava版本。 -->
+        <guava.version>33.2.1-jre</guava.version>
+        <!-- CAFFEINE版本。 -->
+        <caffeine.version>3.2.2</caffeine.version>
+        <!-- Sqlux版本。 -->
+        <sqlux.version>1.0</sqlux.version>
+        <!-- 计算机监控依赖。 -->
+        <oshi.version>6.6.5</oshi.version>
+        <!-- Apache Commons Lang 版本；3.18.0 修复 CVE-2025-48924。 -->
+        <commons-lang3.version>3.18.0</commons-lang3.version>
+        <!-- MapStruct 版本；用于 DTO、VO、Entity 等对象之间的编译期类型转换。 -->
+        <mapstruct.version>1.6.3</mapstruct.version>
+        <!-- Lombok 版本；用于编译期生成 getter/setter、构造器、builder 等样板代码。 -->
+        <lombok.version>1.18.44</lombok.version>
+        <!-- Lombok 与 MapStruct 协同处理版本；解决 Lombok 生成代码后 MapStruct 无法正确识别的问题。 -->
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <!-- Maven 编译插件版本；负责编译 Java 源码。 -->
+        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+        <!-- Maven 资源插件版本；负责复制、过滤 src/main/resources 等资源文件。 -->
+        <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+        <!-- Maven 单元测试插件版本；负责运行 *Test 等单元测试。 -->
+        <maven-surefire-plugin.version>3.5.5</maven-surefire-plugin.version>
+        <!-- Maven 集成测试插件版本；负责运行 *IT 等集成测试。 -->
+        <maven-failsafe-plugin.version>3.5.5</maven-failsafe-plugin.version>
+        <!-- Maven 环境约束插件版本；用于校验 Java、Maven 等构建环境是否符合要求。 -->
+        <maven-enforcer-plugin.version>3.6.2</maven-enforcer-plugin.version>
+        <!-- Maven POM 扁平化插件版本；用于把 ${revision} 等 CI 友好变量解析到发布用 POM。 -->
+        <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
+        <!-- Spring Boot 打包插件版本；只由最终启动模块 ytora-system 使用。 -->
+        <spring-boot-maven-plugin.version>${spring-boot.version}</spring-boot-maven-plugin.version>
+    </properties>
+
+    <!--
+        依赖版本管理。
+        注意：dependencyManagement 只声明版本，不会自动把依赖加入项目。
+        子模块需要使用某个依赖时，仍然要在自己的 dependencies 中显式声明。
+    -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- Spring Boot 官方 BOM；统一约束 Spring Boot 生态和大量常用第三方库版本。 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Tomcat 嵌入式组件；显式覆盖 Spring Boot 3.5.13 默认版本，处理安全扫描告警。 -->
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-core</artifactId>
+                <version>${tomcat.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-el</artifactId>
+                <version>${tomcat.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-websocket</artifactId>
+                <version>${tomcat.version}</version>
+            </dependency>
+            <!-- Apache Commons Lang；覆盖 Knife4j/Springdoc/Swagger 传递进来的旧版本。 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+
+            <!-- 项目内部模块版本；子模块互相依赖时不需要重复写 version。 -->
+            <dependency>
+                <groupId>xyz.ytora</groupId>
+                <artifactId>ytora-base</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>xyz.ytora</groupId>
+                <artifactId>ytora-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>xyz.ytora</groupId>
+                <artifactId>ytora-toolkit</artifactId>
+                <version>${toolkit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>xyz.ytora</groupId>
+                <artifactId>ytora-sqlux</artifactId>
+                <version>${sqlux.version}</version>
+            </dependency>
+
+            <!-- OSHI -->
+            <dependency>
+                <groupId>com.github.oshi</groupId>
+                <artifactId>oshi-core</artifactId>
+                <version>${oshi.version}</version>
+            </dependency>
+
+            <!-- 数据库驱动 -->
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+            </dependency>
+
+            <!-- guava工具类 -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
+            <!-- 本地缓存 -->
+            <dependency>
+                <groupId>com.github.ben-manes.caffeine</groupId>
+                <artifactId>caffeine</artifactId>
+                <version>${caffeine.version}</version>
+            </dependency>
+
+            <!-- Knife4j OpenAPI3 Jakarta Starter；提供完整 Knife4j 接口文档 UI。 -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <!-- MapStruct 运行期 API；业务代码中声明 Mapper 接口时需要该依赖。 -->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <!-- MapStruct 注解处理器；编译期生成对象转换实现类。 -->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <!-- Lombok 和 MapStruct 绑定器；让 MapStruct 在编译期正确读取 Lombok 生成的 getter/setter。 -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok-mapstruct-binding</artifactId>
+                <version>${lombok-mapstruct-binding.version}</version>
+            </dependency>
+            <!-- Lombok；由父 POM 统一版本，子模块按需以 optional/provided 方式引入。 -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <!--
+            插件版本管理。
+            pluginManagement 只统一插件版本和默认配置，子模块需要执行插件时再按需启用。
+            当前父工程在 build/plugins 中显式启用了 enforcer 和 flatten 两个插件。
+        -->
+        <pluginManagement>
+            <plugins>
+                <!-- maven-compiler-plugin：负责编译 Java 源码，并统一 Java release、编码和参数名保留策略。 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <!-- 编译目标平台版本，等价于 javac 的 release 编译参数。 -->
+                        <release>${maven.compiler.release}</release>
+                        <!-- 编译源码时使用 UTF-8，避免中文注释、字符串在不同系统下乱码。 -->
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <!-- 保留方法参数名，便于 Spring MVC 参数绑定、反射、文档生成等场景使用。 -->
+                        <parameters>true</parameters>
+                        <!-- 统一配置注解处理器，避免每个子模块重复声明 processor 依赖。 -->
+                        <annotationProcessorPaths>
+                            <!-- Lombok 注解处理器：生成 getter/setter、构造器、builder 等代码。 -->
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                            <!-- MapStruct 注解处理器：生成对象转换实现类。 -->
+                            <path>
+                                <groupId>org.mapstruct</groupId>
+                                <artifactId>mapstruct-processor</artifactId>
+                                <version>${mapstruct.version}</version>
+                            </path>
+                            <!-- Lombok 与 MapStruct 绑定器：保证 MapStruct 能识别 Lombok 生成的访问器。 -->
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok-mapstruct-binding</artifactId>
+                                <version>${lombok-mapstruct-binding.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+                <!-- maven-resources-plugin：负责复制资源文件，并按需替换 application 配置中的占位符。 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven-resources-plugin.version}</version>
+                    <configuration>
+                        <!-- 读取和输出资源文件时使用 UTF-8。 -->
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <!-- 禁用 Maven 默认的 ${...} 过滤分隔符，避免和 Spring 配置占位符冲突。 -->
+                        <useDefaultDelimiters>false</useDefaultDelimiters>
+                        <!-- 只允许使用 @xxx@ 形式的 Maven 资源过滤占位符。 -->
+                        <delimiters>
+                            <delimiter>@</delimiter>
+                        </delimiters>
+                        <!-- 以下后缀视为非文本资源，不参与过滤，避免二进制文件被破坏。 -->
+                        <nonFilteredFileExtensions>
+                            <!-- 7z 压缩包。 -->
+                            <nonFilteredFileExtension>7z</nonFilteredFileExtension>
+                            <!-- Word 旧版文档。 -->
+                            <nonFilteredFileExtension>doc</nonFilteredFileExtension>
+                            <!-- Word OOXML 文档。 -->
+                            <nonFilteredFileExtension>docx</nonFilteredFileExtension>
+                            <!-- Web 字体文件。 -->
+                            <nonFilteredFileExtension>eot</nonFilteredFileExtension>
+                            <!-- GIF 图片。 -->
+                            <nonFilteredFileExtension>gif</nonFilteredFileExtension>
+                            <!-- 网站图标文件。 -->
+                            <nonFilteredFileExtension>ico</nonFilteredFileExtension>
+                            <!-- Java 归档文件。 -->
+                            <nonFilteredFileExtension>jar</nonFilteredFileExtension>
+                            <!-- JPEG 图片。 -->
+                            <nonFilteredFileExtension>jpeg</nonFilteredFileExtension>
+                            <!-- JPG 图片。 -->
+                            <nonFilteredFileExtension>jpg</nonFilteredFileExtension>
+                            <!-- OpenType 字体文件。 -->
+                            <nonFilteredFileExtension>otf</nonFilteredFileExtension>
+                            <!-- PDF 文档。 -->
+                            <nonFilteredFileExtension>pdf</nonFilteredFileExtension>
+                            <!-- PNG 图片。 -->
+                            <nonFilteredFileExtension>png</nonFilteredFileExtension>
+                            <!-- RAR 压缩包。 -->
+                            <nonFilteredFileExtension>rar</nonFilteredFileExtension>
+                            <!-- TrueType 字体文件。 -->
+                            <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+                            <!-- WOFF 字体文件。 -->
+                            <nonFilteredFileExtension>woff</nonFilteredFileExtension>
+                            <!-- WOFF2 字体文件。 -->
+                            <nonFilteredFileExtension>woff2</nonFilteredFileExtension>
+                            <!-- Excel 旧版表格。 -->
+                            <nonFilteredFileExtension>xls</nonFilteredFileExtension>
+                            <!-- Excel OOXML 表格。 -->
+                            <nonFilteredFileExtension>xlsx</nonFilteredFileExtension>
+                            <!-- ZIP 压缩包。 -->
+                            <nonFilteredFileExtension>zip</nonFilteredFileExtension>
+                        </nonFilteredFileExtensions>
+                    </configuration>
+                </plugin>
+                <!-- maven-surefire-plugin：负责 test 阶段运行单元测试，例如 XxxTest。 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                    <configuration>
+                        <!-- 测试 JVM 使用 UTF-8，避免测试中的中文断言、日志和资源读取乱码。 -->
+                        <argLine>-Dfile.encoding=${project.build.sourceEncoding}</argLine>
+                    </configuration>
+                </plugin>
+                <!-- maven-failsafe-plugin：负责 integration-test/verify 阶段运行集成测试，例如 XxxIT。 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven-failsafe-plugin.version}</version>
+                    <configuration>
+                        <!-- 集成测试 JVM 使用 UTF-8，保持测试环境编码一致。 -->
+                        <argLine>-Dfile.encoding=${project.build.sourceEncoding}</argLine>
+                    </configuration>
+                </plugin>
+                <!-- maven-enforcer-plugin：在构建早期校验环境，避免 Java/Maven 版本不一致导致隐性问题。 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>${maven-enforcer-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <!-- 执行项 ID，用于标识这组环境检查规则。 -->
+                            <id>enforce-build-environment</id>
+                            <goals>
+                                <!-- enforce 目标会执行下面 rules 中定义的校验规则。 -->
+                                <goal>enforce</goal>
+                            </goals>
+                            <configuration>
+                                <rules>
+                                    <!-- 要求 Maven 版本不低于 maven.version。 -->
+                                    <requireMavenVersion>
+                                        <version>[${maven.version},)</version>
+                                    </requireMavenVersion>
+                                    <!-- 要求 JDK 版本不低于 java.version。 -->
+                                    <requireJavaVersion>
+                                        <version>[${java.version},)</version>
+                                    </requireJavaVersion>
+                                </rules>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- flatten-maven-plugin：生成发布友好的 POM，把 ${revision} 等变量解析为实际版本。 -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>flatten-maven-plugin</artifactId>
+                    <version>${flatten-maven-plugin.version}</version>
+                    <configuration>
+                        <!-- 将扁平化后的 POM 用于 install/deploy，避免发布到仓库的 POM 仍保留 ${revision}。 -->
+                        <updatePomFile>true</updatePomFile>
+                        <!-- 只解析 CI Friendly 版本变量，保留正常的父子模块和依赖管理结构。 -->
+                        <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <!-- 在资源处理阶段生成 .flattened-pom.xml。 -->
+                            <id>flatten</id>
+                            <!-- 绑定到 process-resources 阶段，确保 install/deploy 前已经生成扁平化 POM。 -->
+                            <phase>process-resources</phase>
+                            <goals>
+                                <!-- flatten 目标负责生成扁平化 POM。 -->
+                                <goal>flatten</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <!-- 在 clean 阶段清理 flatten 插件生成的临时文件。 -->
+                            <id>flatten.clean</id>
+                            <!-- 绑定到 clean 阶段。 -->
+                            <phase>clean</phase>
+                            <goals>
+                                <!-- clean 目标负责删除 .flattened-pom.xml 等生成文件。 -->
+                                <goal>clean</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- Spring Boot 打包插件；只在最终启动模块 ytora-system 中启用。 -->
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot-maven-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <!-- 启用 enforcer 插件；父工程和子模块构建时都会执行环境版本检查。 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+            </plugin>
+            <!-- 启用 flatten 插件；用于支持 ${revision} 这种统一版本写法。 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+
+        <resources>
+            <!-- 普通资源目录：默认复制 src/main/resources 下的所有资源，不做占位符替换。 -->
+            <resource>
+                <!-- 标准资源目录。 -->
+                <directory>src/main/resources</directory>
+                <!-- 不过滤，避免图片、模板、证书、SQL 等资源被误替换。 -->
+                <filtering>false</filtering>
+            </resource>
+            <!-- Spring 配置资源目录：只对 application 配置文件启用 Maven 占位符替换。 -->
+            <resource>
+                <!-- 仍然使用标准资源目录。 -->
+                <directory>src/main/resources</directory>
+                <includes>
+                    <!-- 匹配 application.yml、application-dev.yml 等 YAML 配置文件。 -->
+                    <include>application*.yml</include>
+                    <!-- 匹配 application.yaml、application-prod.yaml 等 YAML 配置文件。 -->
+                    <include>application*.yaml</include>
+                    <!-- 匹配 application.properties、application-test.properties 等 properties 配置文件。 -->
+                    <include>application*.properties</include>
+                </includes>
+                <!-- 对上面匹配到的配置文件启用 @xxx@ 占位符替换。 -->
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
+    <!--
+        Maven 构建环境 profile。
+        用法示例：mvn package -Pprod。
+        profile.active 可以在 application*.yml 中通过 @profile.active@ 引用。
+    -->
+    <profiles>
+        <!-- 开发环境 profile，默认激活。 -->
+        <profile>
+            <!-- 开发环境标识。 -->
+            <id>dev</id>
+            <activation>
+                <!-- 不指定 -P 时默认使用 dev。 -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <!-- 当前构建环境名称，可被资源过滤替换到配置文件中。 -->
+                <profile.active>dev</profile.active>
+            </properties>
+        </profile>
+        <!-- 测试环境 profile，使用 mvn package -Ptest 激活。 -->
+        <profile>
+            <!-- 测试环境标识。 -->
+            <id>test</id>
+            <properties>
+                <!-- 当前构建环境名称，可被资源过滤替换到配置文件中。 -->
+                <profile.active>test</profile.active>
+            </properties>
+        </profile>
+        <!-- 生产环境 profile，使用 mvn package -Pprod 激活。 -->
+        <profile>
+            <!-- 生产环境标识。 -->
+            <id>prod</id>
+            <properties>
+                <!-- 当前构建环境名称，可被资源过滤替换到配置文件中。 -->
+                <profile.active>prod</profile.active>
+            </properties>
+        </profile>
+    </profiles>
+</project>

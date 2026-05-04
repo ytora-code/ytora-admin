@@ -1,0 +1,53 @@
+package xyz.ytora.base.listenner;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeansException;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.Environment;
+import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
+
+import java.net.InetAddress;
+
+/**
+ * 描述
+ *
+ * <p>说明</p>
+ *
+ * @author ytora 
+ * @since 1.0
+ */
+@Component
+@ConditionalOnClass(name = "com.github.xiaoymin.knife4j.spring.configuration.Knife4jAutoConfiguration")
+@Slf4j
+public class PrintUrlOnApplicationStarted implements ApplicationRunner, ApplicationContextAware {
+
+    private ConfigurableApplicationContext application;
+
+    @Override
+    public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
+        this.application = (ConfigurableApplicationContext) applicationContext;
+    }
+
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        Environment env = application.getEnvironment();
+        String ip = InetAddress.getLocalHost().getHostAddress();
+        String port = env.getProperty("server.port");
+        String path = env.getProperty("server.servlet.context-path");
+        path = path == null ? "" : path.trim();
+        log.info("\n>----------------------------------------------------------------------------------------------->\n\t" +
+                "项目启动成功! 访问路径:\n\t" +
+                "Local:\t\thttp://localhost:" + port + path + "/\n\t" +
+                "External:\thttp://" + ip + ":" + port + path + "/\n\t" +
+                "Swagger文档: http://" + ip + ":" + port + path + "/doc.html\n\t" +
+                "Druid地址:\thttp://" + ip + ":" + port + path + "/index.html\n" +
+                ">----------------------------------------------------------------------------------------------->");
+    }
+
+}

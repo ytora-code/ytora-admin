@@ -1,0 +1,31 @@
+<configuration xmlns="http://ch.qos.logback/xml/ns/logback"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://ch.qos.logback/xml/ns/logback
+               https://raw.githubusercontent.com/enricopulatzo/logback-XSD/master/src/main/xsd/logback.xsd">
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <appender name="SQL_STUOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!--控制台的SQL日志格式-->
+            <pattern>%highlight(%d{MM月dd日HH:mm:ss}) ${PID} %clr(%-5level) 👉 %boldYellow([%10thread])  %boldCyan(%logger{20}): %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STUOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!--控制台的日志格式-->
+            <pattern>%highlight(%d{MM月dd日HH:mm:ss}) ${PID} %clr(%-5level) 👉 %boldYellow([%10thread])  %boldCyan(%logger{20})::%clr(%-5line){magenta}-> %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--单独设置sql记录器的属性, additivity表示日志是否向上级冒泡-->
+    <logger name="sql" level="DEBUG" additivity="false">
+        <appender-ref ref="SQL_STUOUT" />
+    </logger>
+
+    <!--设置根记录器的属性-->
+    <root level="INFO">
+        <!--开发环境，日志输出到控制台-->
+        <appender-ref ref="STUOUT" />
+    </root>
+</configuration>

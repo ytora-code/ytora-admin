@@ -1,0 +1,60 @@
+server:
+  port: 9876
+  servlet:
+    context-path: /ytora
+spring:
+  servlet:
+    multipart:
+      max-file-size: 2048MB
+      max-request-size: 2048MB
+  aop:
+    proxy-target-class: true
+knife4j:
+  production: false
+  enable: true
+  setting:
+    language: zh_cn
+springdoc:
+  override-with-generic-response: false
+logging:
+  config: classpath:log/logback-dev.xml
+ytora:
+  name: ytora-admin
+  version: @revision@
+  base-package: xyz.ytora.**
+  sse: on
+  auth:
+    enable: true
+    token-invalid-time: 6000
+    allow-credentials: true
+    origins: http://localhost:8765
+  cache:
+    default-cache: local
+    impl:
+      local: xyz.ytora.base.cache.support.local.CacheByLocal
+  storage:
+    type: xyz.ytora.base.storage.support.LocalFileStorageServiceImpl
+    strategy: xyz.ytora.base.storage.strategy.Murmur3_128StrategyImpl
+    max: 100MB
+    path: "file-storage/"
+  sqlux:
+    primary-key: primary
+    slow-sql-threshold: 5000
+    sql-logger-impl: xyz.ytora.core.sqlux.log.Slf4jSqlLogger
+    auto-create-table: true
+    entity-path: xyz.ytora.core.**.entity.*
+    dynamic-ds:
+      primary:
+        desc: '主业务库'
+        url: jdbc:postgresql://localhost:5432/ytora?currentSchema=ytora&ssl=false&stringtype=unspecified
+        username: admin
+        password: 220600
+        driver-class-name: org.postgresql.Driver
+        type: com.zaxxer.hikari.HikariDataSource
+#      test:
+#        desc: '测试库'
+#        url: jdbc:postgresql://localhost:5432/postgres?currentSchema=public&ssl=false&stringtype=unspecified
+#        username: admin
+#        password: 220600
+#        driver-class-name: org.postgresql.Driver
+#        type: com.zaxxer.hikari.HikariDataSource

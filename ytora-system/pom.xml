@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>xyz.ytora</groupId>
+        <artifactId>ytora-admin</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>ytora-system</artifactId>
+    <packaging>jar</packaging>
+
+    <description>启动模块和业务模块，存放用户自己的业务代码。</description>
+
+    <dependencies>
+        <!-- 平台内置业务能力：RBAC、系统管理、监控、代码生成器等。 -->
+        <dependency>
+            <groupId>xyz.ytora</groupId>
+            <artifactId>ytora-core</artifactId>
+        </dependency>
+
+        <!-- 测试依赖：仅 system 模块默认引入，避免 base/core 因测试 starter 带入大量传递依赖。 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <finalName>${project.name}</finalName>
+        <plugins>
+            <!-- Spring Boot 打包插件：后续添加启动类后，用于打可执行 jar。 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- 如果没有该配置，devtools不会生效 -->
+                    <!--<fork>true</fork>-->
+                    <!-- 指定jar包的主清单 -->
+                    <mainClass>xyz.ytora.YtoraApp</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <!-- 使得 mvn package 之后的启动 jar 带上运行依赖 -->
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

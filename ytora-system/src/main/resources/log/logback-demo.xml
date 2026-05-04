@@ -1,0 +1,75 @@
+<configuration xmlns="http://ch.qos.logback/xml/ns/logback"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://ch.qos.logback/xml/ns/logback
+               https://raw.githubusercontent.com/enricopulatzo/logback-XSD/master/src/main/xsd/logback.xsd">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <!--附加器，真正输入日志的组件，有控制台附加器，文件附加器-->
+    <!--这是一个控制台附加器ConsoleAppender-->
+    <appender name="STUOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!--控制台的日志格式-->
+            <pattern>%clr(%d{MM月dd日HH:mm:ss}){faint} %clr(${pid}){blue} %clr(%-5level) 👉 [%10thread] %logger{15}::%line -> %clr(%msg){cyan}%n</pattern>
+        </encoder>
+    </appender>
+    <!--这是一个文件附加器，该附加器只能将全部日志输出到一个文件中，用的较少-->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <encoder>
+            <!--文件里的日志格式-->
+            <pattern>%date %class %line %msg%n</pattern>
+        </encoder>
+        <!--日志文件的路径-->
+        <file>haha.log</file>
+        <!--日志内容为追加-->
+        <append>true</append>
+    </appender>
+    <!--滚动文件附加器，可以将日志文件进行归档管理-->
+    <appender name="ROLL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <!--文件里的日志格式-->
+            <pattern>%date %class %line %msg%n</pattern>
+        </encoder>
+        <!--正在记录的日志文件的路径-->
+        <file>./log/haha.log</file>
+        <!--滚动策略,SizeAndTimeBasedRollingPolicy是基于文件大小和时间进行归档-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--归档后的文件的路径，路径中的日期表示归档频率，如下表示每天归档-->
+            <fileNamePattern>./log/%d{yyyy-MM-dd}/%i.log</fileNamePattern>
+            <!--日志文件大小超过指定值，就会进行归档-->
+            <maxFileSize>10MB</maxFileSize>
+            <!--只保留最近的三天(归档文件路径的日期类型)日志文件-->
+            <maxHistory>3</maxHistory>
+            <!--所有日志文件的总大小，超过指定值后会把旧文件删除-->
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <!--过滤器，根据返回的枚举值决定当前附加器能否输出日志，多个过滤器组成一条执行链-->
+        <!--，DENY(不输出)，ACCEPT(立即输出)，NEUTRAL(中立，将输出日志的决定权交给后面的过滤器，如果该过滤器是最后一个，则不输出)-->
+        <!--可以通过过滤器，对日志进行分组输出-->
+        <!--下面是logback提供的过滤器，级别过滤器-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!--LevelFilter过滤器只有当日志输出级别等于info(level)，就返回ACCEPT(onMatch，表示匹配)，如果不等于，则返回DENY(onMismatch，表示不匹配)-->
+            <level>info</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!--阈值过滤器-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <!--当日志输出级别大于等于info(level)，就匹配，否则不匹配，也可以不写onMatch/onMismatch，过滤器返回什么就是什么    -->
+            <level>info</level>
+        </filter>
+        <!--也可以自定义过滤器-->
+    </appender>
+
+    <!--不管是logger还是root，都是记录器-->
+    <!--设置指定记录器的属性-->
+    <!--当子记录器执行时，其所有上级附加器也会执行，导致输出多条日志，additivity=false表示只输出一条日期-->
+    <!--    <logger name="org.raindrop" level="info" additivity="false">-->
+    <!--        &lt;!&ndash;指定该记录器使用的附加器&ndash;&gt;-->
+    <!--        <appender-ref ref="STUOUT" />-->
+    <!--    </logger>-->
+    <!--设置根记录器的属性-->
+    <root level="INFO">
+        <!--一个记录器，可以有多个附加器-->
+        <appender-ref ref="STUOUT" />
+        <!--        <appender-ref ref="ROLL_FILE" />-->
+    </root>
+</configuration>

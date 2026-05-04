@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ytora Service</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+            "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: linear-gradient(135deg, #eef6ff, #ffffff);
+            color: #1f2937;
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            border: 1px solid #e6f0ff;
+            box-shadow: 0 20px 50px rgba(24, 144, 255, 0.12);
+            padding: 48px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .logo-mark {
+            width: 42px;
+            height: 42px;
+            border-radius: 5px;
+            background: linear-gradient(135deg, #1890ff, #36cfc9);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        h1 {
+            margin: 0 0 12px;
+            font-size: 32px;
+        }
+
+        .desc {
+            margin: 0 0 28px;
+            color: #4b5563;
+            line-height: 1.7;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .feature {
+            padding: 16px;
+            border-radius: 7px;
+            background: #f7fbff;
+            border: 1px solid #e6f2ff;
+        }
+
+        .feature-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1890ff;
+            margin-bottom: 6px;
+        }
+
+        .feature-text {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        /* ===== 按钮区域 ===== */
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #1890ff;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #1677d9;
+        }
+
+        .btn-ghost {
+            background: #f0f7ff;
+            color: #1890ff;
+        }
+
+        .btn-ghost:hover {
+            background: #e6f2ff;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: #6b7280;
+            border-top: 1px solid #eef2f7;
+            padding-top: 16px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+        }
+
+        @media (max-width: 640px) {
+            .card {
+                padding: 28px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="card">
+
+        <div class="logo">
+            <div class="logo-mark">Y</div>
+            <div class="logo-text">Ytora</div>
+        </div>
+
+        <h1>后台服务已启动</h1>
+
+        <p class="desc">
+            若能访问此页面，说明后端服务运行正常。
+        </p>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-title">权限管理</div>
+                <div class="feature-text">用户、角色、菜单、权限统一控制</div>
+            </div>
+            <div class="feature">
+                <div class="feature-title">接口服务</div>
+                <div class="feature-text">标准 REST API 输出</div>
+            </div>
+            <div class="feature">
+                <div class="feature-title">前后端分离</div>
+                <div class="feature-text">支持独立前端系统接入</div>
+            </div>
+            <div class="feature">
+                <div class="feature-title">可扩展架构</div>
+                <div class="feature-text">支持模块化与服务化扩展</div>
+            </div>
+        </div>
+
+        <!-- 操作入口 -->
+        <div class="actions">
+            <a id="doc-link" class="btn btn-primary" target="_blank">接口文档</a>
+            <a href="https://github.com/ytora-code/ytora-admin"
+               target="_blank"
+               class="btn btn-ghost">
+                GitHub
+            </a>
+        </div>
+
+        <div class="footer">
+            <div class="status">
+                <span class="dot"></span>
+                <span>Service Running</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    (function () {
+        const path = window.location.pathname;
+
+        // 去掉最后一级页面名，例如：
+        // /ytora/index.html -> /ytora
+        // /ytora/           -> /ytora
+        // /                 -> ''
+        const contextPath = path
+            .replace(/\/index\.html$/, '')
+            .replace(/\/$/, '');
+
+        document.getElementById('doc-link').href =
+            window.location.origin + contextPath + "/doc.html";
+    })();
+</script>
+
+</body>
+</html>
