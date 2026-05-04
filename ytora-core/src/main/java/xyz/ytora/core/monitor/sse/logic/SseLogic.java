@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import xyz.ytora.base.auth.LoginUser;
-import xyz.ytora.base.mvc.result.R;
 import xyz.ytora.base.scope.ScopedValueContext;
 import xyz.ytora.base.sse.*;
 import xyz.ytora.base.util.HttpUtil;
@@ -15,6 +14,7 @@ import xyz.ytora.core.monitor.sse.model.data.AppSseMetricsData;
 import xyz.ytora.core.monitor.sse.model.data.ClientItem;
 import xyz.ytora.core.monitor.sse.model.data.PushMessageItem;
 import xyz.ytora.core.monitor.sse.model.param.SseSendParam;
+import xyz.ytora.toolkit.text.Strs;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -218,4 +218,22 @@ public class SseLogic {
                 .build();
     }
 
+    /**
+     * SSE客户端订阅事件
+     */
+    public void subscribe(String eventName) {
+        if (Strs.isEmpty(eventName)) {
+            return;
+        }
+        LoginUser loginUser = ScopedValueContext.LOGIN_USER.get();
+        sseRegister.subscribe(loginUser.getUserName(), eventName);
+    }
+
+    /**
+     * SSE客户端取消事件订阅
+     */
+    public void unSubscribe(String eventName) {
+        LoginUser loginUser = ScopedValueContext.LOGIN_USER.get();
+        sseRegister.unSubscribe(loginUser.getUserName(), eventName);
+    }
 }

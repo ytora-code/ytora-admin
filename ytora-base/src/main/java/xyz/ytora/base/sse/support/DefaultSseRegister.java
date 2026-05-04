@@ -6,10 +6,9 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import xyz.ytora.base.scope.ScopedValueContext;
 import xyz.ytora.base.sse.ISseRegister;
 import xyz.ytora.base.sse.SseClientInfo;
+import xyz.ytora.toolkit.text.Strs;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -27,6 +26,11 @@ public class DefaultSseRegister implements ISseRegister {
      * 反向映射：SseEmitter -> ClientId
      */
     private final Map<SseEmitter, String> revertConnectionCache = new ConcurrentHashMap<>();
+
+    /**
+     * 客户端的事件订阅列表
+     */
+    private final Map<String, Set<String>> clientSubscribeList = new ConcurrentHashMap<>();
 
     /**
      * 客户端元信息缓存。
@@ -103,6 +107,20 @@ public class DefaultSseRegister implements ISseRegister {
     }
 
     /**
+     * 获取全订阅了指定事件的sse连接
+     */
+    public List<SseEmitter> getAll(String eventName) {
+        List<SseEmitter> list = new ArrayList<>();
+        for (String clientId : clientSubscribeList.keySet()) {
+            Set<String> eventSet = clientSubscribeList.get(clientId);
+            if (eventSet.contains(eventName)) {
+                list.add(connectionCache.get(clientId));
+            }
+        }
+        return list;
+    }
+
+    /**
      * 获取当前建立SSE连接的数量
      */
     public int size() {
@@ -114,6 +132,21 @@ public class DefaultSseRegister implements ISseRegister {
         return clientInfoCache.values().stream()
                 .sorted((left, right) -> Long.compare(right.connectedAt(), left.connectedAt()))
                 .toList();
+    }
+
+    @Override
+    public void subscribe(String id, String eventName) {
+        if (Strs.isEmpty(eventName)) {
+            return;
+        }
+        Set<String> eventSet = clientSubscribeList.computeIfAbsent(id, k -> new HashSet<>());
+        eventSet.add(eventName);
+    }
+
+    @Override
+    public void unSubscribe(String id, String eventName) {
+        Set<String> eventSet = clientSubscribeList.computeIfAbsent(id, k -> new HashSet<>());
+        eventSet.remove(eventName);
     }
 
     /**

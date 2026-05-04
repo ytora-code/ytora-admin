@@ -22,4 +22,18 @@ public interface ISseRegister {
      * 客户端连接信息列表。
      */
     List<SseClientInfo> listClientInfos();
+
+    /**
+     * 订阅事件
+     * @param id 客户端ID
+     * @param eventName 事件名称
+     */
+    void subscribe(String id, String eventName);
+
+    /**
+     * SSE客户端取消事件订阅
+     * @param id 客户端ID
+     * @param eventName 事件名称
+     */
+    void unSubscribe(String id, String eventName);
 }

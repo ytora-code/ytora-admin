@@ -61,7 +61,7 @@ public class DefaultSseMessagePusher extends DefaultSseRegister implements ISseP
         if (size() == 0) {
             return;
         }
-        List<SseEmitter> sseEmitters = listCandidateSseConnection(message.getTo());
+        List<SseEmitter> sseEmitters = listCandidateSseConnection(message);
         // 如果没有任何SSE连接，则不发送
         if (sseEmitters.isEmpty()) {
             return;
@@ -107,10 +107,11 @@ public class DefaultSseMessagePusher extends DefaultSseRegister implements ISseP
     /**
      * 获取符合条件的SSE连接对象
      */
-    private List<SseEmitter> listCandidateSseConnection(String targetClientId) {
+    private List<SseEmitter> listCandidateSseConnection(SseMessage message) {
+        String targetClientId = message.getTo();
         //如果targetClientId为空，则表示广播消息
         if (Strs.isEmpty(targetClientId)) {
-            return getAll();
+            return getAll(message.getEvent());
         }
 
         //否则给指定的客户端发送消息

@@ -82,4 +82,25 @@ public class SseApi {
     public AppSseMetricsData listClient() {
         return sseLogic.getSseMetrics();
     }
+
+    /**
+     * SSE客户端订阅事件
+     */
+    @GetMapping("/subscribe")
+    @Operation(summary = "SSE客户端订阅事件", description = "SSE客户端订阅事件")
+    public R<?> subscribe(@RequestParam String eventName) {
+        sseLogic.subscribe(eventName);
+        return R.success();
+    }
+
+    /**
+     * SSE客户端取消事件订阅
+     */
+    @GetMapping("/unSubscribe")
+    @Operation(summary = "SSE客户端取消事件订阅", description = "SSE客户端取消事件订阅")
+    public R<?> unSubscribe(@RequestParam String eventName) {
+        sseLogic.unSubscribe(eventName);
+        return R.success();
+    }
+
 }
