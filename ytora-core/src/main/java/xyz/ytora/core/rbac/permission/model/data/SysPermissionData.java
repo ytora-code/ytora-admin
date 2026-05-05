@@ -56,9 +56,9 @@ public class SysPermissionData extends BaseData<SysPermission> implements ITree<
     private String permissionCode;
 
     /**
-     * 资源类型，1-接口、2-页面、3-页面元素
+     * 资源类型，1-接口、2-页面、3-表格、4-表单、5-其他
      */
-    @Schema(description = "资源类型，1-接口、2-页面、3-页面元素")
+    @Schema(description = "资源类型，1-接口、2-页面、3-表格、4-表单、5-其他")
     private Integer permissionType;
 
     /**
@@ -72,12 +72,6 @@ public class SysPermissionData extends BaseData<SysPermission> implements ITree<
      */
     @Schema(description = "图标")
     private String icon;
-
-    /**
-     * 元数据
-     */
-    @Schema(description = "元数据")
-    private SysComponentData meta;
 
     /**
      * 是否可见

@@ -13,7 +13,6 @@ import xyz.ytora.core.rbac.permission.model.entity.SysRolePermission;
 import xyz.ytora.core.rbac.permission.model.param.SysRolePermissionParam;
 import xyz.ytora.core.rbac.permission.repo.SysPermissionRepo;
 import xyz.ytora.toolkit.collection.Colls;
-import xyz.ytora.toolkit.text.Strs;
 import xyz.ytora.toolkit.tree.Trees;
 
 import java.util.ArrayList;
@@ -76,6 +75,7 @@ public class SysPermissionLogic extends BaseLogic<SysPermission, SysPermissionRe
     public List<SysPermissionData> tree(String permissionName) {
         List<SysPermission> list = select(SysPermission.class)
                 .from(SysPermission.class)
+                .where(w -> w.eq(SysPermission::getPermissionType, 2))
                 .orderByAsc(SysPermission::getIndex)
                 .submit(SysPermission.class);
 
@@ -94,7 +94,11 @@ public class SysPermissionLogic extends BaseLogic<SysPermission, SysPermissionRe
      * @return 指定PID下面所有子资源的数据
      */
     public List<SysPermissionData> listByPid(String pid) {
-        List<SysPermission> list = repository.list(w -> w.eq(SysPermission::getPid, pid));
+        List<SysPermission> list = repository
+                .list(w -> w
+                        .eq(SysPermission::getPid, pid)
+                        .eq(SysPermission::getPermissionType, 2)
+                );
         return list.stream().map(SysPermission::toData).toList();
     }
 

@@ -18,4 +18,17 @@ import static xyz.ytora.sqlux.core.SQL.*;
 @AllArgsConstructor
 public class SysConfigLogic extends BaseLogic<SysConfig, SysConfigRepo> {
 
+    public String getConfig(String name, String key) {
+        return getConfig(name, key, null);
+    }
+
+    public String getConfig(String name, String key, String defaultValue) {
+        SysConfig config = repository.one(w -> w
+                .eq(SysConfig::getName, name)
+                .eq(SysConfig::getKey, key).eq(SysConfig::getStatus, true)
+        );
+
+        return config == null ? defaultValue :config.getValue();
+    }
+
 }

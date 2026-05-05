@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.basemodel.BaseParam;
 import xyz.ytora.core.rbac.permission.model.SysPermissionMapper;
-import xyz.ytora.core.rbac.permission.model.data.SysComponentData;
 import xyz.ytora.core.rbac.permission.model.entity.SysPermission;
 
 /**
@@ -67,11 +66,6 @@ public class SysPermissionParam extends BaseParam<SysPermission> {
      * 排序
      */
     private Integer index;
-
-    /**
-     * 元数据
-     */
-    private SysComponentData meta;
 
     @Override
     public SysPermission toEntity() {
