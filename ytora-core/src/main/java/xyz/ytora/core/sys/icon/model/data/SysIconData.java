@@ -7,6 +7,7 @@ import xyz.ytora.base.mvc.basemodel.BaseData;
 import xyz.ytora.core.sys.icon.model.SysIconMapper;
 import xyz.ytora.core.sys.icon.model.entity.SysIcon;
 import xyz.ytora.core.sys.icon.model.excel.SysIconExcel;
+import xyz.ytora.sqlux.core.anno.Column;
 
 /**
  * 系统图标库响应数据
@@ -36,6 +37,24 @@ public class SysIconData extends BaseData<SysIcon> {
      */
     @Schema(description = "图标库类型")
     private String type;
+
+    /**
+     * 宽度
+     */
+    @Schema(description = "宽度")
+    private Integer width;
+
+    /**
+     * 高度
+     */
+    @Schema(description = "高度")
+    private Integer height;
+
+    /**
+     * 图标SVG主体数据
+     */
+    @Schema(description = "图标SVG主体数据")
+    private String body;
 
     @Override
     public SysIconExcel toExcel() {

@@ -38,6 +38,24 @@ public class SysIcon extends BaseEntity<SysIcon> {
     @Column(comment = "图标库类型")
     private String type;
 
+    /**
+     * 宽度
+     */
+    @Column(comment = "宽度")
+    private Integer width;
+
+    /**
+     * 高度
+     */
+    @Column(comment = "高度")
+    private Integer height;
+
+    /**
+     * 图标SVG主体数据
+     */
+    @Column(comment = "图标SVG主体数据")
+    private String body;
+
     @Override
     public SysIconData toData() {
         SysIconMapper mapper = SysIconMapper.mapper;

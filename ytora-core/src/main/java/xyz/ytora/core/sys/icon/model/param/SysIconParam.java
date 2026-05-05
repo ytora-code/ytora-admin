@@ -36,6 +36,24 @@ public class SysIconParam extends BaseParam<SysIcon> {
     @Schema(description = "图标库类型")
     private String type;
 
+    /**
+     * 宽度
+     */
+    @Schema(description = "宽度")
+    private Integer width;
+
+    /**
+     * 高度
+     */
+    @Schema(description = "高度")
+    private Integer height;
+
+    /**
+     * 图标SVG主体数据
+     */
+    @Schema(description = "图标SVG主体数据")
+    private String body;
+
     @Override
     public SysIcon toEntity() {
         SysIconMapper mapper = SysIconMapper.mapper;

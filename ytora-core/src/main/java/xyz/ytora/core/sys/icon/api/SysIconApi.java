@@ -9,11 +9,13 @@ import xyz.ytora.base.exception.BaseException;
 import xyz.ytora.base.mvc.basemodel.BaseApi;
 import xyz.ytora.base.mvc.result.R;
 import xyz.ytora.base.mvc.result.anno.XlsxMapper;
+import xyz.ytora.base.util.Pages;
 import xyz.ytora.core.sys.icon.logic.SysIconLogic;
 import xyz.ytora.core.sys.icon.model.data.SysIconData;
 import xyz.ytora.core.sys.icon.model.entity.SysIcon;
 import xyz.ytora.core.sys.icon.model.excel.SysIconExcel;
 import xyz.ytora.core.sys.icon.model.param.SysIconParam;
+import xyz.ytora.sqlux.orm.Page;
 import xyz.ytora.toolkit.document.excel.Excel;
 
 import java.util.Collections;
@@ -33,9 +35,9 @@ import static xyz.ytora.sqlux.core.SQL.select;
 @RequiredArgsConstructor
 public class SysIconApi extends BaseApi<SysIconLogic> {
 
-    @Operation(summary = "分页查询系统图标库", description = "分页查询系统图标库")
+    @Operation(summary = "全量查询系统图标库", description = "全量查询系统图标库")
     @GetMapping("/list")
-    public List<SysIconData> page(@ParameterObject SysIconParam param) {
+    public List<SysIconData> list(@ParameterObject SysIconParam param) {
         List<SysIcon> list = select()
                 .from(SysIcon.class)
                 .orderByAsc(SysIcon::getCode)
@@ -45,14 +47,21 @@ public class SysIconApi extends BaseApi<SysIconLogic> {
                 .map(SysIcon::toData).toList();
     }
 
-    @Operation(summary = "根据ID查询", description = "根据ID查询")
-    @GetMapping("/queryById")
-    public R<SysIconData> queryById(@RequestParam String id) {
-        SysIcon entity = logic.queryById(id);
-        if (entity == null) {
-            throw new BaseException("id为[" + id + "]的数据不存在");
-        }
-        return R.success(entity.toData());
+    @Operation(summary = "分页查询系统图标库", description = "分页查询系统图标库")
+    @GetMapping("/page")
+    public Page<SysIconData> pageByKey(String key,
+                                       @RequestParam(defaultValue = "1") Integer pageNo,
+                                       @RequestParam(defaultValue = "10") Integer pageSize) {
+        return logic.pageByKey(key, pageNo, pageSize);
+    }
+
+    /**
+     * 根据CODE查询
+     */
+    @Operation(summary = "根据CODE查询", description = "根据CODE查询")
+    @GetMapping("/queryByCode")
+    public SysIconData queryByCode(@RequestParam String code) {
+        return logic.queryByCode(code);
     }
 
     @Operation(summary = "新增或编辑", description = "新增或编辑")
