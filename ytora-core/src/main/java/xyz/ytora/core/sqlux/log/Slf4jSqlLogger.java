@@ -120,7 +120,7 @@ public class Slf4jSqlLogger implements SqlLogger {
 
     private void appendFooter(StringBuilder sb) {
         sb.append(System.lineSeparator())
-                .append("└───────────────────────────────────────────────────────────────────────────");
+                .append("└────────────────────────────────────────────────────────────────────────────────────────────────");
     }
 
     private String formatSqlType(SqlType sqlType) {

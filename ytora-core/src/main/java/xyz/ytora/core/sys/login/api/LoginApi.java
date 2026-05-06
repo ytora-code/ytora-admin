@@ -94,4 +94,13 @@ public class LoginApi {
         return null;
     }
 
+    /**
+     * check
+     */
+    @GetMapping("/check")
+    @Operation(summary = "check接口", description = "测试接口，测试当前会话是否正常")
+    public R<String> check() {
+        return R.success(null, "ok");
+    }
+
 }

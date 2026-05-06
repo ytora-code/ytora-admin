@@ -17,7 +17,7 @@ knife4j:
 springdoc:
   override-with-generic-response: false
 logging:
-  config: classpath:log/logback-dev.xml
+  config: classpath:log/logback-prod.xml
 ytora:
   name: ytora-admin
   version: @revision@

@@ -17,7 +17,7 @@ knife4j:
 springdoc:
   override-with-generic-response: false
 logging:
-  config: classpath:log/logback-dev.xml
+  config: classpath:log/logback-test.xml
 ytora:
   name: ytora-admin
   version: @revision@
@@ -47,7 +47,7 @@ ytora:
       primary:
         desc: '主业务库'
         url: jdbc:postgresql://127.0.0.1:5432/ytora?currentSchema=ytora&ssl=false&stringtype=unspecified
-        username: ytora
+        username: admin
         password: 220600
         driver-class-name: org.postgresql.Driver
         type: com.zaxxer.hikari.HikariDataSource

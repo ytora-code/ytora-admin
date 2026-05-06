@@ -226,10 +226,10 @@ start() {
   info "PID 文件：$PID_FILE"
 
   # 创建日志文件
-  touch "$LOG_FILE"
+  : > "$LOG_FILE"
 
   # 启动服务
-  nohup java $JAVA_OPTS -jar "$jar_path" >> "$LOG_FILE" 2>&1 &
+  nohup java $JAVA_OPTS -jar "$jar_path" > "$LOG_FILE" 2>&1 &
 
   local pid=$!
   echo "$pid" > "$PID_FILE"
@@ -238,7 +238,12 @@ start() {
 
   if kill -0 "$pid" >/dev/null 2>&1; then
     info "服务启动成功，PID：$pid"
-    info "查看日志：tail -f $LOG_FILE"
+    info "查看日志：tail -fn $LOG_FILE"
+
+    echo
+    echo "==================== 当前日志内容 ===================="
+    tail -fn 200 "$LOG_FILE"
+    echo "======================================================"
   else
     error "服务启动失败，请查看日志：$LOG_FILE"
     rm -f "$PID_FILE"

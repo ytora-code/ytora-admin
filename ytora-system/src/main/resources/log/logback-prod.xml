@@ -10,7 +10,7 @@
             <pattern>%d{MM-dd HH:mm:ss} %-5level -> [%10thread] %logger::%-5line-> %msg%n</pattern>
         </encoder>
         <!--正在记录的日志文件的路径-->
-        <file>_info.log</file>
+        <file>./log/info.log</file>
         <append>true</append>
         <!--滚动策略,SizeAndTimeBasedRollingPolicy是基于文件大小和时间进行归档-->
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
@@ -35,7 +35,7 @@
             <pattern>%d{MM-dd HH:mm:ss} %-5level -> [%10thread] %-80logger::%-5line-> %msg%n</pattern>
         </encoder>
         <!--正在记录的日志文件的路径-->
-        <file>_error.log</file>
+        <file>./log/error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!--每天进行归档-->
             <fileNamePattern>./log/%d{yyyy-MM-dd}/error_%i.log</fileNamePattern>
@@ -61,7 +61,7 @@
             <pattern>%d{MM-dd HH:mm:ss} %-5level -> [%10thread] %logger -> %msg%n</pattern>
         </encoder>
         <!--正在记录的日志文件的路径-->
-        <file>_sql.log</file>
+        <file>./log/sql.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!--每天进行归档-->
             <fileNamePattern>./log/%d{yyyy-MM-dd}/sql_%i.log</fileNamePattern>
