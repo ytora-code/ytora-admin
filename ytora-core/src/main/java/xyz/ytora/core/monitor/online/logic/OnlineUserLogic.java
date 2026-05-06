@@ -17,6 +17,8 @@ import xyz.ytora.toolkit.text.Strs;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 在线用户业务逻辑
@@ -31,6 +33,10 @@ public class OnlineUserLogic {
 
     private final Caches caches;
     private final SseLogic sseLogic;
+    /**
+     * 在线用户 username <-> 登录token 的缓存映射
+     */
+    private final Map<String, String> onlineUserTokenCache = new ConcurrentHashMap<>();
 
     /**
      * 分页查询在线用户
@@ -71,13 +77,14 @@ public class OnlineUserLogic {
                 if (Strs.isEmpty(trimToken)) {
                     continue;
                 }
-                String cacheKey = buildTokenCacheKey(trimToken);
+                String cacheKey = Const.LOGIN_TOKEN_PREFIXX.value() + token;
                 if (caches.get(cacheKey) == null) {
                     continue;
                 }
                 LoginUser loginUser = caches.remove(cacheKey);
                 if (loginUser != null) {
-                    sseLogic.send(new SseSendParam("logout", loginUser.getUserName(), "你已被注销"));
+                    sseLogic.send(new SseSendParam("logout", "SYS", loginUser.getUserName(), "你已被注销"));
+                    removeOnlineUserByUserName(loginUser.getUserName());
                 }
                 affectRows++;
             } catch (Exception e) {
@@ -86,6 +93,18 @@ public class OnlineUserLogic {
 
         }
         return affectRows;
+    }
+
+    public void registerOnlineUserTokenCache(String userName, String token) {
+        onlineUserTokenCache.put(userName, token);
+    }
+
+    public String getTokenByUserName(String userName) {
+        return onlineUserTokenCache.get(userName);
+    }
+
+    public void removeOnlineUserByUserName(String userName) {
+        onlineUserTokenCache.remove(userName);
     }
 
     private OnlineUserData toOnlineUserData(String cacheKey) {
@@ -118,10 +137,6 @@ public class OnlineUserLogic {
 
     private String extractToken(String cacheKey) {
         return cacheKey.substring(Const.LOGIN_TOKEN_PREFIXX.value().length());
-    }
-
-    private String buildTokenCacheKey(String token) {
-        return Const.LOGIN_TOKEN_PREFIXX.value() + token;
     }
 
 }

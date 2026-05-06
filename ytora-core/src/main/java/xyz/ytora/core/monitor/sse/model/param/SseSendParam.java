@@ -20,6 +20,11 @@ public class SseSendParam {
     private String eventName;
 
     /**
+     * 消息来源
+     */
+    private String source;
+
+    /**
      * 消息发送给
      */
     private String to;

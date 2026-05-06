@@ -105,9 +105,14 @@ public class SseLogic {
      * @param param 消息参数
      */
     public void send(SseSendParam param) {
-        LoginUser loginUser = ScopedValueContext.LOGIN_USER.get();
+        String source = param.getSource();
+        if (Strs.isEmpty(param.getSource())) {
+            LoginUser loginUser = ScopedValueContext.LOGIN_USER.get();
+            source = loginUser.getUserName();
+        }
+
         SseMessage message = new SseMessage();
-        message.setSource(loginUser.getUserName());
+        message.setSource(source);
         message.setTo(param.getTo());
         message.setEvent(param.getEventName());
         message.setData(param.getMessage());

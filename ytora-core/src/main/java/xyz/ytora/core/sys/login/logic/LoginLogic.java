@@ -14,6 +14,9 @@ import xyz.ytora.base.mvc.enums.Const;
 import xyz.ytora.base.mvc.result.ResultCode;
 import xyz.ytora.base.scope.ScopedValueContext;
 import xyz.ytora.base.util.HttpUtil;
+import xyz.ytora.core.monitor.online.logic.OnlineUserLogic;
+import xyz.ytora.core.monitor.sse.logic.SseLogic;
+import xyz.ytora.core.monitor.sse.model.param.SseSendParam;
 import xyz.ytora.core.rbac.permission.logic.SysPermissionLogic;
 import xyz.ytora.core.rbac.permission.model.data.SysPermissionData;
 import xyz.ytora.core.rbac.permission.model.data.SysPermissionType;
@@ -51,6 +54,8 @@ public class LoginLogic {
     private final SysPermissionLogic permissionLogic;
     private final Identity identity;
     private final SysLogLogic logLogic;
+    private final OnlineUserLogic onlineUserLogic;
+    private final SseLogic sseLogic;
     private final Caches caches;
 
     @Value("${ytora.auth.token-invalid-time}")
@@ -100,6 +105,12 @@ public class LoginLogic {
                 .sameSite("Lax") //防止CSRF，推荐Lax或Strict
                 .build();
         resp.addHeader("Set-Cookie", cookie.toString());
+        // 注销其他登录端账号
+        sseLogic.send(new SseSendParam("logout", "SYS", user.getUserName(), "当前账号已经在其他地方登录"));
+        String existUserToken = onlineUserLogic.getTokenByUserName(user.getUserName());
+        caches.remove(Const.LOGIN_TOKEN_PREFIXX.value() + existUserToken);
+
+        onlineUserLogic.registerOnlineUserTokenCache(user.getUserName(), token);
 
         // 存入缓存
         LoginUser loginUser = new LoginUser();
@@ -138,6 +149,8 @@ public class LoginLogic {
                     .maxAge(0)
                     .build();
             resp.addHeader("Set-Cookie", cookie.toString());
+
+            onlineUserLogic.removeOnlineUserByUserName(userName);
         }
 
         SysLog log = new SysLog();

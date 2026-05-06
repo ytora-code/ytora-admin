@@ -112,6 +112,19 @@ public class SpringDocConfig {
     }
 
     /**
+     * 在线开发分组模块
+     */
+    @Bean
+    public GroupedOpenApi onlineGroup() {
+        return GroupedOpenApi.builder()
+                .group("在线开发")
+                .addOpenApiMethodFilter((e) -> e.isAnnotationPresent(Operation.class))
+                .pathsToMatch("/online/**")
+                .addOperationCustomizer(globalHeaderCustomizer())
+                .build();
+    }
+
+    /**
      * 全局请求头
      */
     @Bean
