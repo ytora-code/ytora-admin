@@ -7,7 +7,7 @@
     <appender name="NORMAL_ROLL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
             <!--文件里的日志格式-->
-            <pattern>%d{MM月dd日HH:mm:ss} ${pid} %-5level -> [%10thread] %logger::%-5line-> %msg%n</pattern>
+            <pattern>%d{MM-dd HH:mm:ss} %-5level -> [%10thread] %logger::%-5line-> %msg%n</pattern>
         </encoder>
         <!--正在记录的日志文件的路径-->
         <file>_info.log</file>
@@ -25,15 +25,14 @@
             <cleanHistoryOnStart>true</cleanHistoryOnStart>
         </rollingPolicy>
         <!--过滤器，只输出正常日志(非sql)-->
-        <filter class="org.raindrop.core.log.NormalLogFilter">
-        </filter>
+        <filter class="xyz.ytora.core.sys.log.logback.filter.NormalLogFilter" />
     </appender>
 
     <!--只有日志级别为error才记录-->
     <appender name="ERROR_ROLL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
             <!--文件里的日志格式-->
-            <pattern>%d{MM月dd日HH:mm:ss} ${pid} %-5level -> [%10thread] %-80logger::%-5line-> %msg%n</pattern>
+            <pattern>%d{MM-dd HH:mm:ss} %-5level -> [%10thread] %-80logger::%-5line-> %msg%n</pattern>
         </encoder>
         <!--正在记录的日志文件的路径-->
         <file>_error.log</file>
@@ -59,7 +58,7 @@
     <appender name="SQL_ROLL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
             <!--文件里的日志格式-->
-            <pattern>%d{MM月dd日HH:mm:ss} ${pid} %-5level -> [%10thread] %logger -> %msg%n</pattern>
+            <pattern>%d{MM-dd HH:mm:ss} %-5level -> [%10thread] %logger -> %msg%n</pattern>
         </encoder>
         <!--正在记录的日志文件的路径-->
         <file>_sql.log</file>
@@ -74,19 +73,26 @@
             <totalSizeCap>1GB</totalSizeCap>
         </rollingPolicy>
         <!--过滤器，只有为sql日志才输出-->
-        <filter class="org.raindrop.core.log.SqlLogFilter">
+        <filter class="xyz.ytora.core.sys.log.logback.filter.SqlLogFilter">
         </filter>
     </appender>
+
+    <!--自定义appender-->
+    <appender name="SSE" class="xyz.ytora.core.sys.log.logback.appender.SseAppender" />
 
     <!--设置sql记录器的属性-->
     <logger name="sql" level="INFO" additivity="false">
         <appender-ref ref="SQL_ROLL_FILE" />
+        <!--sql日志附加到自定义appender-->
+        <appender-ref ref="SSE" />
     </logger>
 
     <!--设置根记录器的属性-->
     <root level="INFO">
-        <!--生产环境，日志输出到文件-->
+        <!--测试环境，日志输出到文件-->
         <appender-ref ref="NORMAL_ROLL_FILE" />
         <appender-ref ref="ERROR_ROLL_FILE" />
+        <!--日志附加到自定义appender-->
+        <appender-ref ref="SSE" />
     </root>
 </configuration>

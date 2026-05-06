@@ -4,28 +4,35 @@
                https://raw.githubusercontent.com/enricopulatzo/logback-XSD/master/src/main/xsd/logback.xsd">
 
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <!--SQL日志-->
     <appender name="SQL_STUOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <!--控制台的SQL日志格式-->
-            <pattern>%highlight(%d{MM月dd日HH:mm:ss}) ${PID} %clr(%-5level) 👉 %boldYellow([%10thread])  %boldCyan(%logger{20}): %msg%n</pattern>
+            <pattern>%highlight(%d{MM-dd HH:mm:ss}) %clr(%-5level) 👉 %boldYellow([%10thread])  %boldCyan(%logger{20}): %msg%n</pattern>
         </encoder>
     </appender>
 
+    <!--普通日志-->
     <appender name="STUOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <!--控制台的日志格式-->
-            <pattern>%highlight(%d{MM月dd日HH:mm:ss}) ${PID} %clr(%-5level) 👉 %boldYellow([%10thread])  %boldCyan(%logger{20})::%clr(%-5line){magenta}-> %msg%n</pattern>
+            <pattern>%highlight(%d{MM-dd HH:mm:ss}) %clr(%-5level) 👉 %boldYellow([%10thread])  %boldCyan(%logger{20})::%clr(%-5line){magenta}-> %msg%n</pattern>
         </encoder>
     </appender>
+
+    <!--自定义appender-->
+    <appender name="SSE" class="xyz.ytora.core.sys.log.logback.appender.SseAppender" />
 
     <!--单独设置sql记录器的属性, additivity表示日志是否向上级冒泡-->
     <logger name="sql" level="DEBUG" additivity="false">
         <appender-ref ref="SQL_STUOUT" />
+        <appender-ref ref="SSE" />
     </logger>
 
     <!--设置根记录器的属性-->
     <root level="INFO">
         <!--开发环境，日志输出到控制台-->
         <appender-ref ref="STUOUT" />
+        <appender-ref ref="SSE" />
     </root>
 </configuration>
