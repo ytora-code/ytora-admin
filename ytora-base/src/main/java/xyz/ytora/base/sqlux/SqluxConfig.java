@@ -62,7 +62,7 @@ public class SqluxConfig {
 
         // 遍历所有数据源
         for (String dsName : sqluxProperty.getDynamicDs().keySet()) {
-            DataSourceProperties properties = sqluxProperty.getDynamicDs().get(dsName);
+            CustomerDataSourceProperties properties = sqluxProperty.getDynamicDs().get(dsName);
             DataSource ds = properties.initializeDataSourceBuilder()
                     .type(determineDataSourceType(properties))
                     .build();
@@ -153,7 +153,7 @@ public class SqluxConfig {
         return HikariDataSource.class;
     }
 
-    private void determineDatabaseType(DataSource ds, DataSourceProperties dsp) {
+    private void determineDatabaseType(DataSource ds, CustomerDataSourceProperties dsp) {
         String driverClassName = dsp.getDriverClassName();
         if (driverClassName == null || driverClassName.isEmpty()) {
             throw new IllegalArgumentException("driverClassName 不能为空!");
@@ -182,6 +182,7 @@ public class SqluxConfig {
             throw new IllegalArgumentException("未知的数据库驱动：" + driverClassName);
         }
 
+        dsp.setDbType(dbType);
         dataSourceTypeMapper.put(ds, dbType);
     }
 

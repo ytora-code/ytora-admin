@@ -1,4 +1,4 @@
-package xyz.ytora.core.sqlux.backup;
+package xyz.ytora.base.sqlux;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

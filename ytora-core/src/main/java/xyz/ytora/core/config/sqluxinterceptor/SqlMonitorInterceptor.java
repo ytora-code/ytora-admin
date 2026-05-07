@@ -1,10 +1,11 @@
-package xyz.ytora.core.sqlux.monitor;
+package xyz.ytora.core.config.sqluxinterceptor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import xyz.ytora.base.sqlux.SqluxProperty;
+import xyz.ytora.base.sqlux.monitor.SqlMetricsCollector;
 import xyz.ytora.sqlux.interceptor.Interceptor;
 import xyz.ytora.sqlux.interceptor.SqlExecutionContext;
 

@@ -1,4 +1,4 @@
-package xyz.ytora.core.sqlux.log;
+package xyz.ytora.base.sqlux.log;
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.spi.LocationAwareLogger;

@@ -1,4 +1,4 @@
-package xyz.ytora.core.sqlux.monitor;
+package xyz.ytora.base.sqlux.monitor;
 
 /**
  * 慢 SQL 记录。

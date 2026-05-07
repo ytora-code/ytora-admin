@@ -3,7 +3,7 @@ package xyz.ytora.core.sys.config.model.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.basemodel.BaseEntity;
-import xyz.ytora.core.sqlux.backup.BackupOnDelete;
+import xyz.ytora.base.sqlux.BackupOnDelete;
 import xyz.ytora.core.sys.config.model.SysConfigMapper;
 import xyz.ytora.core.sys.config.model.data.SysConfigData;
 import xyz.ytora.sqlux.core.anno.Column;

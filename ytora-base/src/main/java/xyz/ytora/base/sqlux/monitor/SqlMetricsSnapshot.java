@@ -1,4 +1,4 @@
-package xyz.ytora.core.sqlux.monitor;
+package xyz.ytora.base.sqlux.monitor;
 
 import java.util.List;
 

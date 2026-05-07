@@ -1,4 +1,4 @@
-package xyz.ytora.core.sqlux.monitor;
+package xyz.ytora.base.sqlux.monitor;
 
 import org.springframework.stereotype.Component;
 import xyz.ytora.sqlux.interceptor.SqlExecutionContext;

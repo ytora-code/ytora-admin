@@ -22,7 +22,7 @@ ytora:
   name: ytora-admin
   version: @revision@
   base-package: xyz.ytora.**
-  sse: on
+  sse: off
   auth:
     enable: true
     token-invalid-time: 6000
@@ -40,7 +40,7 @@ ytora:
   sqlux:
     primary-key: primary
     slow-sql-threshold: 5000
-    sql-logger-impl: xyz.ytora.core.sqlux.log.Slf4jSqlLogger
+    sql-logger-impl: xyz.ytora.base.sqlux.log.Slf4jSqlLogger
     auto-create-table: true
     entity-path: xyz.ytora.core.**.entity.*
     dynamic-ds:

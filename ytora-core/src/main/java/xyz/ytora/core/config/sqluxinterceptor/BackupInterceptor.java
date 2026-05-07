@@ -1,4 +1,4 @@
-package xyz.ytora.core.sqlux.backup;
+package xyz.ytora.core.config.sqluxinterceptor;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * 数据备份拦截器。
  * <p>
- * 在删除前，判断即将被删除的表有没有标注注解{@link BackupOnDelete}
+ * 在删除前，判断即将被删除的表有没有标注注解{@link xyz.ytora.base.sqlux.BackupOnDelete}
  * <br/>
  * 如果标注了，需要对即将删除的数据进行备份
  */
@@ -50,7 +50,7 @@ public class BackupInterceptor implements Interceptor {
         }
 
         Class<?> entityClass = deleteQuery.getFrom().getTableClass();
-        BackupOnDelete backupOnDelete = entityClass.getAnnotation(BackupOnDelete.class);
+        xyz.ytora.base.sqlux.BackupOnDelete backupOnDelete = entityClass.getAnnotation(xyz.ytora.base.sqlux.BackupOnDelete.class);
         if (backupOnDelete == null) {
             return;
         }
@@ -92,7 +92,7 @@ public class BackupInterceptor implements Interceptor {
 
         TableRef from = deleteQuery.getFrom();
         Class<?> entityClass = from.getTableClass();
-        BackupOnDelete backupOnDelete = entityClass.getAnnotation(BackupOnDelete.class);
+        xyz.ytora.base.sqlux.BackupOnDelete backupOnDelete = entityClass.getAnnotation(xyz.ytora.base.sqlux.BackupOnDelete.class);
         if (backupOnDelete == null) {
             return;
         }

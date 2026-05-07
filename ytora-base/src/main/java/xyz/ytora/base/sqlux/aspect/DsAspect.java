@@ -1,4 +1,4 @@
-package xyz.ytora.base.sqlux;
+package xyz.ytora.base.sqlux.aspect;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

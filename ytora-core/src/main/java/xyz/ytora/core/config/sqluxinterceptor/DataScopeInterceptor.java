@@ -1,4 +1,4 @@
-package xyz.ytora.core.sqlux.datascope;
+package xyz.ytora.core.config.sqluxinterceptor;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
