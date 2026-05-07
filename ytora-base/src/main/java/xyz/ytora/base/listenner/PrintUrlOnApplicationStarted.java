@@ -46,7 +46,7 @@ public class PrintUrlOnApplicationStarted implements ApplicationRunner, Applicat
                 "Local:\t\thttp://localhost:" + port + path + "/\n\t" +
                 "External:\thttp://" + ip + ":" + port + path + "/\n\t" +
                 "Swagger文档: http://" + ip + ":" + port + path + "/doc.html\n\t" +
-                "Druid地址:\thttp://" + ip + ":" + port + path + "/index.html\n" +
+                "欢迎页地址:\thttp://" + ip + ":" + port + path + "/index.html\n" +
                 ">----------------------------------------------------------------------------------------------->");
     }
 

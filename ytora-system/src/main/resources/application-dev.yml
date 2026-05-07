@@ -19,30 +19,44 @@ springdoc:
 logging:
   config: classpath:log/logback-dev.xml
 ytora:
-  name: ytora-admin
+  name: @project.name@
   version: @revision@
+  # 基础路径
   base-package: xyz.ytora.**
+  # SSE实时推送是否开启
   sse: off
+  # 授权认证
   auth:
     enable: true
     token-invalid-time: 6000
     allow-credentials: true
     origins: http://localhost:8765
+  # 缓存设置
   cache:
     default-cache: local
     impl:
       local: xyz.ytora.base.cache.support.local.CacheByLocal
+      redis: xyz.ytora.base.cache.support.redis.CacheByRedis
+      db: xyz.ytora.base.cache.support.db.CacheByDb
+  # 存储设置
   storage:
     type: xyz.ytora.base.storage.support.LocalFileStorageServiceImpl
     strategy: xyz.ytora.base.storage.strategy.Murmur3_128StrategyImpl
     max: 100MB
     path: "file-storage/"
+  # sqlux设置
   sqlux:
+    # 主数据源
     primary-key: primary
+    # 慢SQL阈值
     slow-sql-threshold: 5000
+    # SQL日志打印器
     sql-logger-impl: xyz.ytora.base.sqlux.log.Slf4jSqlLogger
+    # 是否开启自动建表功能（当实体类对应的数据库表不存在时）
     auto-create-table: true
+    # 实体类路径
     entity-path: xyz.ytora.core.**.entity.*
+    # 数据源信息
     dynamic-ds:
       primary:
         desc: '主业务库'
