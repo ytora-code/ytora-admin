@@ -62,6 +62,12 @@ public class SysDynamicApiData extends BaseData<SysDynamicApi> {
     private String testParam;
 
     /**
+     * 返回结果字段说明
+     */
+    @Schema(description = "返回结果字段说明")
+    private String resultDesc;
+
+    /**
      * 是否开启事务
      */
     @Schema(description = "是否开启事务")

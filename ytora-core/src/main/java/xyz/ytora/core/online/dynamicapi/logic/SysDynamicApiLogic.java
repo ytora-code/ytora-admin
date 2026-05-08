@@ -56,9 +56,13 @@ public class SysDynamicApiLogic extends BaseLogic<SysDynamicApi, SysDynamicApiRe
      * 测试API接口
      */
     public List<Map<String, Object>> test(SysDynamicApiTestExecParam param) {
+        if (param.getMax() == null) {
+            param.setMax(200);
+        }
         // 根据模板字符串 + 参数，得到完整SQL
         String sql = dslEngine.render(param.getContent(), param.getParam());
-        return rawQuery(sql).submit();
+
+        return rawQuery(Strs.format("select inner_sql.* from ({}) inner_sql limit {}", sql, param.getMax())).submit();
     }
 
     /**

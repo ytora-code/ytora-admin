@@ -32,4 +32,10 @@ public class SysDynamicApiTestExecParam {
     @Schema(description = "测试使用的参数")
     private Map<String, Object> param;
 
+    /**
+     * 最多查询数据量
+     */
+    @Schema(description = "最多查询数据量")
+    private Integer max;
+
 }

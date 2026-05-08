@@ -65,6 +65,12 @@ public class SysDynamicApi extends BaseEntity<SysDynamicApi> {
     private String testParam;
 
     /**
+     * 返回结果字段说明
+     */
+    @Column(comment = "返回结果字段说明", type = ColumnType.TEXT)
+    private String resultDesc;
+
+    /**
      * 是否开启事务
      */
     @Column(comment = "是否开启事务")
