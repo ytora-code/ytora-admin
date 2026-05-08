@@ -2,6 +2,7 @@ package xyz.ytora.base.util;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -9,13 +10,15 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import xyz.ytora.base.exception.BaseException;
 import xyz.ytora.base.mvc.enums.Mimes;
 import xyz.ytora.base.mvc.result.R;
+import xyz.ytora.base.util.json.Jsons;
+import xyz.ytora.toolkit.io.Ios;
 import xyz.ytora.toolkit.text.Strs;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -25,6 +28,7 @@ import java.util.function.Consumer;
  * @author ytora
  * @since 1.0
  */
+@Slf4j
 public final class HttpUtil {
 
     private static final List<String> IP_HEADER = List.of(
@@ -183,6 +187,47 @@ public final class HttpUtil {
         }
 
         return ip;
+    }
+
+    /**
+     * 获取请求参数
+     * @return 请求参数
+     */
+    public static Map<String, Object> getReqParam() {
+        HttpServletRequest request = getReq();
+        if (request == null) {
+            throw new IllegalStateException("当前非web环境，无法获取IP");
+        }
+        Map<String, Object> params = new LinkedHashMap<>();
+        // 1.获取表单数据
+        request.getParameterMap().forEach((key, values) -> {
+            if (values == null || values.length == 0) {
+                params.put(key, null);
+            } else if (values.length == 1) {
+                params.put(key, values[0]);
+            } else {
+                params.put(key, Arrays.asList(values));
+            }
+        });
+
+        // 2.如果是post请求，尝试获取请求体json数据
+        String contentType = request.getContentType();
+        if ("POST".equalsIgnoreCase(request.getMethod()) &&  contentType.contains("application/json")) {
+
+            try (BufferedReader reader = request.getReader()) {
+                StringBuilder body = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    body.append(line);
+                }
+                Map<String, Object> map = Jsons.toMap(body);
+                params.putAll(map);
+            } catch (IOException e) {
+                log.error("获取请求体内容出错", e);
+            }
+        }
+
+        return params;
     }
 
 }

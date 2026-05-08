@@ -37,9 +37,12 @@ public enum ResultCode {
     , ERROR_FILE_ID(29, false, "不允许的文件id")
     , ERROR_FILE_METADATA(30, false, "文件元数据读取异常")
 
-    // ==================== 100-200 程序错误 ====================
-    , NULL_ERROR(101, false, "空指针异常"), SQL_ERROR(11, false, "数据库执行异常")
+    , API_NOT_FOUND(44, false, "API接口未找到")
+    , API_NOT_PUBLISH(44, false, "API接口未发布")
 
+    // ==================== 100-200 程序错误 ====================
+    , NULL_ERROR(101, false, "空指针异常")
+    , SQL_ERROR(11, false, "数据库执行异常")
     , FAIL(500, false, "其他错误")
 
     ;

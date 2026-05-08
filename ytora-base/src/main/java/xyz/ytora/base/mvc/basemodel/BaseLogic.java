@@ -33,6 +33,14 @@ public abstract class BaseLogic<T extends AbsEntity, R extends BaseRepo<T>> {
 
     /**
      * 默认的分页查询
+     * @return 分页对象Page
+     */
+    public Page<T> page() {
+        return page(null);
+    }
+
+    /**
+     * 默认的分页查询
      * @param param 查询参数
      * @return 分页对象Page
      */
@@ -53,6 +61,14 @@ public abstract class BaseLogic<T extends AbsEntity, R extends BaseRepo<T>> {
             consumer.accept(select.getQuery());
         }
         return select.submit(page);
+    }
+
+    /**
+     * 默认的列表查询
+     * @return 分页对象Page
+     */
+    public List<T> list() {
+        return list(null);
     }
 
     /**
