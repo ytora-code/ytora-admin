@@ -9,6 +9,7 @@ import xyz.ytora.core.online.dynamicapi.model.data.SysDynamicApiTestExecParam;
 import xyz.ytora.core.online.dynamicapi.model.entity.SysDynamicApi;
 import xyz.ytora.core.online.dynamicapi.repo.SysDynamicApiRepo;
 import xyz.ytora.toolkit.text.Strs;
+import xyz.ytora.toolkit.text.dsl.SqlRenderResult;
 import xyz.ytora.toolkit.text.dsl.YtoraDslEngine;
 
 import java.util.List;
@@ -46,8 +47,12 @@ public class SysDynamicApiLogic extends BaseLogic<SysDynamicApi, SysDynamicApiRe
         }
         if (dynamicApi.getType() == 1) {
             // 根据模板字符串 + 参数，得到完整SQL
-            String sql = dslEngine.render(content, param);
-            return rawQuery(sql).submit();
+            SqlRenderResult renderResult = dslEngine.renderSql(content, param);
+
+            return rawQuery(
+                    renderResult.getSql()
+                    , renderResult.getParameters()
+            ).submit();
         }
         throw new BaseException("暂不支持的动态接口类型：" + dynamicApi.getType());
     }
@@ -60,9 +65,12 @@ public class SysDynamicApiLogic extends BaseLogic<SysDynamicApi, SysDynamicApiRe
             param.setMax(200);
         }
         // 根据模板字符串 + 参数，得到完整SQL
-        String sql = dslEngine.render(param.getContent(), param.getParam());
+        SqlRenderResult renderResult = dslEngine.renderSql(param.getContent(), param.getParam());
 
-        return rawQuery(Strs.format("select inner_sql.* from ({}) inner_sql limit {}", sql, param.getMax())).submit();
+        return rawQuery(
+                Strs.format("select inner_sql.* from ({}) inner_sql limit {}", renderResult.getSql(), param.getMax())
+                , renderResult.getParameters()
+        ).submit();
     }
 
     /**
@@ -72,7 +80,7 @@ public class SysDynamicApiLogic extends BaseLogic<SysDynamicApi, SysDynamicApiRe
     public void publish(String id) {
         update(SysDynamicApi.class)
                 .set(SysDynamicApi::getStatus, 2)
-                .where(w ->w.eq(SysDynamicApi::getId, id))
+                .where(w -> w.eq(SysDynamicApi::getId, id))
                 .submit();
     }
 
@@ -83,7 +91,7 @@ public class SysDynamicApiLogic extends BaseLogic<SysDynamicApi, SysDynamicApiRe
     public void offline(String id) {
         update(SysDynamicApi.class)
                 .set(SysDynamicApi::getStatus, 1)
-                .where(w ->w.eq(SysDynamicApi::getId, id))
+                .where(w -> w.eq(SysDynamicApi::getId, id))
                 .submit();
     }
 }

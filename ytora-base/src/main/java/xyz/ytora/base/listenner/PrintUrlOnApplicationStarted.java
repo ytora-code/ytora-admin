@@ -8,6 +8,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -22,6 +24,7 @@ import java.net.InetAddress;
  * @author ytora 
  * @since 1.0
  */
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @Component
 @ConditionalOnClass(name = "com.github.xiaoymin.knife4j.spring.configuration.Knife4jAutoConfiguration")
 @Slf4j
