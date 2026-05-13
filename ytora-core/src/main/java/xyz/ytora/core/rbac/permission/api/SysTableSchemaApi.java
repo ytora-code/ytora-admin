@@ -4,23 +4,20 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import xyz.ytora.base.exception.BaseException;
 import xyz.ytora.base.mvc.basemodel.BaseApi;
 import xyz.ytora.base.mvc.result.R;
 import xyz.ytora.base.mvc.result.anno.XlsxMapper;
+import xyz.ytora.core.rbac.permission.logic.SysRoleTableSchemaLogic;
 import xyz.ytora.core.rbac.permission.logic.SysTableSchemaLogic;
 import xyz.ytora.core.rbac.permission.model.data.SysPermissionData;
 import xyz.ytora.core.rbac.permission.model.data.SysTableSchemaData;
 import xyz.ytora.core.rbac.permission.model.entity.SysTableSchema;
 import xyz.ytora.core.rbac.permission.model.excel.SysTableSchemaExcel;
+import xyz.ytora.core.rbac.permission.model.param.SysRoleTableSchemaParam;
 import xyz.ytora.core.rbac.permission.model.param.SysTableSchemaParam;
+import xyz.ytora.sqlux.orm.Page;
 import xyz.ytora.toolkit.document.excel.Excel;
 
 import java.util.Collections;
@@ -38,16 +35,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SysTableSchemaApi extends BaseApi<SysTableSchemaLogic> {
 
+    private final SysRoleTableSchemaLogic roleTableSchemaLogic;
+
     // ============================== CRUD =================================>
 
-
     /**
-     * 列表查询指定资源下的表格
+     * 分页查询指定资源下的表格
      */
-    @Operation(summary = "列表查询指定资源下的表格", description = "列表查询指定资源下的表格")
-    @GetMapping("/listTables")
-    public List<SysPermissionData> listTables(@RequestParam String permissionId) {
-        return logic.listTables(permissionId);
+    @Operation(summary = "分页查询指定资源下的表格", description = "分页查询指定资源下的表格")
+    @GetMapping("/pageTables")
+    public Page<SysPermissionData> pageTables(@RequestParam String permissionId,
+                                              @RequestParam(defaultValue = "1") Integer pageNo,
+                                              @RequestParam(defaultValue = "10") Integer pageSize) {
+        return logic.pageTables(permissionId, pageNo, pageSize);
     }
 
     /**
@@ -137,5 +137,43 @@ public class SysTableSchemaApi extends BaseApi<SysTableSchemaLogic> {
     }
 
     // ============================== 其他 =================================>
+
+    /**
+     * 查询指定角色在指定资源下拥有的表格
+     */
+    @Operation(summary = "查询指定角色在指定资源下拥有的表格", description = "查询指定角色在指定资源下拥有的表格")
+    @GetMapping("/listTablesForRole")
+    public List<String> listTablesForRole(@RequestParam String roleId, @RequestParam String permissionId) {
+        return logic.listTablesForRole(roleId, permissionId);
+    }
+
+    /**
+     * 更新指定角色在指定资源下拥有的表格
+     */
+    @Operation(summary = "更新指定角色在指定资源下的分组", description = "更新指定角色在指定资源下的分组")
+    @PostMapping("/refreshTablesForRole")
+    public String refreshTablesForRole(@RequestBody SysRoleTableSchemaParam param) {
+        logic.refreshTablesForRole(param);
+        return "更新成功";
+    }
+
+    /**
+     * 查询指定角色在指定表格下拥有的表格列字段
+     */
+    @Operation(summary = "查询指定角色在指定表格下拥有的表格列字段", description = "查询指定角色在指定表格下拥有的表格列字段")
+    @GetMapping("/listSchemasForRole")
+    public List<String> listSchemasForRole(@RequestParam String roleId, @RequestParam String tableId) {
+        return logic.listSchemasForRole(roleId, tableId);
+    }
+
+    /**
+     * 更新指定角色在指定表格下拥有的表格列字段
+     */
+    @Operation(summary = "更新指定角色在指定表格下拥有的表格列字段", description = "更新指定角色在指定表格下拥有的表格列字段")
+    @PostMapping("/refreshSchemasForRole")
+    public String refreshSchemasForRole(@RequestBody SysRoleTableSchemaParam param) {
+        logic.refreshSchemasForRole(param);
+        return "更新成功";
+    }
 
 }

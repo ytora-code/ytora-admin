@@ -1,33 +1,15 @@
-/*
- Navicat Premium Dump SQL
-
- Source Server         : pg_admin
- Source Server Type    : PostgreSQL
- Source Server Version : 170009 (170009)
- Source Host           : localhost:5432
- Source Catalog        : ytora
- Source Schema         : ytora
-
- Target Server Type    : PostgreSQL
- Target Server Version : 170009 (170009)
- File Encoding         : 65001
-
- Date: 06/05/2026 23:10:45
-*/
-
-
 -- ----------------------------
 -- Table structure for base
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."base";
 CREATE TABLE "ytora"."base" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" date,
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" date,
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default"
+                                "id" int8 NOT NULL,
+                                "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                "create_time" date,
+                                "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                "update_time" date,
+                                "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                "remark" varchar(255) COLLATE "pg_catalog"."default"
 )
 ;
 COMMENT ON COLUMN "ytora"."base"."id" IS '主键';
@@ -47,18 +29,18 @@ COMMENT ON COLUMN "ytora"."base"."remark" IS '备注';
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_config";
 CREATE TABLE "ytora"."sys_config" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6),
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "name" varchar(255) COLLATE "pg_catalog"."default",
-  "key" varchar(255) COLLATE "pg_catalog"."default",
-  "value" varchar(255) COLLATE "pg_catalog"."default",
-  "type" varchar(255) COLLATE "pg_catalog"."default",
-  "status" bool
+                                      "id" int8 NOT NULL,
+                                      "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                      "create_time" timestamp(6),
+                                      "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                      "update_time" timestamp(6),
+                                      "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                      "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                      "name" varchar(255) COLLATE "pg_catalog"."default",
+                                      "key" varchar(255) COLLATE "pg_catalog"."default",
+                                      "value" varchar(255) COLLATE "pg_catalog"."default",
+                                      "type" varchar(255) COLLATE "pg_catalog"."default",
+                                      "status" bool
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_config"."id" IS '数据主键ID';
@@ -84,18 +66,18 @@ COMMENT ON TABLE "ytora"."sys_config" IS '系统配置';
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_data_scope";
 CREATE TABLE "ytora"."sys_data_scope" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6),
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "group_id" int8 NOT NULL,
-  "type" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "column" varchar(255) COLLATE "pg_catalog"."default",
-  "value" varchar(255) COLLATE "pg_catalog"."default"
+                                          "id" int8 NOT NULL,
+                                          "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                          "create_time" timestamp(6),
+                                          "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                          "update_time" timestamp(6),
+                                          "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                          "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                          "group_id" int8 NOT NULL,
+                                          "type" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                          "name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                          "column" varchar(255) COLLATE "pg_catalog"."default",
+                                          "value" varchar(255) COLLATE "pg_catalog"."default"
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_data_scope"."id" IS '数据主键ID';
@@ -121,16 +103,16 @@ COMMENT ON TABLE "ytora"."sys_data_scope" IS '数据范围';
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_data_scope_group";
 CREATE TABLE "ytora"."sys_data_scope_group" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6),
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "permission_id" int8 NOT NULL,
-  "name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "code" varchar(255) COLLATE "pg_catalog"."default" NOT NULL
+                                                "id" int8 NOT NULL,
+                                                "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                                "create_time" timestamp(6),
+                                                "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                                "update_time" timestamp(6),
+                                                "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                                "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                                "permission_id" int8 NOT NULL,
+                                                "name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                                "code" varchar(255) COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_data_scope_group"."id" IS '数据主键ID';
@@ -148,23 +130,24 @@ COMMENT ON TABLE "ytora"."sys_data_scope_group" IS '数据范围组';
 -- ----------------------------
 -- Records of sys_data_scope_group
 -- ----------------------------
+INSERT INTO "ytora"."sys_data_scope_group" VALUES (775201008320512, 'ytora', '2026-05-13 21:43:48.667581', 'ytora', '2026-05-13 21:43:48.667581', 'A01-02-01', NULL, 1, '1', '1');
 
 -- ----------------------------
 -- Table structure for sys_depart
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_depart";
 CREATE TABLE "ytora"."sys_depart" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6),
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "pid" int8 NOT NULL,
-  "depart_name" varchar(255) COLLATE "pg_catalog"."default",
-  "type" varchar(255) COLLATE "pg_catalog"."default",
-  "contact_id" varchar(255) COLLATE "pg_catalog"."default"
+                                      "id" int8 NOT NULL,
+                                      "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                      "create_time" timestamp(6),
+                                      "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                      "update_time" timestamp(6),
+                                      "depart_code" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                      "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                      "pid" int8 NOT NULL,
+                                      "depart_name" varchar(255) COLLATE "pg_catalog"."default",
+                                      "type" varchar(255) COLLATE "pg_catalog"."default",
+                                      "contact_id" varchar(255) COLLATE "pg_catalog"."default"
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_depart"."id" IS '数据主键ID';
@@ -236,16 +219,16 @@ INSERT INTO "ytora"."sys_depart" VALUES (724200000000050, 'ytora', '2026-05-04 2
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_dict";
 CREATE TABLE "ytora"."sys_dict" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6),
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "dict_name" varchar(255) COLLATE "pg_catalog"."default",
-  "dict_code" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "index" int4
+                                    "id" int8 NOT NULL,
+                                    "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                    "create_time" timestamp(6),
+                                    "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                    "update_time" timestamp(6),
+                                    "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                    "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                    "dict_name" varchar(255) COLLATE "pg_catalog"."default",
+                                    "dict_code" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                    "index" int4
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_dict"."id" IS '数据主键ID';
@@ -284,18 +267,18 @@ INSERT INTO "ytora"."sys_dict" VALUES (720076110495744, 'ytora', '2026-05-04 04:
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_dict_item";
 CREATE TABLE "ytora"."sys_dict_item" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6),
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "dict_code" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "item_value" varchar(255) COLLATE "pg_catalog"."default",
-  "item_text" varchar(255) COLLATE "pg_catalog"."default",
-  "index" int4,
-  "color" varchar(255) COLLATE "pg_catalog"."default"
+                                         "id" int8 NOT NULL,
+                                         "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                         "create_time" timestamp(6),
+                                         "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                         "update_time" timestamp(6),
+                                         "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                         "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                         "dict_code" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                         "item_value" varchar(255) COLLATE "pg_catalog"."default",
+                                         "item_text" varchar(255) COLLATE "pg_catalog"."default",
+                                         "index" int4,
+                                         "color" varchar(255) COLLATE "pg_catalog"."default"
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_dict_item"."id" IS '数据主键ID';
@@ -617,24 +600,102 @@ INSERT INTO "ytora"."sys_dict_item" VALUES (720084440186880, 'ytora', '2026-05-0
 INSERT INTO "ytora"."sys_dict_item" VALUES (720121645760512, 'ytora', '2026-05-04 04:16:24.292161', 'ytora', '2026-05-04 04:16:24.292161', '707063588388864', NULL, 'DATA_SCOPE', 'CUSTOM', '自定义', 7, NULL);
 
 -- ----------------------------
+-- Table structure for sys_dynamic_api
+-- ----------------------------
+DROP TABLE IF EXISTS "ytora"."sys_dynamic_api";
+CREATE TABLE "ytora"."sys_dynamic_api" (
+                                           "id" int8 NOT NULL,
+                                           "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                           "create_time" timestamp(6),
+                                           "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                           "update_time" timestamp(6),
+                                           "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                           "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                           "group_id" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                           "uri" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                           "method" int4,
+                                           "name" varchar(255) COLLATE "pg_catalog"."default",
+                                           "type" int4,
+                                           "content" text COLLATE "pg_catalog"."default",
+                                           "test_param" text COLLATE "pg_catalog"."default",
+                                           "result_desc" text COLLATE "pg_catalog"."default",
+                                           "transactional" bool,
+                                           "status" int4
+)
+;
+COMMENT ON COLUMN "ytora"."sys_dynamic_api"."id" IS '数据主键ID';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api"."create_by" IS '数据创建人';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api"."create_time" IS '数据创建日期';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api"."update_by" IS '数据修改人';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api"."update_time" IS '数据修改日期';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api"."depart_code" IS '数据创建人所属部门';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api"."remark" IS '数据备注';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api"."group_id" IS '所属分组ID';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api"."uri" IS '接口URI';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api"."method" IS '请求方式,1-get/2-post/3-put/4-delete';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api"."name" IS '接口名称';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api"."type" IS '接口类型，1:dsl-sql/2-sql/3-JavaScript/4-python/5-java';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api"."content" IS '接口内容';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api"."test_param" IS '测试参数';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api"."result_desc" IS '返回结果字段说明';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api"."transactional" IS '是否开启事务';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api"."status" IS '接口状态，1-未发布/2-已发布';
+COMMENT ON TABLE "ytora"."sys_dynamic_api" IS '动态API接口表';
+
+-- ----------------------------
+-- Records of sys_dynamic_api
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_dynamic_api_group
+-- ----------------------------
+DROP TABLE IF EXISTS "ytora"."sys_dynamic_api_group";
+CREATE TABLE "ytora"."sys_dynamic_api_group" (
+                                                 "id" int8 NOT NULL,
+                                                 "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                                 "create_time" timestamp(6),
+                                                 "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                                 "update_time" timestamp(6),
+                                                 "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                                 "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                                 "pid" varchar(255) COLLATE "pg_catalog"."default",
+                                                 "name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL
+)
+;
+COMMENT ON COLUMN "ytora"."sys_dynamic_api_group"."id" IS '数据主键ID';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api_group"."create_by" IS '数据创建人';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api_group"."create_time" IS '数据创建日期';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api_group"."update_by" IS '数据修改人';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api_group"."update_time" IS '数据修改日期';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api_group"."depart_code" IS '数据创建人所属部门';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api_group"."remark" IS '数据备注';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api_group"."pid" IS '上级分组ID';
+COMMENT ON COLUMN "ytora"."sys_dynamic_api_group"."name" IS '分组名称';
+COMMENT ON TABLE "ytora"."sys_dynamic_api_group" IS '动态API接口分组表';
+
+-- ----------------------------
+-- Records of sys_dynamic_api_group
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for sys_file
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_file";
 CREATE TABLE "ytora"."sys_file" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6),
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "file_id" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "folder_id" varchar(255) COLLATE "pg_catalog"."default",
-  "file_name" varchar(255) COLLATE "pg_catalog"."default",
-  "file_size" int8,
-  "file_size_text" varchar(255) COLLATE "pg_catalog"."default",
-  "file_type" varchar(255) COLLATE "pg_catalog"."default",
-  "download_count" int4
+                                    "id" int8 NOT NULL,
+                                    "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                    "create_time" timestamp(6),
+                                    "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                    "update_time" timestamp(6),
+                                    "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                    "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                    "file_id" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                    "folder_id" varchar(255) COLLATE "pg_catalog"."default",
+                                    "file_name" varchar(255) COLLATE "pg_catalog"."default",
+                                    "file_size" int8,
+                                    "file_size_text" varchar(255) COLLATE "pg_catalog"."default",
+                                    "file_type" varchar(255) COLLATE "pg_catalog"."default",
+                                    "download_count" int4
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_file"."id" IS '数据主键ID';
@@ -661,16 +722,16 @@ COMMENT ON TABLE "ytora"."sys_file" IS '系统文件表';
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_folder";
 CREATE TABLE "ytora"."sys_folder" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6),
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "pid" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "path" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "depth" int4
+                                      "id" int8 NOT NULL,
+                                      "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                      "create_time" timestamp(6),
+                                      "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                      "update_time" timestamp(6),
+                                      "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                      "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                      "pid" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                      "path" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                      "depth" int4
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_folder"."id" IS '数据主键ID';
@@ -693,26 +754,26 @@ COMMENT ON TABLE "ytora"."sys_folder" IS '系统文件夹';
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_form_schema";
 CREATE TABLE "ytora"."sys_form_schema" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" date,
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" date,
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "permission_id" int8 NOT NULL,
-  "type" varchar(255) COLLATE "pg_catalog"."default",
-  "label" varchar(255) COLLATE "pg_catalog"."default",
-  "label_position" varchar(255) COLLATE "pg_catalog"."default",
-  "label_width" float8,
-  "size" varchar(255) COLLATE "pg_catalog"."default",
-  "placeholder" varchar(255) COLLATE "pg_catalog"."default",
-  "key" varchar(255) COLLATE "pg_catalog"."default",
-  "dict_code" varchar(255) COLLATE "pg_catalog"."default",
-  "hidden" bool,
-  "disabled" bool,
-  "default_value" varchar(255) COLLATE "pg_catalog"."default",
-  "attr" jsonb
+                                           "id" int8 NOT NULL,
+                                           "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                           "create_time" date,
+                                           "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                           "update_time" date,
+                                           "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                           "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                           "permission_id" int8 NOT NULL,
+                                           "type" varchar(255) COLLATE "pg_catalog"."default",
+                                           "label" varchar(255) COLLATE "pg_catalog"."default",
+                                           "label_position" varchar(255) COLLATE "pg_catalog"."default",
+                                           "label_width" float8,
+                                           "size" varchar(255) COLLATE "pg_catalog"."default",
+                                           "placeholder" varchar(255) COLLATE "pg_catalog"."default",
+                                           "key" varchar(255) COLLATE "pg_catalog"."default",
+                                           "dict_code" varchar(255) COLLATE "pg_catalog"."default",
+                                           "hidden" bool,
+                                           "disabled" bool,
+                                           "default_value" varchar(255) COLLATE "pg_catalog"."default",
+                                           "attr" jsonb
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_form_schema"."id" IS '主键';
@@ -734,7 +795,7 @@ COMMENT ON COLUMN "ytora"."sys_form_schema"."dict_code" IS '字典code';
 COMMENT ON COLUMN "ytora"."sys_form_schema"."hidden" IS '是否隐藏';
 COMMENT ON COLUMN "ytora"."sys_form_schema"."disabled" IS '是否禁用';
 COMMENT ON COLUMN "ytora"."sys_form_schema"."default_value" IS '默认值';
-COMMENT ON TABLE "ytora"."sys_form_schema" IS '表格列结构';
+COMMENT ON TABLE "ytora"."sys_form_schema" IS '表单项的结构';
 
 -- ----------------------------
 -- Records of sys_form_schema
@@ -745,19 +806,19 @@ COMMENT ON TABLE "ytora"."sys_form_schema" IS '表格列结构';
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_icon";
 CREATE TABLE "ytora"."sys_icon" (
-  "id" int4 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" date,
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" date,
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "code" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "type" varchar(255) COLLATE "pg_catalog"."default" NOT NULL DEFAULT 'lucide'::character varying,
-  "width" int2 NOT NULL DEFAULT 24,
-  "height" int2 NOT NULL DEFAULT 24,
-  "hidden" bool NOT NULL DEFAULT false,
-  "body" text COLLATE "pg_catalog"."default" NOT NULL
+                                    "id" int4 NOT NULL,
+                                    "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                    "create_time" date,
+                                    "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                    "update_time" date,
+                                    "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                    "code" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                    "name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                    "type" varchar(255) COLLATE "pg_catalog"."default" NOT NULL DEFAULT 'lucide'::character varying,
+                                    "width" int2 NOT NULL DEFAULT 24,
+                                    "height" int2 NOT NULL DEFAULT 24,
+                                    "hidden" bool NOT NULL DEFAULT false,
+                                    "body" text COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_icon"."id" IS '主键';
@@ -2544,23 +2605,23 @@ INSERT INTO "ytora"."sys_icon" VALUES (1760, NULL, NULL, NULL, NULL, NULL, 'sqls
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_log";
 CREATE TABLE "ytora"."sys_log" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "end_time" timestamp(6),
-  "type" varchar(255) COLLATE "pg_catalog"."default",
-  "trace_id" varchar(255) COLLATE "pg_catalog"."default",
-  "thread" varchar(255) COLLATE "pg_catalog"."default",
-  "happen_place" varchar(255) COLLATE "pg_catalog"."default",
-  "content" text COLLATE "pg_catalog"."default",
-  "param_length" int4,
-  "params" text COLLATE "pg_catalog"."default",
-  "result_length" int4,
-  "result" text COLLATE "pg_catalog"."default",
-  "cost" int8,
-  "ip" varchar(255) COLLATE "pg_catalog"."default",
-  "request_url" varchar(255) COLLATE "pg_catalog"."default",
-  "error_stack" varchar(255) COLLATE "pg_catalog"."default"
+                                   "id" int8 NOT NULL,
+                                   "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                   "create_time" timestamp(6),
+                                   "end_time" timestamp(6),
+                                   "type" varchar(255) COLLATE "pg_catalog"."default",
+                                   "trace_id" varchar(255) COLLATE "pg_catalog"."default",
+                                   "thread" varchar(255) COLLATE "pg_catalog"."default",
+                                   "happen_place" varchar(255) COLLATE "pg_catalog"."default",
+                                   "content" text COLLATE "pg_catalog"."default",
+                                   "param_length" int4,
+                                   "params" text COLLATE "pg_catalog"."default",
+                                   "result_length" int4,
+                                   "result" text COLLATE "pg_catalog"."default",
+                                   "cost" int8,
+                                   "ip" varchar(255) COLLATE "pg_catalog"."default",
+                                   "request_url" varchar(255) COLLATE "pg_catalog"."default",
+                                   "error_stack" varchar(255) COLLATE "pg_catalog"."default"
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_log"."id" IS '数据主键ID';
@@ -2591,20 +2652,20 @@ COMMENT ON TABLE "ytora"."sys_log" IS '日志表';
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_permission";
 CREATE TABLE "ytora"."sys_permission" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6),
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "pid" int8 NOT NULL,
-  "permission_name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "permission_code" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "permission_type" int4,
-  "icon" varchar(255) COLLATE "pg_catalog"."default",
-  "visible" bool,
-  "index" int4
+                                          "id" int8 NOT NULL,
+                                          "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                          "create_time" timestamp(6),
+                                          "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                          "update_time" timestamp(6),
+                                          "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                          "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                          "pid" int8 NOT NULL,
+                                          "permission_name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                          "permission_code" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                          "permission_type" int4,
+                                          "icon" varchar(255) COLLATE "pg_catalog"."default",
+                                          "visible" bool,
+                                          "index" int4
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_permission"."id" IS '数据主键ID';
@@ -2657,26 +2718,28 @@ INSERT INTO "ytora"."sys_permission" VALUES (30, NULL, NULL, NULL, NULL, NULL, N
 INSERT INTO "ytora"."sys_permission" VALUES (16, NULL, NULL, NULL, NULL, NULL, NULL, 2, '接口管理', '/sys/static-api', 2, 'i-lucide-route', 't', 8);
 INSERT INTO "ytora"."sys_permission" VALUES (1, NULL, NULL, 'ytora', '2026-05-03 16:00:38.186736', NULL, '1234', 0, 'RBAC', '/rbac', 2, 'i-lucide-shield-check', 't', 1);
 INSERT INTO "ytora"."sys_permission" VALUES (727996893954048, 'ytora', '2026-05-05 13:39:11.046264', 'ytora', '2026-05-05 19:04:34.070701', 'A01-02-01', NULL, 2, '通知中心', '/sys/bell', 2, 'i-lucide-bell', 't', 9);
+INSERT INTO "ytora"."sys_permission" VALUES (775124975419392, 'ytora', '2026-05-13 21:24:28.499761', 'ytora', '2026-05-13 21:24:28.500762', 'A01-02-01', '1', 1, '1', '2', 3, NULL, 't', NULL);
+INSERT INTO "ytora"."sys_permission" VALUES (775200320389120, 'ytora', '2026-05-13 21:43:38.174104', 'ytora', '2026-05-13 21:43:38.174104', 'A01-02-01', NULL, 1, '1', '2', 4, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_recycle_bin
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_recycle_bin";
 CREATE TABLE "ytora"."sys_recycle_bin" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6),
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "deleted_by" varchar(255) COLLATE "pg_catalog"."default",
-  "deleted_time" timestamp(6),
-  "delete_reason" varchar(255) COLLATE "pg_catalog"."default",
-  "original_table" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "original_id" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "original_data" jsonb NOT NULL,
-  "restore_sql" varchar(255) COLLATE "pg_catalog"."default"
+                                           "id" int8 NOT NULL,
+                                           "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                           "create_time" timestamp(6),
+                                           "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                           "update_time" timestamp(6),
+                                           "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                           "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                           "deleted_by" varchar(255) COLLATE "pg_catalog"."default",
+                                           "deleted_time" timestamp(6),
+                                           "delete_reason" varchar(255) COLLATE "pg_catalog"."default",
+                                           "original_table" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                           "original_id" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                           "original_data" jsonb NOT NULL,
+                                           "restore_sql" varchar(255) COLLATE "pg_catalog"."default"
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_recycle_bin"."id" IS '数据主键ID';
@@ -2704,15 +2767,15 @@ COMMENT ON TABLE "ytora"."sys_recycle_bin" IS '回收站';
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_role";
 CREATE TABLE "ytora"."sys_role" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6),
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "role_name" varchar(255) COLLATE "pg_catalog"."default",
-  "role_code" varchar(255) COLLATE "pg_catalog"."default" NOT NULL
+                                    "id" int8 NOT NULL,
+                                    "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                    "create_time" timestamp(6),
+                                    "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                    "update_time" timestamp(6),
+                                    "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                    "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                    "role_name" varchar(255) COLLATE "pg_catalog"."default",
+                                    "role_code" varchar(255) COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_role"."id" IS '数据主键ID';
@@ -2744,16 +2807,16 @@ INSERT INTO "ytora"."sys_role" VALUES (724118196518912, 'ytora', '2026-05-04 21:
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_role_data_scope";
 CREATE TABLE "ytora"."sys_role_data_scope" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6),
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "role_id" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "group_id" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "scope_id" varchar(255) COLLATE "pg_catalog"."default" NOT NULL
+                                               "id" int8 NOT NULL,
+                                               "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                               "create_time" timestamp(6),
+                                               "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                               "update_time" timestamp(6),
+                                               "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                               "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                               "role_id" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                               "group_id" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                               "scope_id" varchar(255) COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_role_data_scope"."id" IS '数据主键ID';
@@ -2777,16 +2840,16 @@ COMMENT ON TABLE "ytora"."sys_role_data_scope" IS '角色-数据范围关系表'
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_role_data_scope_group";
 CREATE TABLE "ytora"."sys_role_data_scope_group" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6),
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "role_id" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "permission_id" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "group_id" varchar(255) COLLATE "pg_catalog"."default" NOT NULL
+                                                     "id" int8 NOT NULL,
+                                                     "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                                     "create_time" timestamp(6),
+                                                     "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                                     "update_time" timestamp(6),
+                                                     "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                                     "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                                     "role_id" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                                     "permission_id" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                                     "group_id" varchar(255) COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_role_data_scope_group"."id" IS '数据主键ID';
@@ -2806,19 +2869,52 @@ COMMENT ON TABLE "ytora"."sys_role_data_scope_group" IS '角色-数据范围分�
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for sys_role_form_schema
+-- ----------------------------
+DROP TABLE IF EXISTS "ytora"."sys_role_form_schema";
+CREATE TABLE "ytora"."sys_role_form_schema" (
+                                                "id" int8 NOT NULL,
+                                                "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                                "create_time" date,
+                                                "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                                "update_time" date,
+                                                "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                                "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                                "role_id" int8 NOT NULL,
+                                                "form_id" int8,
+                                                "schema_id" int8
+)
+;
+COMMENT ON COLUMN "ytora"."sys_role_form_schema"."id" IS '主键';
+COMMENT ON COLUMN "ytora"."sys_role_form_schema"."create_by" IS '数据创建人';
+COMMENT ON COLUMN "ytora"."sys_role_form_schema"."create_time" IS '数据创建日期';
+COMMENT ON COLUMN "ytora"."sys_role_form_schema"."update_by" IS '数据修改人';
+COMMENT ON COLUMN "ytora"."sys_role_form_schema"."update_time" IS '数据修改日期';
+COMMENT ON COLUMN "ytora"."sys_role_form_schema"."depart_code" IS '数据创建人所属部门';
+COMMENT ON COLUMN "ytora"."sys_role_form_schema"."remark" IS '备注';
+COMMENT ON COLUMN "ytora"."sys_role_form_schema"."role_id" IS '角色ID';
+COMMENT ON COLUMN "ytora"."sys_role_form_schema"."form_id" IS '表单的资源ID';
+COMMENT ON COLUMN "ytora"."sys_role_form_schema"."schema_id" IS '表单项ID';
+COMMENT ON TABLE "ytora"."sys_role_form_schema" IS '角色-表单项关系表';
+
+-- ----------------------------
+-- Records of sys_role_form_schema
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for sys_role_permission
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_role_permission";
 CREATE TABLE "ytora"."sys_role_permission" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6),
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "role_id" int8 NOT NULL,
-  "permission_id" int8 NOT NULL
+                                               "id" int8 NOT NULL,
+                                               "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                               "create_time" timestamp(6),
+                                               "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                               "update_time" timestamp(6),
+                                               "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                               "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                               "role_id" int8 NOT NULL,
+                                               "permission_id" int8 NOT NULL
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_role_permission"."id" IS '数据主键ID';
@@ -2867,24 +2963,57 @@ INSERT INTO "ytora"."sys_role_permission" VALUES (727997305257984, 'ytora', '202
 INSERT INTO "ytora"."sys_role_permission" VALUES (717050531479560, 'ytora', '2026-05-03 15:15:22.807886', 'ytora', '2026-05-03 15:15:22.807886', '707063588388864', NULL, 1, 6);
 
 -- ----------------------------
+-- Table structure for sys_role_table_schema
+-- ----------------------------
+DROP TABLE IF EXISTS "ytora"."sys_role_table_schema";
+CREATE TABLE "ytora"."sys_role_table_schema" (
+                                                 "id" int8 NOT NULL,
+                                                 "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                                 "create_time" date,
+                                                 "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                                 "update_time" date,
+                                                 "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                                 "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                                 "role_id" int8 NOT NULL,
+                                                 "table_id" int8,
+                                                 "schema_id" int8
+)
+;
+COMMENT ON COLUMN "ytora"."sys_role_table_schema"."id" IS '主键';
+COMMENT ON COLUMN "ytora"."sys_role_table_schema"."create_by" IS '数据创建人';
+COMMENT ON COLUMN "ytora"."sys_role_table_schema"."create_time" IS '数据创建日期';
+COMMENT ON COLUMN "ytora"."sys_role_table_schema"."update_by" IS '数据修改人';
+COMMENT ON COLUMN "ytora"."sys_role_table_schema"."update_time" IS '数据修改日期';
+COMMENT ON COLUMN "ytora"."sys_role_table_schema"."depart_code" IS '数据创建人所属部门';
+COMMENT ON COLUMN "ytora"."sys_role_table_schema"."remark" IS '备注';
+COMMENT ON COLUMN "ytora"."sys_role_table_schema"."role_id" IS '角色ID';
+COMMENT ON COLUMN "ytora"."sys_role_table_schema"."table_id" IS '表格的资源ID';
+COMMENT ON COLUMN "ytora"."sys_role_table_schema"."schema_id" IS '表格列ID';
+COMMENT ON TABLE "ytora"."sys_role_table_schema" IS '角色-表字段关系表';
+
+-- ----------------------------
+-- Records of sys_role_table_schema
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for sys_scheduler_task
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_scheduler_task";
 CREATE TABLE "ytora"."sys_scheduler_task" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6),
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "time_wheel_task_id" varchar(255) COLLATE "pg_catalog"."default",
-  "task_name" varchar(255) COLLATE "pg_catalog"."default",
-  "task_code" varchar(255) COLLATE "pg_catalog"."default",
-  "cron" varchar(255) COLLATE "pg_catalog"."default",
-  "type" int2,
-  "params" varchar(255) COLLATE "pg_catalog"."default",
-  "status" int2
+                                              "id" int8 NOT NULL,
+                                              "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                              "create_time" timestamp(6),
+                                              "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                              "update_time" timestamp(6),
+                                              "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                              "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                              "time_wheel_task_id" varchar(255) COLLATE "pg_catalog"."default",
+                                              "task_name" varchar(255) COLLATE "pg_catalog"."default",
+                                              "task_code" varchar(255) COLLATE "pg_catalog"."default",
+                                              "cron" varchar(255) COLLATE "pg_catalog"."default",
+                                              "type" int2,
+                                              "params" varchar(255) COLLATE "pg_catalog"."default",
+                                              "status" int2
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_scheduler_task"."id" IS '数据主键ID';
@@ -2912,23 +3041,23 @@ INSERT INTO "ytora"."sys_scheduler_task" VALUES (718086710165504, 'ytora', '2026
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_table_schema";
 CREATE TABLE "ytora"."sys_table_schema" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" date,
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" date,
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "permission_id" int8 NOT NULL,
-  "type" varchar(255) COLLATE "pg_catalog"."default",
-  "key" varchar(255) COLLATE "pg_catalog"."default",
-  "title" varchar(255) COLLATE "pg_catalog"."default",
-  "width" int2,
-  "align" varchar(255) COLLATE "pg_catalog"."default",
-  "fixed" varchar(255) COLLATE "pg_catalog"."default",
-  "ellipsis" varchar(255) COLLATE "pg_catalog"."default",
-  "formatter" varchar(255) COLLATE "pg_catalog"."default",
-  "attr" jsonb
+                                            "id" int8 NOT NULL,
+                                            "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                            "create_time" date,
+                                            "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                            "update_time" date,
+                                            "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                            "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                            "permission_id" int8 NOT NULL,
+                                            "type" varchar(255) COLLATE "pg_catalog"."default",
+                                            "key" varchar(255) COLLATE "pg_catalog"."default",
+                                            "title" varchar(255) COLLATE "pg_catalog"."default",
+                                            "width" int2,
+                                            "align" varchar(255) COLLATE "pg_catalog"."default",
+                                            "fixed" varchar(255) COLLATE "pg_catalog"."default",
+                                            "ellipsis" varchar(255) COLLATE "pg_catalog"."default",
+                                            "formatter" varchar(255) COLLATE "pg_catalog"."default",
+                                            "attr" jsonb
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_table_schema"."id" IS '主键';
@@ -2948,33 +3077,34 @@ COMMENT ON COLUMN "ytora"."sys_table_schema"."fixed" IS '单元格固定位置�
 COMMENT ON COLUMN "ytora"."sys_table_schema"."ellipsis" IS '文字内容溢出时，是否省略';
 COMMENT ON COLUMN "ytora"."sys_table_schema"."formatter" IS '格式化文字';
 COMMENT ON COLUMN "ytora"."sys_table_schema"."attr" IS '其他属性';
-COMMENT ON TABLE "ytora"."sys_table_schema" IS '表格列结构';
+COMMENT ON TABLE "ytora"."sys_table_schema" IS '表格列的结构';
 
 -- ----------------------------
 -- Records of sys_table_schema
 -- ----------------------------
+INSERT INTO "ytora"."sys_table_schema" VALUES (775247323660288, 'ytora', '2026-05-13', 'ytora', '2026-05-13', 'A01-02-01', NULL, 775124975419392, 'text', '1', '1', 11, NULL, NULL, 'false', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_user
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_user";
 CREATE TABLE "ytora"."sys_user" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6),
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "user_name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "real_name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "password" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "avatar" varchar(255) COLLATE "pg_catalog"."default",
-  "phone" varchar(16) COLLATE "pg_catalog"."default",
-  "email" varchar(255) COLLATE "pg_catalog"."default",
-  "birthday" date,
-  "id_card" varchar(255) COLLATE "pg_catalog"."default",
-  "status" int4
+                                    "id" int8 NOT NULL,
+                                    "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                    "create_time" timestamp(6),
+                                    "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                    "update_time" timestamp(6),
+                                    "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                    "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                    "user_name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                    "real_name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                    "password" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                    "avatar" varchar(255) COLLATE "pg_catalog"."default",
+                                    "phone" varchar(16) COLLATE "pg_catalog"."default",
+                                    "email" varchar(255) COLLATE "pg_catalog"."default",
+                                    "birthday" date,
+                                    "id_card" varchar(255) COLLATE "pg_catalog"."default",
+                                    "status" int4
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_user"."id" IS '数据主键ID';
@@ -3005,15 +3135,15 @@ INSERT INTO "ytora"."sys_user" VALUES (1, 'admin', '2026-05-03 18:46:08.770908',
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_user_depart";
 CREATE TABLE "ytora"."sys_user_depart" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6),
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "user_id" int8 NOT NULL,
-  "depart_id" int8 NOT NULL
+                                           "id" int8 NOT NULL,
+                                           "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                           "create_time" timestamp(6),
+                                           "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                           "update_time" timestamp(6),
+                                           "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                           "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                           "user_id" int8 NOT NULL,
+                                           "depart_id" int8 NOT NULL
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_user_depart"."id" IS '数据主键ID';
@@ -3039,15 +3169,15 @@ INSERT INTO "ytora"."sys_user_depart" VALUES (724103089815552, 'ytora', '2026-05
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_user_role";
 CREATE TABLE "ytora"."sys_user_role" (
-  "id" int8 NOT NULL,
-  "create_by" varchar(255) COLLATE "pg_catalog"."default",
-  "create_time" timestamp(6),
-  "update_by" varchar(255) COLLATE "pg_catalog"."default",
-  "update_time" timestamp(6),
-  "depart_code" varchar(255) COLLATE "pg_catalog"."default",
-  "remark" varchar(255) COLLATE "pg_catalog"."default",
-  "user_id" int8 NOT NULL,
-  "role_id" int8 NOT NULL
+                                         "id" int8 NOT NULL,
+                                         "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                         "create_time" timestamp(6),
+                                         "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                         "update_time" timestamp(6),
+                                         "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                         "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                         "user_id" int8 NOT NULL,
+                                         "role_id" int8 NOT NULL
 )
 ;
 COMMENT ON COLUMN "ytora"."sys_user_role"."id" IS '数据主键ID';
@@ -3065,6 +3195,44 @@ COMMENT ON TABLE "ytora"."sys_user_role" IS '用户-角色关系表';
 -- ----------------------------
 INSERT INTO "ytora"."sys_user_role" VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1);
 INSERT INTO "ytora"."sys_user_role" VALUES (724788389347328, 'admin', '2026-05-05 00:03:13.148105', 'admin', '2026-05-05 00:03:13.148105', 'B01', NULL, 2, 1);
+
+-- ----------------------------
+-- Function structure for add_func
+-- ----------------------------
+DROP FUNCTION IF EXISTS "ytora"."add_func"("a" int4, "b" int4);
+CREATE FUNCTION "ytora"."add_func"("a" int4, "b" int4)
+    RETURNS "pg_catalog"."int4" AS $BODY$
+BEGIN
+RETURN a + b;
+END;
+$BODY$
+LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+-- ----------------------------
+-- Function structure for hello_func
+-- ----------------------------
+DROP FUNCTION IF EXISTS "ytora"."hello_func"();
+CREATE FUNCTION "ytora"."hello_func"()
+    RETURNS "pg_catalog"."text" AS $BODY$
+BEGIN
+RETURN 'hello world';
+END;
+$BODY$
+LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+-- ----------------------------
+-- Procedure structure for hello_proc
+-- ----------------------------
+DROP PROCEDURE IF EXISTS "ytora"."hello_proc"();
+CREATE PROCEDURE "ytora"."hello_proc"()
+    AS $BODY$
+BEGIN
+    RAISE NOTICE 'hello procedure';
+END;
+$BODY$
+LANGUAGE plpgsql;
 
 -- ----------------------------
 -- Primary Key structure for table base
@@ -3102,6 +3270,16 @@ ALTER TABLE "ytora"."sys_dict" ADD CONSTRAINT "sys_dict_pkey" PRIMARY KEY ("id")
 ALTER TABLE "ytora"."sys_dict_item" ADD CONSTRAINT "sys_dict_item_pkey" PRIMARY KEY ("id");
 
 -- ----------------------------
+-- Primary Key structure for table sys_dynamic_api
+-- ----------------------------
+ALTER TABLE "ytora"."sys_dynamic_api" ADD CONSTRAINT "sys_dynamic_api_pkey" PRIMARY KEY ("id");
+
+-- ----------------------------
+-- Primary Key structure for table sys_dynamic_api_group
+-- ----------------------------
+ALTER TABLE "ytora"."sys_dynamic_api_group" ADD CONSTRAINT "sys_dynamic_api_group_pkey" PRIMARY KEY ("id");
+
+-- ----------------------------
 -- Primary Key structure for table sys_file
 -- ----------------------------
 ALTER TABLE "ytora"."sys_file" ADD CONSTRAINT "sys_file_pkey" PRIMARY KEY ("id");
@@ -3120,8 +3298,8 @@ ALTER TABLE "ytora"."sys_form_schema" ADD CONSTRAINT "sys_table_schema_copy1_pke
 -- Indexes structure for table sys_icon
 -- ----------------------------
 CREATE INDEX "idx_sys_icon_type" ON "ytora"."sys_icon" USING btree (
-  "type" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
-);
+    "type" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
+    );
 
 -- ----------------------------
 -- Uniques structure for table sys_icon
@@ -3164,9 +3342,19 @@ ALTER TABLE "ytora"."sys_role_data_scope" ADD CONSTRAINT "sys_role_data_scope_pk
 ALTER TABLE "ytora"."sys_role_data_scope_group" ADD CONSTRAINT "sys_role_data_scope_group_pkey" PRIMARY KEY ("id");
 
 -- ----------------------------
+-- Primary Key structure for table sys_role_form_schema
+-- ----------------------------
+ALTER TABLE "ytora"."sys_role_form_schema" ADD CONSTRAINT "sys_role_table_schema_copy1_pkey" PRIMARY KEY ("id");
+
+-- ----------------------------
 -- Primary Key structure for table sys_role_permission
 -- ----------------------------
 ALTER TABLE "ytora"."sys_role_permission" ADD CONSTRAINT "sys_role_permission_pkey" PRIMARY KEY ("id");
+
+-- ----------------------------
+-- Primary Key structure for table sys_role_table_schema
+-- ----------------------------
+ALTER TABLE "ytora"."sys_role_table_schema" ADD CONSTRAINT "sys_table_schema_copy1_pkey1" PRIMARY KEY ("id");
 
 -- ----------------------------
 -- Primary Key structure for table sys_scheduler_task

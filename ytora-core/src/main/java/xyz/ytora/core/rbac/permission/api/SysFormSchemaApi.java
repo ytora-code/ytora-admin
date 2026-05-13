@@ -15,18 +15,20 @@ import xyz.ytora.core.rbac.permission.model.data.SysPermissionData;
 import xyz.ytora.core.rbac.permission.model.entity.SysFormSchema;
 import xyz.ytora.core.rbac.permission.model.excel.SysFormSchemaExcel;
 import xyz.ytora.core.rbac.permission.model.param.SysFormSchemaParam;
+import xyz.ytora.core.rbac.permission.model.param.SysRoleFormSchemaParam;
+import xyz.ytora.sqlux.orm.Page;
 import xyz.ytora.toolkit.document.excel.Excel;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * 表格列结构模块的API层
+ * 表单列结构模块的API层
  *
  * @author 杨桐
  * @since 1.0
  */
-@Tag(name = "表格列结构")
+@Tag(name = "表单列结构")
 @RestController
 @RequestMapping("/sys/form-schema")
 @RequiredArgsConstructor
@@ -35,12 +37,14 @@ public class SysFormSchemaApi extends BaseApi<SysFormSchemaLogic> {
     // ============================== CRUD =================================>
 
     /**
-     * 列表查询指定资源下的表单
+     * 分页查询指定资源下的表单
      */
-    @Operation(summary = "列表查询指定资源下的表单", description = "列表查询指定资源下的表单")
-    @GetMapping("/listForms")
-    public List<SysPermissionData> listForms(@RequestParam String permissionId) {
-        return logic.listForms(permissionId);
+    @Operation(summary = "分页查询指定资源下的表单", description = "分页查询指定资源下的表单")
+    @GetMapping("/pageForms")
+    public Page<SysPermissionData> pageForms(@RequestParam String permissionId,
+                                             @RequestParam(defaultValue = "1") Integer pageNo,
+                                             @RequestParam(defaultValue = "10") Integer pageSize) {
+        return logic.pageForms(permissionId, pageNo, pageSize);
     }
 
     /**
@@ -121,5 +125,43 @@ public class SysFormSchemaApi extends BaseApi<SysFormSchemaLogic> {
     }
 
     // ============================== 其他 =================================>
+
+    /**
+     * 查询指定角色在指定资源下拥有的表单
+     */
+    @Operation(summary = "查询指定角色在指定资源下拥有的表单", description = "查询指定角色在指定资源下拥有的表单")
+    @GetMapping("/listFormsForRole")
+    public List<String> listFormsForRole(@RequestParam String roleId, @RequestParam String permissionId) {
+        return logic.listFormsForRole(roleId, permissionId);
+    }
+
+    /**
+     * 更新指定角色在指定资源下拥有的表单
+     */
+    @Operation(summary = "更新指定角色在指定资源下的分组", description = "更新指定角色在指定资源下的分组")
+    @PostMapping("/refreshFormsForRole")
+    public String refreshFormsForRole(@RequestBody SysRoleFormSchemaParam param) {
+        logic.refreshFormsForRole(param);
+        return "更新成功";
+    }
+
+    /**
+     * 查询指定角色在指定表单下拥有的表单项字段
+     */
+    @Operation(summary = "查询指定角色在指定表单下拥有的表单项字段", description = "查询指定角色在指定表单下拥有的表单项字段")
+    @GetMapping("/listSchemasForRole")
+    public List<String> listSchemasForRole(@RequestParam String roleId, @RequestParam String formId) {
+        return logic.listSchemasForRole(roleId, formId);
+    }
+
+    /**
+     * 更新指定角色在指定表单下拥有的表单项字段
+     */
+    @Operation(summary = "更新指定角色在指定表单下拥有的表单项字段", description = "更新指定角色在指定表单下拥有的表单项字段")
+    @PostMapping("/refreshSchemasForRole")
+    public String refreshSchemasForRole(@RequestBody SysRoleFormSchemaParam param) {
+        logic.refreshSchemasForRole(param);
+        return "更新成功";
+    }
 
 }
