@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.ytora.base.mvc.basemodel.BaseLogic;
+import xyz.ytora.core.rbac.permission.PermissionType;
 import xyz.ytora.core.rbac.permission.model.data.SysPermissionData;
 import xyz.ytora.core.rbac.permission.model.data.SysPermissionType;
 import xyz.ytora.core.rbac.permission.model.data.SysRolePermissionDetail;
@@ -75,7 +76,7 @@ public class SysPermissionLogic extends BaseLogic<SysPermission, SysPermissionRe
     public List<SysPermissionData> tree(String permissionName) {
         List<SysPermission> list = select(SysPermission.class)
                 .from(SysPermission.class)
-                .where(w -> w.eq(SysPermission::getPermissionType, 2))
+                .where(w -> w.eq(SysPermission::getPermissionType, PermissionType.MENU.code()))
                 .orderByAsc(SysPermission::getIndex)
                 .submit(SysPermission.class);
 
@@ -97,7 +98,7 @@ public class SysPermissionLogic extends BaseLogic<SysPermission, SysPermissionRe
         List<SysPermission> list = repository
                 .list(w -> w
                         .eq(SysPermission::getPid, pid)
-                        .eq(SysPermission::getPermissionType, 2)
+                        .eq(SysPermission::getPermissionType, PermissionType.MENU.code())
                 );
         return list.stream().map(SysPermission::toData).toList();
     }
@@ -127,6 +128,7 @@ public class SysPermissionLogic extends BaseLogic<SysPermission, SysPermissionRe
         // 获取所有资源
         List<SysRolePermissionTree> allPermission = select(SysPermission::getId, SysPermission::getPid, SysPermission::getPermissionName, SysPermission::getPermissionType)
                 .from(SysPermission.class)
+                .where(w -> w.eq(SysPermission::getPermissionType, PermissionType.MENU.code()))
                 .orderByAsc(SysPermission::getIndex)
                 .submit(SysRolePermissionTree.class);
 

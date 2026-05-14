@@ -75,6 +75,12 @@ public class SysTableSchema extends BaseEntity<SysTableSchema> {
     private String formatter;
 
     /**
+     * 排序
+     */
+    @Column(comment = "排序")
+    private Integer index;
+
+    /**
      * 其他属性
      */
     @Column(comment = "其他属性")

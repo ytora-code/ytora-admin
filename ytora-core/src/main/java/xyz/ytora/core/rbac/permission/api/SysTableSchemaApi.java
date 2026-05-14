@@ -31,7 +31,7 @@ import java.util.List;
  */
 @Tag(name = "表格列结构")
 @RestController
-@RequestMapping("/sys/table-schema")
+@RequestMapping("/rbac/table-schema")
 @RequiredArgsConstructor
 public class SysTableSchemaApi extends BaseApi<SysTableSchemaLogic> {
 
@@ -61,9 +61,9 @@ public class SysTableSchemaApi extends BaseApi<SysTableSchemaLogic> {
     }
 
     /**
-     * 根据表格code查询数据表格列Schema数据
+     * 根据表格code查询当前角色拥有的表格列Schema
      */
-    @Operation(summary = "根据表格code查询数据表格列Schema数据", description = "根据表格code查询数据表格列Schema数据")
+    @Operation(summary = "根据表格code查询当前角色拥有的表格列Schema", description = "根据表格code查询当前角色拥有的表格列Schema")
     @GetMapping("/listSchemasByTableCode")
     public List<SysTableSchemaData> listSchemasByTableCode(@RequestParam String tableCode) {
         return logic.listSchemasByTableCode(tableCode);

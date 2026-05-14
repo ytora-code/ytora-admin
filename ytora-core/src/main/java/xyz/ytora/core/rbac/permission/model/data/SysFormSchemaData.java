@@ -92,6 +92,12 @@ public class SysFormSchemaData extends BaseData<SysFormSchema> {
     private String defaultValue;
 
     /**
+     * 排序
+     */
+    @Schema(description = "排序")
+    private Integer index;
+
+    /**
      * attr
      */
     @Schema(description = "attr")

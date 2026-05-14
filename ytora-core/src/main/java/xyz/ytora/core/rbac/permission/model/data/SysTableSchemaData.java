@@ -7,6 +7,7 @@ import xyz.ytora.base.mvc.basemodel.BaseData;
 import xyz.ytora.core.rbac.permission.model.SysTableSchemaMapper;
 import xyz.ytora.core.rbac.permission.model.entity.SysTableSchema;
 import xyz.ytora.core.rbac.permission.model.excel.SysTableSchemaExcel;
+import xyz.ytora.sqlux.core.anno.Column;
 
 /**
  * 表格列结构响应数据
@@ -72,6 +73,12 @@ public class SysTableSchemaData extends BaseData<SysTableSchema> {
      */
     @Schema(description = "格式化文字")
     private String formatter;
+
+    /**
+     * 排序
+     */
+    @Schema(description = "排序")
+    private Integer index;
 
     /**
      * 其他属性

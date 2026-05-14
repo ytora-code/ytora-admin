@@ -2,16 +2,24 @@ package xyz.ytora.core.rbac.permission.logic;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import xyz.ytora.base.auth.LoginUser;
 import xyz.ytora.base.mvc.basemodel.BaseLogic;
+import xyz.ytora.base.scope.ScopedValueContext;
 import xyz.ytora.base.util.Pages;
+import xyz.ytora.core.rbac.permission.PermissionType;
+import xyz.ytora.core.rbac.permission.model.data.SysFormSchemaData;
 import xyz.ytora.core.rbac.permission.model.data.SysPermissionData;
+import xyz.ytora.core.rbac.permission.model.data.SysFormSchemaData;
 import xyz.ytora.core.rbac.permission.model.entity.*;
 import xyz.ytora.core.rbac.permission.model.param.SysRoleFormSchemaParam;
 import xyz.ytora.core.rbac.permission.repo.SysFormSchemaRepo;
+import xyz.ytora.core.rbac.role.model.entity.SysUserRole;
 import xyz.ytora.sqlux.orm.AbsEntity;
 import xyz.ytora.sqlux.orm.Page;
+import xyz.ytora.sqlux.sql.stage.select.SelectWhereStage;
 import xyz.ytora.toolkit.collection.Colls;
 
+import java.util.Collections;
 import java.util.List;
 
 import static xyz.ytora.sqlux.core.SQL.*;
@@ -34,9 +42,11 @@ public class SysFormSchemaLogic extends BaseLogic<SysFormSchema, SysFormSchemaRe
     public Page<SysPermissionData> pageForms(String permissionId, Integer pageNo, Integer pageSize) {
         Page<SysPermission> page = select().from(SysPermission.class)
                 .where(w -> w
-                        .eq(SysPermission::getPermissionType, 4)
+                        .eq(SysPermission::getPermissionType, PermissionType.FORM.code())
                         .eq(SysPermission::getPid, permissionId)
-                ).submit(Pages.getPage(SysPermission.class));
+                )
+                .orderByAsc(SysPermission::getIndex)
+                .submit(Pages.getPage(SysPermission.class));
         return page.trans(SysPermission::toData);
     }
 
@@ -53,7 +63,7 @@ public class SysFormSchemaLogic extends BaseLogic<SysFormSchema, SysFormSchemaRe
                 .where(w -> w
                         .eq(SysRolePermission::getRoleId, roleId)
                         .eq(SysPermission::getPid, permissionId)
-                        .eq(SysPermission::getPermissionType, 4)
+                        .eq(SysPermission::getPermissionType, PermissionType.FORM.code())
                 ).submit(SysPermission.class);
         return list.stream().map(AbsEntity::getId).toList();
     }
@@ -91,7 +101,7 @@ public class SysFormSchemaLogic extends BaseLogic<SysFormSchema, SysFormSchemaRe
     /**
      * 查询指定角色在指定表单下拥有的表单列字段
      * @param roleId 角色ID
-     * @param tableId 表单资源ID
+     * @param formId 表单资源ID
      * @return 表单列ID数组
      */
     public List<String> listSchemasForRole(String roleId, String formId) {
@@ -135,5 +145,36 @@ public class SysFormSchemaLogic extends BaseLogic<SysFormSchema, SysFormSchemaRe
             }).toList();
             insert(SysRoleFormSchema.class).into().values(list).submit();
         }
+    }
+
+    /**
+     * 根据表单code查询当前角色拥有的表单项Schema
+     * @param formCode 表单编码
+     * @return 表单项数组
+     */
+    public List<SysFormSchemaData> listSchemasByFormCode(String formCode) {
+        if (!ScopedValueContext.LOGIN_USER.isBound()) {
+            return Collections.emptyList();
+        }
+        LoginUser loginUser = ScopedValueContext.LOGIN_USER.get();
+
+        // 子查询：查询用户的角色信息
+        SelectWhereStage subQuery = select(SysUserRole::getRoleId)
+                .from(SysUserRole.class)
+                .where(w -> w.eq(SysUserRole::getUserId, loginUser.getId()));
+
+        List<SysFormSchema> list = select(SysFormSchema.class)
+                .from(SysRoleFormSchema.class)
+                .leftJoin(SysFormSchema.class, on -> on.eq(SysRoleFormSchema::getSchemaId, SysFormSchema::getId))
+                .leftJoin(SysPermission.class, on -> on.eq(SysPermission::getId, SysFormSchema::getPermissionId))
+                .where(w -> w
+                        .in(SysRoleFormSchema::getRoleId, subQuery)
+                        .eq(SysPermission::getPermissionCode, formCode)
+                        .eq(SysPermission::getPermissionType, PermissionType.FORM.code())
+                ).orderByAsc(SysFormSchema::getIndex)
+                .submit(SysFormSchema.class);
+
+        return list.stream().map(SysFormSchema::toData).toList();
+
     }
 }

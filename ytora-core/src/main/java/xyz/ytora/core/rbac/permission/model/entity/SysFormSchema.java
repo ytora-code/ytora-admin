@@ -93,6 +93,12 @@ public class SysFormSchema extends BaseEntity<SysFormSchema> {
     private String defaultValue;
 
     /**
+     * 排序
+     */
+    @Column(comment = "排序")
+    private Integer index;
+
+    /**
      * attr
      */
     @Column(comment = "attr")

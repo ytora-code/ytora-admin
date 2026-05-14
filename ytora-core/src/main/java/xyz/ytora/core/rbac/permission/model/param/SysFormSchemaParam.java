@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.basemodel.BaseParam;
 import xyz.ytora.core.rbac.permission.model.SysFormSchemaMapper;
 import xyz.ytora.core.rbac.permission.model.entity.SysFormSchema;
+import xyz.ytora.sqlux.core.anno.Column;
 
 /**
  * 表格列结构请求数据
@@ -89,6 +90,12 @@ public class SysFormSchemaParam extends BaseParam<SysFormSchema> {
      */
     @Schema(description = "默认值")
     private String defaultValue;
+
+    /**
+     * 排序
+     */
+    @Schema(description = "排序")
+    private Integer index;
 
     /**
      * attr

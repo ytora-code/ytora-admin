@@ -2,6 +2,7 @@ package xyz.ytora.core.rbac.permission.repo;
 
 import org.springframework.stereotype.Repository;
 import xyz.ytora.base.mvc.basemodel.BaseRepo;
+import xyz.ytora.core.rbac.permission.PermissionType;
 import xyz.ytora.core.rbac.permission.model.entity.SysPermission;
 import xyz.ytora.core.rbac.permission.model.entity.SysRolePermission;
 import xyz.ytora.toolkit.collection.Colls;
@@ -30,7 +31,7 @@ public class SysPermissionRepo extends BaseRepo<SysPermission> {
         }
         return select().from(SysPermission.class)
                 .where(w -> w
-                        .eq(SysPermission::getPermissionType, 2)
+                        .eq(SysPermission::getPermissionType, PermissionType.MENU.code())
                         .in(
                                 SysPermission::getId,
                                 distinct().select(SysRolePermission::getPermissionId)

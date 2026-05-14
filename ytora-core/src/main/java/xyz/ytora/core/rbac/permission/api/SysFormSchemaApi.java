@@ -12,6 +12,7 @@ import xyz.ytora.base.mvc.result.anno.XlsxMapper;
 import xyz.ytora.core.rbac.permission.logic.SysFormSchemaLogic;
 import xyz.ytora.core.rbac.permission.model.data.SysFormSchemaData;
 import xyz.ytora.core.rbac.permission.model.data.SysPermissionData;
+import xyz.ytora.core.rbac.permission.model.data.SysTableSchemaData;
 import xyz.ytora.core.rbac.permission.model.entity.SysFormSchema;
 import xyz.ytora.core.rbac.permission.model.excel.SysFormSchemaExcel;
 import xyz.ytora.core.rbac.permission.model.param.SysFormSchemaParam;
@@ -30,7 +31,7 @@ import java.util.List;
  */
 @Tag(name = "表单列结构")
 @RestController
-@RequestMapping("/sys/form-schema")
+@RequestMapping("/rbac/form-schema")
 @RequiredArgsConstructor
 public class SysFormSchemaApi extends BaseApi<SysFormSchemaLogic> {
 
@@ -55,6 +56,15 @@ public class SysFormSchemaApi extends BaseApi<SysFormSchemaLogic> {
     public List<SysFormSchemaData> listSchemas(@ParameterObject SysFormSchemaParam param) {
         List<SysFormSchema> list = logic.list(param);
         return list.stream().map(SysFormSchema::toData).toList();
+    }
+
+    /**
+     * 根据表单code查询当前角色拥有的表单项Schema
+     */
+    @Operation(summary = "根据表单code查询当前角色拥有的表单项Schema", description = "根据表单code查询当前角色拥有的表单项Schema")
+    @GetMapping("/listSchemasByFormCode")
+    public List<SysFormSchemaData> listSchemasByFormCode(@RequestParam String formCode) {
+        return logic.listSchemasByFormCode(formCode);
     }
 
     /**

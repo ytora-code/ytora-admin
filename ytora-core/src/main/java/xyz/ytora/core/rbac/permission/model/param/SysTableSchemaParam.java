@@ -80,6 +80,12 @@ public class SysTableSchemaParam extends BaseParam<SysTableSchema> {
     private String formatter;
 
     /**
+     * 排序
+     */
+    @Schema(description = "排序")
+    private Integer index;
+
+    /**
      * 其他属性
      */
     @Schema(description = "其他属性")

@@ -1,5 +1,6 @@
 package xyz.ytora.core.rbac.permission.model.excel;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import xyz.ytora.base.mvc.basemodel.BaseExcel;
@@ -89,6 +90,12 @@ public class SysFormSchemaExcel extends BaseExcel<SysFormSchema> {
      */
     @Excel("默认值")
     private String defaultValue;
+
+    /**
+     * 排序
+     */
+    @Schema(description = "排序")
+    private Integer index;
 
     /**
      * attr

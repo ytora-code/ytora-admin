@@ -2,9 +2,12 @@ package xyz.ytora.core.rbac.permission.logic;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import xyz.ytora.base.auth.LoginUser;
 import xyz.ytora.base.mvc.basemodel.BaseLogic;
+import xyz.ytora.base.scope.ScopedValueContext;
 import xyz.ytora.base.util.Pages;
 import xyz.ytora.core.rbac.datascope.model.entity.SysRoleDataScopeGroup;
+import xyz.ytora.core.rbac.permission.PermissionType;
 import xyz.ytora.core.rbac.permission.model.data.SysPermissionData;
 import xyz.ytora.core.rbac.permission.model.data.SysTableSchemaData;
 import xyz.ytora.core.rbac.permission.model.entity.SysPermission;
@@ -13,8 +16,10 @@ import xyz.ytora.core.rbac.permission.model.entity.SysRoleTableSchema;
 import xyz.ytora.core.rbac.permission.model.entity.SysTableSchema;
 import xyz.ytora.core.rbac.permission.model.param.SysRoleTableSchemaParam;
 import xyz.ytora.core.rbac.permission.repo.SysTableSchemaRepo;
+import xyz.ytora.core.rbac.role.model.entity.SysUserRole;
 import xyz.ytora.sqlux.orm.AbsEntity;
 import xyz.ytora.sqlux.orm.Page;
+import xyz.ytora.sqlux.sql.stage.select.SelectWhereStage;
 import xyz.ytora.toolkit.collection.Colls;
 
 import java.util.Collections;
@@ -39,27 +44,40 @@ public class SysTableSchemaLogic extends BaseLogic<SysTableSchema, SysTableSchem
     public Page<SysPermissionData> pageTables(String permissionId, Integer pageNo, Integer pageSize) {
         Page<SysPermission> page = select().from(SysPermission.class)
                 .where(w -> w
-                        .eq(SysPermission::getPermissionType, 3)
+                        .eq(SysPermission::getPermissionType, PermissionType.TABLE.code())
                         .eq(SysPermission::getPid, permissionId)
-                ).submit(Pages.getPage(SysPermission.class));
+                )
+                .orderByAsc(SysPermission::getIndex)
+                .submit(Pages.getPage(SysPermission.class));
         return page.trans(SysPermission::toData);
     }
 
     /**
-     * 根据表格code查询数据表格列Schema数据
+     * 根据表格code查询当前角色拥有的表格列Schema
      */
     public List<SysTableSchemaData> listSchemasByTableCode(String tableCode) {
-        Optional<SysPermission> permissionOptional = select().from(SysPermission.class)
-                .where(w -> w
-                        .eq(SysPermission::getPermissionCode, tableCode)
-                ).submit(SysPermission.class, 0);
-        if (permissionOptional.isPresent()) {
-            SysPermission permission = permissionOptional.get();
-            List<SysTableSchema> list = repository.list(w -> w.eq(SysTableSchema::getPermissionId, permission.getId()));
-            return list.stream().map(SysTableSchema::toData).toList();
+        if (!ScopedValueContext.LOGIN_USER.isBound()) {
+            return Collections.emptyList();
         }
+        LoginUser loginUser = ScopedValueContext.LOGIN_USER.get();
 
-        return Collections.emptyList();
+        // 子查询：查询用户的角色信息
+        SelectWhereStage subQuery = select(SysUserRole::getRoleId)
+                .from(SysUserRole.class)
+                .where(w -> w.eq(SysUserRole::getUserId, loginUser.getId()));
+
+        List<SysTableSchema> list = select(SysTableSchema.class)
+                .from(SysRoleTableSchema.class)
+                .leftJoin(SysTableSchema.class, on -> on.eq(SysRoleTableSchema::getSchemaId, SysTableSchema::getId))
+                .leftJoin(SysPermission.class, on -> on.eq(SysPermission::getId, SysTableSchema::getPermissionId))
+                .where(w -> w
+                        .in(SysRoleTableSchema::getRoleId, subQuery)
+                        .eq(SysPermission::getPermissionCode, tableCode)
+                        .eq(SysPermission::getPermissionType, PermissionType.FORM.code())
+                ).orderByAsc(SysTableSchema::getIndex)
+                .submit(SysTableSchema.class);
+
+        return list.stream().map(SysTableSchema::toData).toList();
     }
 
     /**
@@ -75,7 +93,7 @@ public class SysTableSchemaLogic extends BaseLogic<SysTableSchema, SysTableSchem
                 .where(w -> w
                         .eq(SysRolePermission::getRoleId, roleId)
                         .eq(SysPermission::getPid, permissionId)
-                        .eq(SysPermission::getPermissionType, 3)
+                        .eq(SysPermission::getPermissionType, PermissionType.TABLE.code())
                 ).submit(SysPermission.class);
         return list.stream().map(AbsEntity::getId).toList();
     }

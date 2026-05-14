@@ -7,6 +7,7 @@ import xyz.ytora.core.rbac.permission.model.SysRoleFormSchemaMapper;
 import xyz.ytora.core.rbac.permission.model.data.SysRoleFormSchemaData;
 import xyz.ytora.sqlux.core.anno.Column;
 import xyz.ytora.sqlux.core.anno.Table;
+import xyz.ytora.sqlux.core.enums.ColumnType;
 import xyz.ytora.sqlux.core.enums.IdType;
 
 /**
@@ -23,19 +24,19 @@ public class SysRoleFormSchema extends BaseEntity<SysRoleFormSchema> {
     /**
      * 角色ID
      */
-    @Column(comment = "角色ID", notNull = true)
+    @Column(comment = "角色ID", notNull = true, type = ColumnType.INT8)
     private String roleId;
 
     /**
      * 表单的资源ID
      */
-    @Column(comment = "表单的资源ID")
+    @Column(comment = "表单的资源ID", type = ColumnType.INT8)
     private String formId;
 
     /**
      * 表单项ID
      */
-    @Column(comment = "表单项ID")
+    @Column(comment = "表单项ID", type = ColumnType.INT8)
     private String schemaId;
 
     @Override
