@@ -25,6 +25,114 @@ COMMENT ON COLUMN "ytora"."base"."remark" IS '备注';
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for biz_deploy
+-- ----------------------------
+DROP TABLE IF EXISTS "ytora"."biz_deploy";
+CREATE TABLE "ytora"."biz_deploy" (
+                                      "id" int8 NOT NULL,
+                                      "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                      "create_time" date,
+                                      "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                      "update_time" date,
+                                      "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                      "remark" varchar(255) COLLATE "pg_catalog"."default",
+                                      "name" varchar(255) COLLATE "pg_catalog"."default",
+                                      "id_card" varchar(255) COLLATE "pg_catalog"."default",
+                                      "professional" varchar(255) COLLATE "pg_catalog"."default",
+                                      "status" varchar(32) COLLATE "pg_catalog"."default"
+)
+;
+COMMENT ON COLUMN "ytora"."biz_deploy"."id" IS '主键';
+COMMENT ON COLUMN "ytora"."biz_deploy"."create_by" IS '数据创建人';
+COMMENT ON COLUMN "ytora"."biz_deploy"."create_time" IS '数据创建日期';
+COMMENT ON COLUMN "ytora"."biz_deploy"."update_by" IS '数据修改人';
+COMMENT ON COLUMN "ytora"."biz_deploy"."update_time" IS '数据修改日期';
+COMMENT ON COLUMN "ytora"."biz_deploy"."depart_code" IS '数据创建人所属部门';
+COMMENT ON COLUMN "ytora"."biz_deploy"."remark" IS '备注';
+COMMENT ON COLUMN "ytora"."biz_deploy"."name" IS '姓名';
+COMMENT ON COLUMN "ytora"."biz_deploy"."id_card" IS '身份证';
+COMMENT ON COLUMN "ytora"."biz_deploy"."professional" IS '专业方向';
+COMMENT ON COLUMN "ytora"."biz_deploy"."status" IS '状态，待初审，初审不通过，初审通过待复核，复核不通过，复核通过';
+COMMENT ON TABLE "ytora"."biz_deploy" IS '开发者';
+
+-- ----------------------------
+-- Records of biz_deploy
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_code_rule
+-- ----------------------------
+DROP TABLE IF EXISTS "ytora"."sys_code_rule";
+CREATE TABLE "ytora"."sys_code_rule" (
+                                         "id" int8 NOT NULL,
+                                         "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                         "create_time" timestamp(6) DEFAULT CURRENT_TIMESTAMP,
+                                         "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                         "update_time" timestamp(6) DEFAULT CURRENT_TIMESTAMP,
+                                         "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                         "remark" varchar(500) COLLATE "pg_catalog"."default",
+                                         "rule_code" varchar(64) COLLATE "pg_catalog"."default" NOT NULL,
+                                         "rule_name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+                                         "rule_template" varchar(1000) COLLATE "pg_catalog"."default" NOT NULL,
+                                         "seq_start" int8 NOT NULL DEFAULT 0,
+                                         "seq_step" int4 NOT NULL DEFAULT 1,
+                                         "timezone" varchar(32) COLLATE "pg_catalog"."default" NOT NULL DEFAULT 'Asia/Shanghai'::character varying
+)
+;
+COMMENT ON COLUMN "ytora"."sys_code_rule"."id" IS '主键';
+COMMENT ON COLUMN "ytora"."sys_code_rule"."create_by" IS '数据创建人';
+COMMENT ON COLUMN "ytora"."sys_code_rule"."create_time" IS '数据创建时间';
+COMMENT ON COLUMN "ytora"."sys_code_rule"."update_by" IS '数据修改人';
+COMMENT ON COLUMN "ytora"."sys_code_rule"."update_time" IS '数据修改时间';
+COMMENT ON COLUMN "ytora"."sys_code_rule"."depart_code" IS '数据创建人所属部门';
+COMMENT ON COLUMN "ytora"."sys_code_rule"."remark" IS '备注';
+COMMENT ON COLUMN "ytora"."sys_code_rule"."rule_code" IS '规则编码，如 ORDER_NO、DDBM';
+COMMENT ON COLUMN "ytora"."sys_code_rule"."rule_name" IS '规则名称';
+COMMENT ON COLUMN "ytora"."sys_code_rule"."rule_template" IS '编码模板，如 DDBM-${date:yyyy-MM-dd}-${seq:4}、DDBM-${date:yyyy}-${seq:4}、DDBM-${week}-${seq:4}、DDBM-${date:yyyy-MM-dd}-${uuid:32}、DDBM-${date:yyyy-MM-dd HH:mm}-${snow:20}';
+COMMENT ON COLUMN "ytora"."sys_code_rule"."seq_start" IS 'seq流水起始值，默认0，表示第一次生成0000';
+COMMENT ON COLUMN "ytora"."sys_code_rule"."seq_step" IS 'seq流水步长，默认1';
+COMMENT ON COLUMN "ytora"."sys_code_rule"."timezone" IS '日期时区';
+COMMENT ON TABLE "ytora"."sys_code_rule" IS '系统编码规则表';
+
+-- ----------------------------
+-- Records of sys_code_rule
+-- ----------------------------
+INSERT INTO "ytora"."sys_code_rule" VALUES (1, NULL, '2026-05-18 17:26:39.471429', NULL, '2026-05-18 17:26:39.471429', NULL, 'periodKey自动解析为 date:yyyy-MM-dd=当前日期', 'DDBM_DAY', '订单编码-按天流水', 'DDBM-${date:yyyy-MM-dd}-${seq:4}', 0, 1, 'Asia/Shanghai');
+
+-- ----------------------------
+-- Table structure for sys_code_seq
+-- ----------------------------
+DROP TABLE IF EXISTS "ytora"."sys_code_seq";
+CREATE TABLE "ytora"."sys_code_seq" (
+                                        "id" int8 NOT NULL,
+                                        "create_by" varchar(255) COLLATE "pg_catalog"."default",
+                                        "create_time" timestamp(6) DEFAULT CURRENT_TIMESTAMP,
+                                        "update_by" varchar(255) COLLATE "pg_catalog"."default",
+                                        "update_time" timestamp(6) DEFAULT CURRENT_TIMESTAMP,
+                                        "depart_code" varchar(255) COLLATE "pg_catalog"."default",
+                                        "remark" varchar(500) COLLATE "pg_catalog"."default",
+                                        "rule_code" varchar(64) COLLATE "pg_catalog"."default" NOT NULL,
+                                        "period_key" varchar(500) COLLATE "pg_catalog"."default" NOT NULL DEFAULT 'NONE'::character varying,
+                                        "next_value" int8 NOT NULL
+)
+;
+COMMENT ON COLUMN "ytora"."sys_code_seq"."id" IS '主键';
+COMMENT ON COLUMN "ytora"."sys_code_seq"."create_by" IS '数据创建人';
+COMMENT ON COLUMN "ytora"."sys_code_seq"."create_time" IS '数据创建时间';
+COMMENT ON COLUMN "ytora"."sys_code_seq"."update_by" IS '数据修改人';
+COMMENT ON COLUMN "ytora"."sys_code_seq"."update_time" IS '数据修改时间';
+COMMENT ON COLUMN "ytora"."sys_code_seq"."depart_code" IS '数据创建人所属部门';
+COMMENT ON COLUMN "ytora"."sys_code_seq"."remark" IS '备注';
+COMMENT ON COLUMN "ytora"."sys_code_seq"."rule_code" IS '规则编码，对应 sys_code_rule.rule_code';
+COMMENT ON COLUMN "ytora"."sys_code_seq"."period_key" IS '自动解析出来的周期key，如 date:yyyy-MM-dd=2026-05-18、date:yyyy=2026、week=2026-W21、NONE';
+COMMENT ON COLUMN "ytora"."sys_code_seq"."next_value" IS '下一次可分配的序列值';
+COMMENT ON TABLE "ytora"."sys_code_seq" IS '系统编码流水表，仅用于 ${seq:n} 这种顺序流水生成器';
+
+-- ----------------------------
+-- Records of sys_code_seq
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for sys_config
 -- ----------------------------
 DROP TABLE IF EXISTS "ytora"."sys_config";
@@ -97,6 +205,9 @@ COMMENT ON TABLE "ytora"."sys_data_scope" IS '数据范围';
 -- ----------------------------
 -- Records of sys_data_scope
 -- ----------------------------
+INSERT INTO "ytora"."sys_data_scope" VALUES (778517337210880, 'ytora', '2026-05-14 11:47:11.83075', 'ytora', '2026-05-14 11:47:11.83075', 'A01-02-01', NULL, 775201008320512, 'ALL', '查看全部数据', NULL, NULL);
+INSERT INTO "ytora"."sys_data_scope" VALUES (778517802582016, 'ytora', '2026-05-14 11:47:18.931169', 'ytora', '2026-05-14 11:47:18.931169', 'A01-02-01', NULL, 775201008320512, 'ASSIGNED_DEPART', '查看指定部门的数据', NULL, 'B01-02-01');
+INSERT INTO "ytora"."sys_data_scope" VALUES (778519651155968, 'ytora', '2026-05-14 11:47:47.138994', 'ytora', '2026-05-14 11:47:47.138994', 'A01-02-01', NULL, 775201008320512, 'ROOT_DEPT', '查看当前主体（组织根）数据', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_data_scope_group
@@ -773,6 +884,7 @@ CREATE TABLE "ytora"."sys_form_schema" (
                                            "hidden" bool,
                                            "disabled" bool,
                                            "default_value" varchar(255) COLLATE "pg_catalog"."default",
+                                           "index" int2,
                                            "attr" jsonb
 )
 ;
@@ -795,11 +907,14 @@ COMMENT ON COLUMN "ytora"."sys_form_schema"."dict_code" IS '字典code';
 COMMENT ON COLUMN "ytora"."sys_form_schema"."hidden" IS '是否隐藏';
 COMMENT ON COLUMN "ytora"."sys_form_schema"."disabled" IS '是否禁用';
 COMMENT ON COLUMN "ytora"."sys_form_schema"."default_value" IS '默认值';
+COMMENT ON COLUMN "ytora"."sys_form_schema"."index" IS '排序';
 COMMENT ON TABLE "ytora"."sys_form_schema" IS '表单项的结构';
 
 -- ----------------------------
 -- Records of sys_form_schema
 -- ----------------------------
+INSERT INTO "ytora"."sys_form_schema" VALUES (778520159453184, 'ytora', '2026-05-14', 'ytora', '2026-05-14', 'A01-02-01', NULL, 775200320389120, 'input', '1', NULL, NULL, NULL, '1', '1', NULL, 'f', 'f', NULL, NULL, NULL);
+INSERT INTO "ytora"."sys_form_schema" VALUES (778520398725120, 'ytora', '2026-05-14', 'ytora', '2026-05-14', 'A01-02-01', NULL, 775200320389120, 'input', '2', NULL, NULL, NULL, '2', '2', NULL, 'f', 'f', NULL, 2, NULL);
 
 -- ----------------------------
 -- Table structure for sys_icon
@@ -2717,9 +2832,10 @@ INSERT INTO "ytora"."sys_permission" VALUES (29, NULL, NULL, NULL, NULL, NULL, N
 INSERT INTO "ytora"."sys_permission" VALUES (30, NULL, NULL, NULL, NULL, NULL, NULL, 4, '接口文档', '/online/swagger', 2, 'i-lucide-book-text', 't', 5);
 INSERT INTO "ytora"."sys_permission" VALUES (16, NULL, NULL, NULL, NULL, NULL, NULL, 2, '接口管理', '/sys/static-api', 2, 'i-lucide-route', 't', 8);
 INSERT INTO "ytora"."sys_permission" VALUES (1, NULL, NULL, 'ytora', '2026-05-03 16:00:38.186736', NULL, '1234', 0, 'RBAC', '/rbac', 2, 'i-lucide-shield-check', 't', 1);
-INSERT INTO "ytora"."sys_permission" VALUES (727996893954048, 'ytora', '2026-05-05 13:39:11.046264', 'ytora', '2026-05-05 19:04:34.070701', 'A01-02-01', NULL, 2, '通知中心', '/sys/bell', 2, 'i-lucide-bell', 't', 9);
-INSERT INTO "ytora"."sys_permission" VALUES (775124975419392, 'ytora', '2026-05-13 21:24:28.499761', 'ytora', '2026-05-13 21:24:28.500762', 'A01-02-01', '1', 1, '1', '2', 3, NULL, 't', NULL);
-INSERT INTO "ytora"."sys_permission" VALUES (775200320389120, 'ytora', '2026-05-13 21:43:38.174104', 'ytora', '2026-05-13 21:43:38.174104', 'A01-02-01', NULL, 1, '1', '2', 4, NULL, NULL, NULL);
+INSERT INTO "ytora"."sys_permission" VALUES (727996893954048, 'ytora', '2026-05-05 13:39:11.046264', 'ytora', '2026-05-14 17:56:51.844188', 'A01-02-01', NULL, 2, '通知中心', '/sys/bell', 2, 'i-lucide-bell', 't', 10);
+INSERT INTO "ytora"."sys_permission" VALUES (779972669931520, 'ytora', '2026-05-14 17:57:18.446129', 'ytora', '2026-05-14 17:57:18.446129', 'A01-02-01', NULL, 2, '系统编码规则', '/sys/code-rule', 2, 'i-lucide-hash', 't', 9);
+INSERT INTO "ytora"."sys_permission" VALUES (802781387030528, 'ytora', '2026-05-18 18:37:51.849099', 'ytora', '2026-05-18 18:40:42.330954', 'A01-02-01', NULL, 802779341651968, '开发者管理', '/biz/deploy', 2, 'i-lucide-user-cog', 't', 1);
+INSERT INTO "ytora"."sys_permission" VALUES (802779341651968, 'ytora', '2026-05-18 18:37:20.641638', 'ytora', '2026-05-18 18:41:44.84075', 'A01-02-01', NULL, 0, '业务模块', '/biz', 2, 'i-lucide-briefcase-business', 't', 5);
 
 -- ----------------------------
 -- Table structure for sys_recycle_bin
@@ -2961,6 +3077,11 @@ INSERT INTO "ytora"."sys_role_permission" VALUES (717054079467537, 'ytora', '202
 INSERT INTO "ytora"."sys_role_permission" VALUES (717054079467538, 'ytora', '2026-05-03 15:16:16.945394', 'ytora', '2026-05-03 15:16:16.945394', '707063588388864', NULL, 1, 21);
 INSERT INTO "ytora"."sys_role_permission" VALUES (727997305257984, 'ytora', '2026-05-05 13:39:17.319036', 'ytora', '2026-05-05 13:39:17.319036', 'A01-02-01', NULL, 1, 727996893954048);
 INSERT INTO "ytora"."sys_role_permission" VALUES (717050531479560, 'ytora', '2026-05-03 15:15:22.807886', 'ytora', '2026-05-03 15:15:22.807886', '707063588388864', NULL, 1, 6);
+INSERT INTO "ytora"."sys_role_permission" VALUES (778515107151872, 'ytora', '2026-05-14 11:46:37.802228', 'ytora', '2026-05-14 11:46:37.802228', 'A01-02-01', NULL, 1, 775124975419392);
+INSERT INTO "ytora"."sys_role_permission" VALUES (778515280756736, 'ytora', '2026-05-14 11:46:40.451765', 'ytora', '2026-05-14 11:46:40.451765', 'A01-02-01', NULL, 1, 775200320389120);
+INSERT INTO "ytora"."sys_role_permission" VALUES (779973546672128, 'ytora', '2026-05-14 17:57:31.823763', 'ytora', '2026-05-14 17:57:31.823763', 'A01-02-01', NULL, 1, 779972669931520);
+INSERT INTO "ytora"."sys_role_permission" VALUES (802782385143808, 'ytora', '2026-05-18 18:38:07.078855', 'ytora', '2026-05-18 18:38:07.078983', 'A01-02-01', NULL, 1, 802781387030528);
+INSERT INTO "ytora"."sys_role_permission" VALUES (802782385143809, 'ytora', '2026-05-18 18:38:07.078983', 'ytora', '2026-05-18 18:38:07.078983', 'A01-02-01', NULL, 1, 802779341651968);
 
 -- ----------------------------
 -- Table structure for sys_role_table_schema
@@ -3057,6 +3178,7 @@ CREATE TABLE "ytora"."sys_table_schema" (
                                             "fixed" varchar(255) COLLATE "pg_catalog"."default",
                                             "ellipsis" varchar(255) COLLATE "pg_catalog"."default",
                                             "formatter" varchar(255) COLLATE "pg_catalog"."default",
+                                            "index" int2,
                                             "attr" jsonb
 )
 ;
@@ -3076,13 +3198,15 @@ COMMENT ON COLUMN "ytora"."sys_table_schema"."align" IS '单元格内容的align
 COMMENT ON COLUMN "ytora"."sys_table_schema"."fixed" IS '单元格固定位置：左/右';
 COMMENT ON COLUMN "ytora"."sys_table_schema"."ellipsis" IS '文字内容溢出时，是否省略';
 COMMENT ON COLUMN "ytora"."sys_table_schema"."formatter" IS '格式化文字';
+COMMENT ON COLUMN "ytora"."sys_table_schema"."index" IS '排序';
 COMMENT ON COLUMN "ytora"."sys_table_schema"."attr" IS '其他属性';
 COMMENT ON TABLE "ytora"."sys_table_schema" IS '表格列的结构';
 
 -- ----------------------------
 -- Records of sys_table_schema
 -- ----------------------------
-INSERT INTO "ytora"."sys_table_schema" VALUES (775247323660288, 'ytora', '2026-05-13', 'ytora', '2026-05-13', 'A01-02-01', NULL, 775124975419392, 'text', '1', '1', 11, NULL, NULL, 'false', NULL, NULL);
+INSERT INTO "ytora"."sys_table_schema" VALUES (775247323660288, 'ytora', '2026-05-13', 'ytora', '2026-05-14', 'A01-02-01', NULL, 775124975419392, 'text', '1', '1', 11, NULL, NULL, 'false', NULL, 123, NULL);
+INSERT INTO "ytora"."sys_table_schema" VALUES (778519024762880, 'ytora', '2026-05-14', 'ytora', '2026-05-14', 'A01-02-01', NULL, 775124975419392, 'text', '22', '2', 222, NULL, NULL, 'false', NULL, 123, NULL);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -3240,6 +3364,42 @@ LANGUAGE plpgsql;
 ALTER TABLE "ytora"."base" ADD CONSTRAINT "base_pkey" PRIMARY KEY ("id");
 
 -- ----------------------------
+-- Primary Key structure for table biz_deploy
+-- ----------------------------
+ALTER TABLE "ytora"."biz_deploy" ADD CONSTRAINT "base_copy1_pkey1" PRIMARY KEY ("id");
+
+-- ----------------------------
+-- Uniques structure for table sys_code_rule
+-- ----------------------------
+ALTER TABLE "ytora"."sys_code_rule" ADD CONSTRAINT "uk_sys_code_rule_code" UNIQUE ("rule_code");
+
+-- ----------------------------
+-- Checks structure for table sys_code_rule
+-- ----------------------------
+ALTER TABLE "ytora"."sys_code_rule" ADD CONSTRAINT "ck_sys_code_rule_seq_start" CHECK (seq_start >= 0);
+ALTER TABLE "ytora"."sys_code_rule" ADD CONSTRAINT "ck_sys_code_rule_seq_step" CHECK (seq_step > 0);
+
+-- ----------------------------
+-- Primary Key structure for table sys_code_rule
+-- ----------------------------
+ALTER TABLE "ytora"."sys_code_rule" ADD CONSTRAINT "pk_sys_code_rule" PRIMARY KEY ("id");
+
+-- ----------------------------
+-- Uniques structure for table sys_code_seq
+-- ----------------------------
+ALTER TABLE "ytora"."sys_code_seq" ADD CONSTRAINT "uk_sys_code_seq_rule_period" UNIQUE ("rule_code", "period_key");
+
+-- ----------------------------
+-- Checks structure for table sys_code_seq
+-- ----------------------------
+ALTER TABLE "ytora"."sys_code_seq" ADD CONSTRAINT "ck_sys_code_seq_next_value" CHECK (next_value >= 0);
+
+-- ----------------------------
+-- Primary Key structure for table sys_code_seq
+-- ----------------------------
+ALTER TABLE "ytora"."sys_code_seq" ADD CONSTRAINT "pk_sys_code_seq" PRIMARY KEY ("id");
+
+-- ----------------------------
 -- Primary Key structure for table sys_config
 -- ----------------------------
 ALTER TABLE "ytora"."sys_config" ADD CONSTRAINT "sys_config_pkey" PRIMARY KEY ("id");
@@ -3315,6 +3475,12 @@ ALTER TABLE "ytora"."sys_icon" ADD CONSTRAINT "sys_icon_pkey" PRIMARY KEY ("id")
 -- Primary Key structure for table sys_log
 -- ----------------------------
 ALTER TABLE "ytora"."sys_log" ADD CONSTRAINT "sys_log_pkey" PRIMARY KEY ("id");
+
+-- ----------------------------
+-- Uniques structure for table sys_permission
+-- ----------------------------
+ALTER TABLE "ytora"."sys_permission" ADD CONSTRAINT "uk_code" UNIQUE ("permission_code");
+COMMENT ON CONSTRAINT "uk_code" ON "ytora"."sys_permission" IS '资源code必须唯一';
 
 -- ----------------------------
 -- Primary Key structure for table sys_permission
