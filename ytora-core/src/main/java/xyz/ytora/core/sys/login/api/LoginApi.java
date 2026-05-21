@@ -100,6 +100,10 @@ public class LoginApi {
     @GetMapping("/check")
     @Operation(summary = "check接口", description = "测试接口，测试当前会话是否正常")
     public R<String> check() {
+        Thread current = Thread.currentThread();
+        System.out.println("线程名: " + current.getName());
+        System.out.println("是否虚拟线程: " + current.isVirtual());
+        System.out.println("线程类型: " + current.getClass());
         return R.success(null, "ok");
     }
 

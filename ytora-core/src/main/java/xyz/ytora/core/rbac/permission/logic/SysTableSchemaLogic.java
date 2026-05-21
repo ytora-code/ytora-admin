@@ -73,7 +73,7 @@ public class SysTableSchemaLogic extends BaseLogic<SysTableSchema, SysTableSchem
                 .where(w -> w
                         .in(SysRoleTableSchema::getRoleId, subQuery)
                         .eq(SysPermission::getPermissionCode, tableCode)
-                        .eq(SysPermission::getPermissionType, PermissionType.FORM.code())
+                        .eq(SysPermission::getPermissionType, PermissionType.TABLE.code())
                 ).orderByAsc(SysTableSchema::getIndex)
                 .submit(SysTableSchema.class);
 

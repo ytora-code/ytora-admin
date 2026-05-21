@@ -21,6 +21,7 @@ import xyz.ytora.sqlux.orm.Page;
 import xyz.ytora.toolkit.document.excel.Excel;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -57,7 +58,7 @@ public class SysTableSchemaApi extends BaseApi<SysTableSchemaLogic> {
     @GetMapping("/listSchemas")
     public List<SysTableSchemaData> listSchemas(@ParameterObject SysTableSchemaParam param) {
         List<SysTableSchema> list = logic.list(param);
-        return list.stream().map(SysTableSchema::toData).toList();
+        return list.stream().map(SysTableSchema::toData).sorted(Comparator.comparing(SysTableSchemaData::getIndex)).toList();
     }
 
     /**

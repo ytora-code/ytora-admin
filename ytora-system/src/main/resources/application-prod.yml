@@ -1,7 +1,12 @@
 server:
   port: 9876
+  shutdown: graceful
   servlet:
     context-path: /ytora
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 spring:
   servlet:
     multipart:
@@ -9,6 +14,12 @@ spring:
       max-request-size: 2048MB
   aop:
     proxy-target-class: true
+  # 开启虚拟线程：接收请求的线程和 @Async 异步方法使用的线程会默认使用虚拟线程
+  threads:
+    virtual:
+      enabled: true
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
 knife4j:
   production: false
   enable: true
