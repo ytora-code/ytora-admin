@@ -4,6 +4,8 @@
 # Java Jar 服务启动脚本
 #
 # 使用方式：
+#   ./run.sh
+#   ./run.sh xxx.jar
 #   ./run.sh start
 #   ./run.sh start xxx.jar
 #   ./run.sh stop
@@ -12,20 +14,19 @@
 #   ./run.sh restart xxx.jar
 #
 # 说明：
-#   1. start/restart 后面可以传 jar 路径
-#   2. 如果没有传 jar 路径，会使用 DEFAULT_JAR_PATH
-#   3. 如果 DEFAULT_JAR_PATH 也为空，则报错
-#   4. 日志输出到脚本同目录 run.log
-#   5. PID 保存到脚本同目录 run.pid
+#   1. 不传参数时，默认执行 restart
+#   2. 如果第一个参数是 .jar 文件，则默认对该 Jar 执行 restart
+#   3. start/restart 后面可以传 jar 路径
+#   4. 如果没有传 jar 路径，会使用 DEFAULT_JAR_PATH
+#   5. 如果 DEFAULT_JAR_PATH 也为空，则默认使用当前目录第一个 jar 包
+#   6. 日志输出到脚本同目录 run.log
+#   7. PID 保存到脚本同目录 run.pid
 # ==========================================================
 
 set -e
 
 # ==========================================================
 # 1. 默认 Jar 路径
-#
-# 如果你希望 ./run.sh start 不传 jar 也能启动，
-# 就在这里配置默认 jar 路径。
 #
 # 示例：
 #   DEFAULT_JAR_PATH="./app.jar"
@@ -36,14 +37,15 @@ set -e
 DEFAULT_JAR_PATH=""
 
 # ==========================================================
-# 2. Java 启动参数
-#
-# 可按需调整 JVM 参数。
+# 2. Java 路径 和 启动参数
 #
 # 示例：
+#   JAVA_PATH="java"
+#   JAVA_PATH="/home/jdk17/bin/java"
 #   JAVA_OPTS="-Xms512m -Xmx512m"
 #   JAVA_OPTS="-Xms512m -Xmx512m -Dspring.profiles.active=prod"
 # ==========================================================
+JAVA_PATH="java"
 JAVA_OPTS="-Xms512m -Xmx512m"
 
 # ==========================================================
@@ -67,13 +69,25 @@ strip_cr() {
   echo "$value"
 }
 
-# 命令
-COMMAND="$(strip_cr "${1:-}")"
+# 脚本收到的第一个参数
+RAW_COMMAND="$(strip_cr "${1:-}")"
 
-# 外部传入的 Jar 路径
-INPUT_JAR_PATH="$(strip_cr "${2:-}")"
+# 如果第一个参数为空，也就是脚本调用时没传参数，则默认执行 restart
+if [ -z "$RAW_COMMAND" ]; then
+  COMMAND="restart"
+  INPUT_JAR_PATH=""
+# 如果第一个参数内容以".jar"结尾，则对该jar执行 restart
+elif [[ "$RAW_COMMAND" == *.jar ]]; then
+  COMMAND="restart"
+  INPUT_JAR_PATH="$RAW_COMMAND"
+# 否则使用指定的 COMMAND 命令和 jar 路径
+else
+  COMMAND="$RAW_COMMAND"
+  INPUT_JAR_PATH="$(strip_cr "${2:-}")"
+fi
 
 DEFAULT_JAR_PATH="$(strip_cr "$DEFAULT_JAR_PATH")"
+JAVA_PATH="$(strip_cr "$JAVA_PATH")"
 JAVA_OPTS="$(strip_cr "$JAVA_OPTS")"
 STOP_TIMEOUT="$(strip_cr "$STOP_TIMEOUT")"
 
@@ -203,8 +217,8 @@ start() {
   local jar_path
   jar_path="$(get_jar_path)"
 
-  if ! command -v java >/dev/null 2>&1; then
-    error "未找到 java 命令，请先安装 Java 或配置 PATH。"
+  if ! command -v "$JAVA_PATH" >/dev/null 2>&1; then
+    error "未找到 Java 命令：$JAVA_PATH"
     exit 1
   fi
 
@@ -229,7 +243,7 @@ start() {
   : > "$LOG_FILE"
 
   # 启动服务
-  nohup java $JAVA_OPTS -jar "$jar_path" > "$LOG_FILE" 2>&1 &
+  nohup "$JAVA_PATH" $JAVA_OPTS -jar "$jar_path" > "$LOG_FILE" 2>&1 &
 
   local pid=$!
   echo "$pid" > "$PID_FILE"
@@ -322,17 +336,24 @@ restart() {
 # ==========================================================
 usage() {
   echo "用法："
+  echo "  ./run.sh"
+  echo "  ./run.sh [jar路径]"
   echo "  ./run.sh start [jar路径]"
   echo "  ./run.sh stop"
   echo "  ./run.sh status"
   echo "  ./run.sh restart [jar路径]"
   echo
+  echo "说明："
+  echo "  不传参数时，默认执行 restart"
+  echo "  第一个参数如果是 .jar 文件，则默认对该 Jar 执行 restart"
+  echo
   echo "示例："
+  echo "  ./run.sh"
+  echo "  ./run.sh app.jar"
   echo "  ./run.sh start app.jar"
   echo "  ./run.sh start /data/app/admin/admin.jar"
   echo "  ./run.sh restart app.jar"
 }
-
 
 # ==========================================================
 # 命令分发
