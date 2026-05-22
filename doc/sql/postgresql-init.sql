@@ -58,6 +58,7 @@ COMMENT ON TABLE "ytora"."biz_deploy" IS '开发者';
 -- ----------------------------
 -- Records of biz_deploy
 -- ----------------------------
+INSERT INTO "ytora"."biz_deploy" VALUES (819716288544768, 'ytora', '2026-05-21', 'ytora', '2026-05-21', 'A01-02-01', NULL, '张三', '2131231312e', '废物费王凤伟', '初审不通过');
 
 -- ----------------------------
 -- Table structure for sys_code_rule
@@ -278,7 +279,6 @@ COMMENT ON TABLE "ytora"."sys_depart" IS '部门表';
 -- Records of sys_depart
 -- ----------------------------
 INSERT INTO "ytora"."sys_depart" VALUES (724045561724928, 'ytora', '2026-05-04 20:54:18.500842', 'ytora', '2026-05-04 20:54:18.501834', 'A01', NULL, 0, '安布雷拉（保护伞）制药', 'ROOT', '2');
-INSERT INTO "ytora"."sys_depart" VALUES (724053956427776, 'ytora', '2026-05-04 20:56:26.591354', 'ytora', '2026-05-04 20:56:26.591354', 'B01', NULL, 0, '星环集团', 'ROOT', '1');
 INSERT INTO "ytora"."sys_depart" VALUES (724100000000001, 'ytora', '2026-05-04 21:00:53.854907', 'ytora', '2026-05-04 21:00:53.854907', 'A01-01', 'Umbrella Pharmaceuticals，对外制药业务主体', 724045561724928, 'Umbrella Pharmaceuticals', 'CENTER', NULL);
 INSERT INTO "ytora"."sys_depart" VALUES (724100000000002, 'ytora', '2026-05-04 21:00:53.854907', 'ytora', '2026-05-04 21:00:53.854907', 'A01-01-01', '疫苗、药物与公开医学研究', 724100000000001, '制药研究部', 'DEPT', NULL);
 INSERT INTO "ytora"."sys_depart" VALUES (724100000000003, 'ytora', '2026-05-04 21:00:53.854907', 'ytora', '2026-05-04 21:00:53.854907', 'A01-01-02', '药品生产与临床资料管理', 724100000000001, '药品生产部', 'DEPT', NULL);
@@ -324,6 +324,7 @@ INSERT INTO "ytora"."sys_depart" VALUES (724200000000042, 'ytora', '2026-05-04 2
 INSERT INTO "ytora"."sys_depart" VALUES (724200000000051, 'ytora', '2026-05-04 21:00:53.854907', 'ytora', '2026-05-04 21:00:53.854907', 'B01-06-01', '基地能源、环境与设备维护', 724200000000050, '基地运行组', 'TEAM', NULL);
 INSERT INTO "ytora"."sys_depart" VALUES (724200000000052, 'ytora', '2026-05-04 21:00:53.854907', 'ytora', '2026-05-04 21:00:53.854907', 'B01-06-02', '资料、文物与历史记录保存', 724200000000050, '文明档案组', 'TEAM', NULL);
 INSERT INTO "ytora"."sys_depart" VALUES (724200000000050, 'ytora', '2026-05-04 21:00:53.854907', 'admin', '2026-05-05 02:04:49.16198', 'B01-06', '程心、AA后期基地维持相关事务', 724053956427776, '基地维持处', 'depart', '2');
+INSERT INTO "ytora"."sys_depart" VALUES (724053956427776, 'ytora', '2026-05-04 20:56:26.591354', 'ytora', '2026-05-22 11:13:20.140121', 'B01', '123', 0, '星环集团', 'ROOT', '1');
 
 -- ----------------------------
 -- Table structure for sys_dict
@@ -372,6 +373,9 @@ INSERT INTO "ytora"."sys_dict" VALUES (1014, NULL, NULL, NULL, NULL, NULL, NULL,
 INSERT INTO "ytora"."sys_dict" VALUES (1015, NULL, NULL, NULL, NULL, NULL, NULL, '日志级别', 'log_level', 15);
 INSERT INTO "ytora"."sys_dict" VALUES (1001, NULL, NULL, NULL, '2026-05-02 00:34:15.158855', NULL, '123', '性别', 'gender', 1);
 INSERT INTO "ytora"."sys_dict" VALUES (720076110495744, 'ytora', '2026-05-04 04:04:49.47967', 'ytora', '2026-05-04 04:04:49.47967', '707063588388864', NULL, '数据范围类型', 'DATA_SCOPE', NULL);
+INSERT INTO "ytora"."sys_dict" VALUES (823938492923904, 'ytora', '2026-05-22 12:18:23.664846', 'ytora', '2026-05-22 12:18:23.664846', 'A01-02-01', NULL, '请求方式', 'HTTP_METHOD', NULL);
+INSERT INTO "ytora"."sys_dict" VALUES (823947408965632, 'ytora', '2026-05-22 12:20:39.712973', 'ytora', '2026-05-22 12:20:39.712973', 'A01-02-01', NULL, '接口类型', 'API_TYPE', NULL);
+INSERT INTO "ytora"."sys_dict" VALUES (823950306050048, 'ytora', '2026-05-22 12:21:23.919439', 'ytora', '2026-05-22 12:21:23.919439', 'A01-02-01', NULL, '接口状态', 'API_STATUS', NULL);
 
 -- ----------------------------
 -- Table structure for sys_dict_item
@@ -505,14 +509,12 @@ INSERT INTO "ytora"."sys_dict_item" VALUES (200094, NULL, NULL, NULL, NULL, NULL
 INSERT INTO "ytora"."sys_dict_item" VALUES (200095, NULL, NULL, NULL, NULL, NULL, NULL, 'gender', '95', '保密', 95, NULL);
 INSERT INTO "ytora"."sys_dict_item" VALUES (200096, NULL, NULL, NULL, NULL, NULL, NULL, 'gender', '96', '待确认', 96, NULL);
 INSERT INTO "ytora"."sys_dict_item" VALUES (200097, NULL, NULL, NULL, NULL, NULL, NULL, 'gender', '97', '不适用', 97, NULL);
-INSERT INTO "ytora"."sys_dict_item" VALUES (210002, NULL, NULL, NULL, NULL, NULL, NULL, 'id_card_type', 'PASSPORT', '护照', 2, NULL);
-INSERT INTO "ytora"."sys_dict_item" VALUES (210003, NULL, NULL, NULL, NULL, NULL, NULL, 'id_card_type', 'HK_MACAO_PASS', '港澳居民来往内地通行证', 3, NULL);
-INSERT INTO "ytora"."sys_dict_item" VALUES (210004, NULL, NULL, NULL, NULL, NULL, NULL, 'id_card_type', 'TAIWAN_PASS', '台湾居民来往大陆通行证', 4, NULL);
-INSERT INTO "ytora"."sys_dict_item" VALUES (210005, NULL, NULL, NULL, NULL, NULL, NULL, 'id_card_type', 'FOREIGN_PERMANENT_RESIDENCE', '外国人永久居留身份证', 5, NULL);
 INSERT INTO "ytora"."sys_dict_item" VALUES (210006, NULL, NULL, NULL, NULL, NULL, NULL, 'id_card_type', 'DRIVER_LICENSE', '驾驶证', 6, NULL);
 INSERT INTO "ytora"."sys_dict_item" VALUES (210007, NULL, NULL, NULL, NULL, NULL, NULL, 'id_card_type', 'OFFICER_CARD', '军官证', 7, NULL);
 INSERT INTO "ytora"."sys_dict_item" VALUES (210008, NULL, NULL, NULL, NULL, NULL, NULL, 'id_card_type', 'SOLDIER_CARD', '士兵证', 8, NULL);
 INSERT INTO "ytora"."sys_dict_item" VALUES (210009, NULL, NULL, NULL, NULL, NULL, NULL, 'id_card_type', 'POLICE_CARD', '警官证', 9, NULL);
+INSERT INTO "ytora"."sys_dict_item" VALUES (210003, NULL, NULL, 'ytora', '2026-05-22 12:13:58.59411', NULL, NULL, 'id_card_type', 'HK_MACAO_PASS', '港澳居民来往内地通行证', 3, '#C81E1EFF');
+INSERT INTO "ytora"."sys_dict_item" VALUES (210004, NULL, NULL, 'ytora', '2026-05-22 12:14:08.402548', NULL, NULL, 'id_card_type', 'TAIWAN_PASS', '台湾居民来往大陆通行证', 4, '#5B9FEBFF');
 INSERT INTO "ytora"."sys_dict_item" VALUES (210010, NULL, NULL, NULL, NULL, NULL, NULL, 'id_card_type', 'HOUSEHOLD_REGISTER', '户口簿', 10, NULL);
 INSERT INTO "ytora"."sys_dict_item" VALUES (210011, NULL, NULL, NULL, NULL, NULL, NULL, 'id_card_type', 'BIRTH_CERTIFICATE', '出生证明', 11, NULL);
 INSERT INTO "ytora"."sys_dict_item" VALUES (210012, NULL, NULL, NULL, NULL, NULL, NULL, 'id_card_type', 'OTHER', '其他', 12, NULL);
@@ -695,7 +697,6 @@ INSERT INTO "ytora"."sys_dict_item" VALUES (340003, NULL, NULL, NULL, NULL, NULL
 INSERT INTO "ytora"."sys_dict_item" VALUES (340004, NULL, NULL, NULL, NULL, NULL, NULL, 'log_level', 'WARN', 'WARN', 4, NULL);
 INSERT INTO "ytora"."sys_dict_item" VALUES (340005, NULL, NULL, NULL, NULL, NULL, NULL, 'log_level', 'ERROR', 'ERROR', 5, NULL);
 INSERT INTO "ytora"."sys_dict_item" VALUES (340006, NULL, NULL, NULL, NULL, NULL, NULL, 'log_level', 'FATAL', 'FATAL', 6, NULL);
-INSERT INTO "ytora"."sys_dict_item" VALUES (210001, NULL, NULL, NULL, '2026-05-02 01:15:00.163094', NULL, '1', 'id_card_type', 'ID_CARD', '居民身份证', 1, NULL);
 INSERT INTO "ytora"."sys_dict_item" VALUES (300001, NULL, NULL, 'ytora', '2026-05-03 18:05:44.084042', NULL, NULL, 'user_status', '1', '正常', 1, NULL);
 INSERT INTO "ytora"."sys_dict_item" VALUES (300002, NULL, NULL, 'ytora', '2026-05-03 18:05:48.883035', NULL, NULL, 'user_status', '2', '锁定', 2, NULL);
 INSERT INTO "ytora"."sys_dict_item" VALUES (300003, NULL, NULL, 'ytora', '2026-05-03 18:05:54.265442', NULL, NULL, 'user_status', '3', '禁用', 3, NULL);
@@ -709,6 +710,20 @@ INSERT INTO "ytora"."sys_dict_item" VALUES (720086311043072, 'ytora', '2026-05-0
 INSERT INTO "ytora"."sys_dict_item" VALUES (720087255613440, 'ytora', '2026-05-04 04:07:39.540968', 'ytora', '2026-05-04 04:07:39.540968', '707063588388864', NULL, 'DATA_SCOPE', 'ASSIGNED_USER', '查看指定人员创建的数据', 6, NULL);
 INSERT INTO "ytora"."sys_dict_item" VALUES (720084440186880, 'ytora', '2026-05-04 04:06:56.580425', 'ytora', '2026-05-04 04:07:51.973634', '707063588388864', NULL, 'DATA_SCOPE', 'DEPT_AND_CHILD', '查看当前部门及子部门数据', 3, NULL);
 INSERT INTO "ytora"."sys_dict_item" VALUES (720121645760512, 'ytora', '2026-05-04 04:16:24.292161', 'ytora', '2026-05-04 04:16:24.292161', '707063588388864', NULL, 'DATA_SCOPE', 'CUSTOM', '自定义', 7, NULL);
+INSERT INTO "ytora"."sys_dict_item" VALUES (210005, NULL, NULL, 'ytora', '2026-05-22 12:13:46.94644', NULL, NULL, 'id_card_type', 'FOREIGN_PERMANENT_RESIDENCE', '外国人永久居留身份证', 5, '#E32F2FFF');
+INSERT INTO "ytora"."sys_dict_item" VALUES (210002, NULL, NULL, 'ytora', '2026-05-22 12:07:25.710615', NULL, NULL, 'id_card_type', 'PASSPORT', '护照', 2, '#4A55CBFF');
+INSERT INTO "ytora"."sys_dict_item" VALUES (823949270188032, 'ytora', '2026-05-22 12:21:08.112971', 'ytora', '2026-05-22 12:22:20.817655', 'A01-02-01', NULL, 'API_TYPE', '1', '动态SQL', 1, '#6DEBE3FF');
+INSERT INTO "ytora"."sys_dict_item" VALUES (823954609733632, 'ytora', '2026-05-22 12:22:29.587381', 'ytora', '2026-05-22 12:22:29.587381', 'A01-02-01', NULL, 'API_TYPE', '2', 'sql', 2, NULL);
+INSERT INTO "ytora"."sys_dict_item" VALUES (823955166396416, 'ytora', '2026-05-22 12:22:38.081902', 'ytora', '2026-05-22 12:22:38.081902', 'A01-02-01', NULL, 'API_TYPE', '3', 'JavaScript', 3, NULL);
+INSERT INTO "ytora"."sys_dict_item" VALUES (823955636682752, 'ytora', '2026-05-22 12:22:45.257386', 'ytora', '2026-05-22 12:22:45.257386', 'A01-02-01', NULL, 'API_TYPE', '4', 'python', 4, NULL);
+INSERT INTO "ytora"."sys_dict_item" VALUES (823956253835264, 'ytora', '2026-05-22 12:22:54.674344', 'ytora', '2026-05-22 12:22:54.674344', 'A01-02-01', NULL, 'API_TYPE', '5', 'java', 5, NULL);
+INSERT INTO "ytora"."sys_dict_item" VALUES (823957931556864, 'ytora', '2026-05-22 12:23:20.274779', 'ytora', '2026-05-22 12:23:20.274779', 'A01-02-01', NULL, 'API_STATUS', '1', '未发布', 1, '#EE3F3FFF');
+INSERT INTO "ytora"."sys_dict_item" VALUES (823958538551296, 'ytora', '2026-05-22 12:23:29.537393', 'ytora', '2026-05-22 12:23:29.53742', 'A01-02-01', NULL, 'API_STATUS', '2', '已发布', 2, NULL);
+INSERT INTO "ytora"."sys_dict_item" VALUES (823940136632320, 'ytora', '2026-05-22 12:18:48.745186', 'ytora', '2026-05-22 12:37:03.423813', 'A01-02-01', NULL, 'HTTP_METHOD', '1', 'GET', 1, '#3FDD89FF');
+INSERT INTO "ytora"."sys_dict_item" VALUES (823941326372864, 'ytora', '2026-05-22 12:19:06.89919', 'ytora', '2026-05-22 12:37:07.171683', 'A01-02-01', NULL, 'HTTP_METHOD', '2', 'POST', 2, '#44C0E6FF');
+INSERT INTO "ytora"."sys_dict_item" VALUES (823943643660288, 'ytora', '2026-05-22 12:19:42.258516', 'ytora', '2026-05-22 12:37:10.262212', 'A01-02-01', NULL, 'HTTP_METHOD', '3', 'PUT', 3, '#E8BC69FF');
+INSERT INTO "ytora"."sys_dict_item" VALUES (823944976793600, 'ytora', '2026-05-22 12:20:02.600849', 'ytora', '2026-05-22 12:37:13.910545', 'A01-02-01', NULL, 'HTTP_METHOD', '4', 'DELETE', 4, '#E64545FF');
+INSERT INTO "ytora"."sys_dict_item" VALUES (210001, NULL, NULL, 'ytora', '2026-05-22 18:16:31.103526', NULL, '1', 'id_card_type', 'ID_CARD', '居民身份证', 1, '#4DA6E6FF');
 
 -- ----------------------------
 -- Table structure for sys_dynamic_api
@@ -756,6 +771,9 @@ COMMENT ON TABLE "ytora"."sys_dynamic_api" IS '动态API接口表';
 -- ----------------------------
 -- Records of sys_dynamic_api
 -- ----------------------------
+INSERT INTO "ytora"."sys_dynamic_api" VALUES (824036342104064, 'ytora', '2026-05-22 12:43:16.724748', 'ytora', '2026-05-22 12:43:16.725764', 'A01-02-01', NULL, '823930280542208', '/test', 1, '测试', 1, 'select 1', '{
+
+}', NULL, 'f', 1);
 
 -- ----------------------------
 -- Table structure for sys_dynamic_api_group
@@ -787,6 +805,7 @@ COMMENT ON TABLE "ytora"."sys_dynamic_api_group" IS '动态API接口分组表';
 -- ----------------------------
 -- Records of sys_dynamic_api_group
 -- ----------------------------
+INSERT INTO "ytora"."sys_dynamic_api_group" VALUES (823930280542208, 'ytora', '2026-05-22 12:16:18.353746', 'ytora', '2026-05-22 12:16:18.354243', 'A01-02-01', NULL, NULL, '测试');
 
 -- ----------------------------
 -- Table structure for sys_file
@@ -2761,6 +2780,20 @@ COMMENT ON TABLE "ytora"."sys_log" IS '日志表';
 -- ----------------------------
 -- Records of sys_log
 -- ----------------------------
+INSERT INTO "ytora"."sys_log" VALUES (806599312080896, NULL, '2026-05-19 10:48:48.745011', NULL, 'LOGIN_LOG', NULL, NULL, NULL, '退出登录', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', NULL, NULL);
+INSERT INTO "ytora"."sys_log" VALUES (806601233203200, 'ytora', '2026-05-19 10:49:18.075851', NULL, 'LOGIN_LOG', NULL, NULL, NULL, '登录系统', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', NULL, NULL);
+INSERT INTO "ytora"."sys_log" VALUES (807986387746816, 'ytora', '2026-05-19 16:41:33.850679', NULL, 'LOGIN_LOG', NULL, NULL, NULL, '登录系统', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', NULL, NULL);
+INSERT INTO "ytora"."sys_log" VALUES (808089250299904, 'ytora', '2026-05-19 17:07:43.414211', NULL, 'LOGIN_LOG', NULL, NULL, NULL, '退出登录', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', NULL, NULL);
+INSERT INTO "ytora"."sys_log" VALUES (819114404347904, 'ytora', '2026-05-21 15:51:33.911423', NULL, 'LOGIN_LOG', NULL, NULL, NULL, '登录系统', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', NULL, NULL);
+INSERT INTO "ytora"."sys_log" VALUES (819114993188864, 'ytora', '2026-05-21 15:51:42.899861', NULL, 'LOGIN_LOG', NULL, NULL, NULL, '退出登录', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', NULL, NULL);
+INSERT INTO "ytora"."sys_log" VALUES (819115064033280, 'ytora', '2026-05-21 15:51:43.980394', NULL, 'LOGIN_LOG', NULL, NULL, NULL, '登录系统', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', NULL, NULL);
+INSERT INTO "ytora"."sys_log" VALUES (819115476910080, 'ytora', '2026-05-21 15:51:50.280486', NULL, 'LOGIN_LOG', NULL, NULL, NULL, '退出登录', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', NULL, NULL);
+INSERT INTO "ytora"."sys_log" VALUES (819115551883264, 'ytora', '2026-05-21 15:51:51.424687', NULL, 'LOGIN_LOG', NULL, NULL, NULL, '登录系统', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', NULL, NULL);
+INSERT INTO "ytora"."sys_log" VALUES (819144690171904, 'ytora', '2026-05-21 15:59:16.027126', NULL, 'LOGIN_LOG', NULL, NULL, NULL, '登录系统', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', NULL, NULL);
+INSERT INTO "ytora"."sys_log" VALUES (819162482081792, 'ytora', '2026-05-21 16:03:47.522794', NULL, 'LOGIN_LOG', NULL, NULL, NULL, '登录系统', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', NULL, NULL);
+INSERT INTO "ytora"."sys_log" VALUES (823649613381632, NULL, '2026-05-22 11:04:55.695916', NULL, 'LOGIN_LOG', NULL, NULL, NULL, '退出登录', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', NULL, NULL);
+INSERT INTO "ytora"."sys_log" VALUES (823661689307136, 'ytora', '2026-05-22 11:07:59.976', NULL, 'LOGIN_LOG', NULL, NULL, NULL, '登录系统', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', NULL, NULL);
+INSERT INTO "ytora"."sys_log" VALUES (824082141609984, 'ytora', '2026-05-22 12:54:55.562697', NULL, 'LOGIN_LOG', NULL, NULL, NULL, '登录系统', NULL, NULL, NULL, NULL, NULL, '127.0.0.1', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_permission
@@ -2836,6 +2869,7 @@ INSERT INTO "ytora"."sys_permission" VALUES (727996893954048, 'ytora', '2026-05-
 INSERT INTO "ytora"."sys_permission" VALUES (779972669931520, 'ytora', '2026-05-14 17:57:18.446129', 'ytora', '2026-05-14 17:57:18.446129', 'A01-02-01', NULL, 2, '系统编码规则', '/sys/code-rule', 2, 'i-lucide-hash', 't', 9);
 INSERT INTO "ytora"."sys_permission" VALUES (802781387030528, 'ytora', '2026-05-18 18:37:51.849099', 'ytora', '2026-05-18 18:40:42.330954', 'A01-02-01', NULL, 802779341651968, '开发者管理', '/biz/deploy', 2, 'i-lucide-user-cog', 't', 1);
 INSERT INTO "ytora"."sys_permission" VALUES (802779341651968, 'ytora', '2026-05-18 18:37:20.641638', 'ytora', '2026-05-18 18:41:44.84075', 'A01-02-01', NULL, 0, '业务模块', '/biz', 2, 'i-lucide-briefcase-business', 't', 5);
+INSERT INTO "ytora"."sys_permission" VALUES (819121860509696, 'ytora', '2026-05-21 15:53:27.686477', 'ytora', '2026-05-21 15:53:38.968273', 'A01-02-01', '123', 802781387030528, '数据表格', 'deploy-table', 3, NULL, 't', 0);
 
 -- ----------------------------
 -- Table structure for sys_recycle_bin
@@ -3082,6 +3116,7 @@ INSERT INTO "ytora"."sys_role_permission" VALUES (778515280756736, 'ytora', '202
 INSERT INTO "ytora"."sys_role_permission" VALUES (779973546672128, 'ytora', '2026-05-14 17:57:31.823763', 'ytora', '2026-05-14 17:57:31.823763', 'A01-02-01', NULL, 1, 779972669931520);
 INSERT INTO "ytora"."sys_role_permission" VALUES (802782385143808, 'ytora', '2026-05-18 18:38:07.078855', 'ytora', '2026-05-18 18:38:07.078983', 'A01-02-01', NULL, 1, 802781387030528);
 INSERT INTO "ytora"."sys_role_permission" VALUES (802782385143809, 'ytora', '2026-05-18 18:38:07.078983', 'ytora', '2026-05-18 18:38:07.078983', 'A01-02-01', NULL, 1, 802779341651968);
+INSERT INTO "ytora"."sys_role_permission" VALUES (819137353154560, 'ytora', '2026-05-21 15:57:24.085589', 'ytora', '2026-05-21 15:57:24.085589', 'A01-02-01', NULL, 1, 819121860509696);
 
 -- ----------------------------
 -- Table structure for sys_role_table_schema
@@ -3115,6 +3150,12 @@ COMMENT ON TABLE "ytora"."sys_role_table_schema" IS '角色-表字段关系表';
 -- ----------------------------
 -- Records of sys_role_table_schema
 -- ----------------------------
+INSERT INTO "ytora"."sys_role_table_schema" VALUES (819137593409536, 'ytora', '2026-05-21', 'ytora', '2026-05-21', 'A01-02-01', NULL, 1, 819121860509696, 819132228829184);
+INSERT INTO "ytora"."sys_role_table_schema" VALUES (819137593409537, 'ytora', '2026-05-21', 'ytora', '2026-05-21', 'A01-02-01', NULL, 1, 819121860509696, 819127031955456);
+INSERT INTO "ytora"."sys_role_table_schema" VALUES (819137593409538, 'ytora', '2026-05-21', 'ytora', '2026-05-21', 'A01-02-01', NULL, 1, 819121860509696, 819128230019072);
+INSERT INTO "ytora"."sys_role_table_schema" VALUES (819204975362048, 'ytora', '2026-05-21', 'ytora', '2026-05-21', 'A01-02-01', NULL, 1, 819121860509696, 819204263247872);
+INSERT INTO "ytora"."sys_role_table_schema" VALUES (819707305394176, 'ytora', '2026-05-21', 'ytora', '2026-05-21', 'A01-02-01', NULL, 1, 819121860509696, 819706457292800);
+INSERT INTO "ytora"."sys_role_table_schema" VALUES (819707305394177, 'ytora', '2026-05-21', 'ytora', '2026-05-21', 'A01-02-01', NULL, 1, 819121860509696, 819129791610880);
 
 -- ----------------------------
 -- Table structure for sys_scheduler_task
@@ -3207,6 +3248,12 @@ COMMENT ON TABLE "ytora"."sys_table_schema" IS '表格列的结构';
 -- ----------------------------
 INSERT INTO "ytora"."sys_table_schema" VALUES (775247323660288, 'ytora', '2026-05-13', 'ytora', '2026-05-14', 'A01-02-01', NULL, 775124975419392, 'text', '1', '1', 11, NULL, NULL, 'false', NULL, 123, NULL);
 INSERT INTO "ytora"."sys_table_schema" VALUES (778519024762880, 'ytora', '2026-05-14', 'ytora', '2026-05-14', 'A01-02-01', NULL, 775124975419392, 'text', '22', '2', 222, NULL, NULL, 'false', NULL, 123, NULL);
+INSERT INTO "ytora"."sys_table_schema" VALUES (819204263247872, 'ytora', '2026-05-21', 'ytora', '2026-05-21', 'A01-02-01', NULL, 819121860509696, 'selection', 'selection', '#', NULL, 'center', 'left', 'false', NULL, 0, NULL);
+INSERT INTO "ytora"."sys_table_schema" VALUES (819128230019072, 'ytora', '2026-05-21', 'ytora', '2026-05-21', 'A01-02-01', NULL, 819121860509696, 'text', 'idCard', '身份证', NULL, 'center', NULL, 'false', NULL, 2, NULL);
+INSERT INTO "ytora"."sys_table_schema" VALUES (819127031955456, 'ytora', '2026-05-21', 'ytora', '2026-05-21', 'A01-02-01', NULL, 819121860509696, 'text', 'name', '姓名', NULL, 'center', NULL, 'true', NULL, 1, NULL);
+INSERT INTO "ytora"."sys_table_schema" VALUES (819129791610880, 'ytora', '2026-05-21', 'ytora', '2026-05-21', 'A01-02-01', NULL, 819121860509696, 'text', 'professional', '专业方向', NULL, 'center', NULL, 'false', NULL, 3, NULL);
+INSERT INTO "ytora"."sys_table_schema" VALUES (819132228829184, 'ytora', '2026-05-21', 'ytora', '2026-05-21', 'A01-02-01', NULL, 819121860509696, 'number', 'status', '状态', NULL, 'center', NULL, 'false', NULL, 4, NULL);
+INSERT INTO "ytora"."sys_table_schema" VALUES (819706457292800, 'ytora', '2026-05-21', 'ytora', '2026-05-21', 'A01-02-01', NULL, 819121860509696, 'slot', 'action', '操作', 220, 'center', 'right', 'false', NULL, 5, NULL);
 
 -- ----------------------------
 -- Table structure for sys_user

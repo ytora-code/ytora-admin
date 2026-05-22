@@ -27,10 +27,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static xyz.ytora.sqlux.core.SQL.select;
 import static xyz.ytora.sqlux.sql.func.SqlFuncAggregation.count;
@@ -48,6 +45,13 @@ public class DatabaseLogic {
     private final DataSource dataSource;
     private final IMetaService metaService;
     public final Map<String, DataSourceDesc> dsMap = new LinkedHashMap<>();
+    public static final Map<DbType, Set<String>> BASE_SCHEMA = Map.of(
+            DbType.POSTGRESQL, Set.of("information_schema", "pg_catalog", "pg_toast"),
+            DbType.MYSQL, Set.of("information_schema", "mysql", "performance_schema", "sys"),
+            DbType.MARIADB, Set.of("information_schema", "mysql", "performance_schema", "sys"),
+            DbType.ORACLE, Set.of("SYS", "SYSTEM", "XDB", "CTXSYS", "MDSYS", "OUTLN", "DBSNMP"),
+            DbType.SQLSERVER, Set.of("INFORMATION_SCHEMA", "sys")
+    );
 
     @Autowired
     public void autowired(SqluxProperty sqluxProperty) {
@@ -96,7 +100,32 @@ public class DatabaseLogic {
         if (Colls.isEmpty(schemas)) {
             schemas = Collections.singletonList(dataSourceDesc.getCatalog());
         }
-        return schemas;
+        return schemas.stream().filter(i -> !isBaseSchema(dataSourceDesc.getDbType(), i)).toList();
+    }
+
+    private boolean isBaseSchema(String dbTypeName, String schema) {
+        if (Strs.isEmpty(schema) || Strs.isEmpty(dbTypeName)) {
+            return false;
+        }
+
+        DbType dbType;
+        try {
+            dbType = DbType.fromString(dbTypeName);
+        } catch (Exception e) {
+            return false;
+        }
+
+        String normalizedSchema = schema.trim();
+        Set<String> baseSchemas = BASE_SCHEMA.getOrDefault(dbType, Collections.emptySet());
+        if (dbType == DbType.ORACLE || dbType == DbType.SQLSERVER) {
+            return baseSchemas.contains(normalizedSchema.toUpperCase(Locale.ROOT));
+        }
+        if (dbType == DbType.POSTGRESQL) {
+            return baseSchemas.contains(normalizedSchema)
+                    || normalizedSchema.startsWith("pg_temp_")
+                    || normalizedSchema.startsWith("pg_toast_temp_");
+        }
+        return baseSchemas.contains(normalizedSchema.toLowerCase(Locale.ROOT));
     }
 
     /**

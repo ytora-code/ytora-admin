@@ -32,6 +32,7 @@ target/
 build/
 
 # 日志文件
+/log
 *.log
 
 # 操作系统生成的文件
