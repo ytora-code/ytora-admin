@@ -111,7 +111,7 @@ public class DefaultSseMessagePusher extends DefaultSseRegister implements ISseP
         String targetClientId = message.getTo();
         //如果targetClientId为空，则表示广播消息
         if (Strs.isEmpty(targetClientId)) {
-            return getAll(message.getEvent());
+            return listSubscribers(message.getEvent());
         }
 
         //否则给指定的客户端发送消息

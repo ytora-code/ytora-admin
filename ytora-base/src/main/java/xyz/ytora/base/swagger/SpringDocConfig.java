@@ -125,6 +125,19 @@ public class SpringDocConfig {
     }
 
     /**
+     * AI开发分组模块
+     */
+    @Bean
+    public GroupedOpenApi aiGroup() {
+        return GroupedOpenApi.builder()
+                .group("AI开发")
+                .addOpenApiMethodFilter((e) -> e.isAnnotationPresent(Operation.class))
+                .pathsToMatch("/ai/**")
+                .addOperationCustomizer(globalHeaderCustomizer())
+                .build();
+    }
+
+    /**
      * 全局请求头
      */
     @Bean

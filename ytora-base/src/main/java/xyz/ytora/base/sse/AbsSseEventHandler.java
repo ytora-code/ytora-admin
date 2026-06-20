@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import xyz.ytora.base.exception.BaseException;
 import xyz.ytora.base.scheduler.timewheel.ITimeWheelScheduler;
 import xyz.ytora.base.scheduler.timewheel.TimeWheelTask;
-import xyz.ytora.base.sse.support.DefaultSseMessagePusher;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,6 +33,11 @@ public abstract class AbsSseEventHandler {
     private ISsePusher pusher;
 
     /**
+     * 消息注册器
+     */
+    private ISseRegister sseRegister;
+
+    /**
      * 该SSE事件处理器在定时任务中的任务id
      */
     public String taskId;
@@ -54,6 +58,11 @@ public abstract class AbsSseEventHandler {
     @Autowired
     public void setPusher(ISsePusher pusher) {
         this.pusher = pusher;
+    }
+
+    @Autowired
+    public void setSseRegister(ISseRegister sseRegister) {
+        this.sseRegister = sseRegister;
     }
 
     /**
@@ -83,6 +92,7 @@ public abstract class AbsSseEventHandler {
             scheduler.cancelTask(taskId);
             taskId = null;
         }
+        sseEventMap.remove(getEventName(), this);
         isRunning = false;
         log.info("SSE事件处理器已停止: {}", getEventName());
     }
@@ -138,14 +148,15 @@ public abstract class AbsSseEventHandler {
 
         //将任务注册进时间轮
         TimeWheelTask task = new TimeWheelTask(cronExpression(), () -> {
-            if (isRunning) {
-                Object result = exec();
-                if (result != null) {
-                    message.setData(result);
-                    pusher.push(message);
-                }
+            if (!isRunning || sseRegister.listSubscribers(eventName).isEmpty()) {
+                return;
             }
-        });
+            Object result = exec();
+            if (result != null) {
+                message.setData(result);
+                pusher.push(message);
+            }
+        }).setReentrant(false);
 
         this.taskId = scheduler.addTask(task);
     }

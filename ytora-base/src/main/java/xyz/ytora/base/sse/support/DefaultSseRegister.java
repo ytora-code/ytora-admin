@@ -102,19 +102,21 @@ public class DefaultSseRegister implements ISseRegister {
     /**
      * 获取全部sse连接
      */
-    public List<SseEmitter> getAll() {
+    public List<SseEmitter> listSubscribers() {
         return connectionCache.values().stream().toList();
     }
 
     /**
      * 获取全订阅了指定事件的sse连接
      */
-    public List<SseEmitter> getAll(String eventName) {
+    @Override
+    public List<SseEmitter> listSubscribers(String eventName) {
         List<SseEmitter> list = new ArrayList<>();
         for (String clientId : clientSubscribeList.keySet()) {
             Set<String> eventSet = clientSubscribeList.get(clientId);
-            if (eventSet.contains(eventName)) {
-                list.add(connectionCache.get(clientId));
+            SseEmitter emitter = connectionCache.get(clientId);
+            if (emitter != null && eventSet != null && eventSet.contains(eventName)) {
+                list.add(emitter);
             }
         }
         return list;
@@ -139,14 +141,20 @@ public class DefaultSseRegister implements ISseRegister {
         if (Strs.isEmpty(eventName)) {
             return;
         }
-        Set<String> eventSet = clientSubscribeList.computeIfAbsent(id, k -> new HashSet<>());
+        Set<String> eventSet = clientSubscribeList.computeIfAbsent(id, k -> ConcurrentHashMap.newKeySet());
         eventSet.add(eventName);
     }
 
     @Override
     public void unSubscribe(String id, String eventName) {
-        Set<String> eventSet = clientSubscribeList.computeIfAbsent(id, k -> new HashSet<>());
+        Set<String> eventSet = clientSubscribeList.get(id);
+        if (eventSet == null) {
+            return;
+        }
         eventSet.remove(eventName);
+        if (eventSet.isEmpty()) {
+            clientSubscribeList.remove(id, eventSet);
+        }
     }
 
     /**
@@ -186,6 +194,7 @@ public class DefaultSseRegister implements ISseRegister {
             connectionCache.remove(id, targetEmitter);
             revertConnectionCache.remove(targetEmitter);
             clientInfoCache.remove(id);
+            clientSubscribeList.remove(id);
         }
     }
 

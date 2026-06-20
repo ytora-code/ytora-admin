@@ -4,6 +4,7 @@ import  xyz.ytora.base.scheduler.Task;
 import xyz.ytora.toolkit.time.cron.Crons;
 
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -35,6 +36,12 @@ public class TimeWheelTask implements Comparable<TimeWheelTask> {
 
     //任务是否已经取消
     private volatile boolean cancelled;
+
+    //是否允许同一个任务多次并发执行，默认保持原有行为
+    private volatile boolean reentrant = true;
+
+    //不可重入任务的运行状态
+    private final AtomicBoolean running = new AtomicBoolean(false);
 
     public TimeWheelTask(String cron, Task task) {
         setCron(cron);
@@ -106,6 +113,25 @@ public class TimeWheelTask implements Comparable<TimeWheelTask> {
 
     boolean isCancelled() {
         return cancelled;
+    }
+
+    boolean isReentrant() {
+        return reentrant;
+    }
+
+    public TimeWheelTask setReentrant(boolean reentrant) {
+        this.reentrant = reentrant;
+        return this;
+    }
+
+    boolean tryStartExecution() {
+        return reentrant || running.compareAndSet(false, true);
+    }
+
+    void finishExecution() {
+        if (!reentrant) {
+            running.set(false);
+        }
     }
 
     void cancel() {

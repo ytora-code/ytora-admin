@@ -228,7 +228,7 @@ public final class TimeWheelSchedulerImpl implements ITimeWheelScheduler {
                 //只有该任务的pos跟当前槽位的索引匹配才执行任务，这是为了方便取消任务
                 if (current.getPos() == currentSlot && !current.isCancelled()) {
                     //使用虚拟线程来执行任务，避免任务阻塞时间轮线程
-                    Thread.ofVirtual().name(WHEEL_THREAD_NAME_PREFIX).start(currentTask::doTask);
+                    executeTask(current, currentTask);
                     //根据cron表达式，计算下一次执行时间距离现在的时间间隔
                     long nextExecMilli = Crons.nextTimeByCron(current.getCron(), current.getExecMilli());
                     long nextPeriod = nextExecMilli - current.getExecMilli();
@@ -272,6 +272,29 @@ public final class TimeWheelSchedulerImpl implements ITimeWheelScheduler {
 
             //休眠一段时间后，进入下一个槽位
             LockSupport.parkNanos(nano - System.nanoTime());
+        }
+    }
+
+    private void executeTask(TimeWheelTask timeWheelTask, Task task) {
+        if (!timeWheelTask.tryStartExecution()) {
+            if (log.isWarnEnabled()) {
+                log.warn("定时任务上一次执行尚未结束，跳过本轮执行，taskId: {}, cron: {}",
+                        timeWheelTask.getTaskId(), timeWheelTask.getCron());
+            }
+            return;
+        }
+
+        try {
+            Thread.ofVirtual().name(WHEEL_THREAD_NAME_PREFIX).start(() -> {
+                try {
+                    task.doTask();
+                } finally {
+                    timeWheelTask.finishExecution();
+                }
+            });
+        } catch (RuntimeException | Error e) {
+            timeWheelTask.finishExecution();
+            throw e;
         }
     }
 

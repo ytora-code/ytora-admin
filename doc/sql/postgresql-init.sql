@@ -3406,14 +3406,9 @@ $BODY$
 LANGUAGE plpgsql;
 
 -- ----------------------------
--- Primary Key structure for table base
--- ----------------------------
-ALTER TABLE "ytora"."base" ADD CONSTRAINT "base_pkey" PRIMARY KEY ("id");
-
--- ----------------------------
 -- Primary Key structure for table biz_deploy
 -- ----------------------------
-ALTER TABLE "ytora"."biz_deploy" ADD CONSTRAINT "base_copy1_pkey1" PRIMARY KEY ("id");
+ALTER TABLE "ytora"."biz_deploy" ADD CONSTRAINT "biz_deploy_pkey1" PRIMARY KEY ("id");
 
 -- ----------------------------
 -- Uniques structure for table sys_code_rule
@@ -3577,7 +3572,7 @@ ALTER TABLE "ytora"."sys_scheduler_task" ADD CONSTRAINT "sys_scheduler_task_pkey
 -- ----------------------------
 -- Primary Key structure for table sys_table_schema
 -- ----------------------------
-ALTER TABLE "ytora"."sys_table_schema" ADD CONSTRAINT "base_copy1_pkey" PRIMARY KEY ("id");
+ALTER TABLE "ytora"."sys_table_schema" ADD CONSTRAINT "sys_table_schema_pkey" PRIMARY KEY ("id");
 
 -- ----------------------------
 -- Primary Key structure for table sys_user

@@ -55,6 +55,14 @@ ytora:
     strategy: xyz.ytora.base.storage.strategy.Murmur3_128StrategyImpl
     max: 100MB
     path: "file-storage/"
+  # AI
+  ai:
+    cli-path: claude-ds.sh
+    api:
+      default-provider: deepseek
+      base-uri: https://api.deepseek.com
+      api-key: xxx
+      model: deepseek-chat
   # sqlux设置
   sqlux:
     # 主数据源
@@ -72,7 +80,7 @@ ytora:
       primary:
         desc: '主业务库'
         url: jdbc:postgresql://localhost:5432/ytora?currentSchema=ytora&ssl=false&stringtype=unspecified
-        username: admin
+        username: ytora
         password: 220600
         driver-class-name: org.postgresql.Driver
         type: com.zaxxer.hikari.HikariDataSource

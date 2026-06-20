@@ -19,6 +19,11 @@ public interface ISseRegister {
     int size();
 
     /**
+     * 获取全订阅了指定事件的sse连接。
+     */
+    List<SseEmitter> listSubscribers(String eventName);
+
+    /**
      * 客户端连接信息列表。
      */
     List<SseClientInfo> listClientInfos();
